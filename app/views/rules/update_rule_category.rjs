@@ -1,0 +1,1 @@
+page.replace_html '#rules div.catdata.ui-accordion-content-active', :partial => "rules_category", :locals => {:sensor => @sensor, :category => @category} 

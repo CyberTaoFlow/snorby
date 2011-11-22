@@ -61,6 +61,8 @@ gem 'whois',                       '~> 1.6.6'
 gem 'simple_form',                 '~> 1.2.2'
 gem 'geoip',                       '~> 1.1.1'
 gem 'netaddr',                     '~> 1.5.0'
+gem 'snmp',			   '~> 1.0.3'
+gem 'getopt',			   '~> 1.4.1'
 
 group(:test) do
   gem 'capybara'

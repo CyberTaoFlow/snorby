@@ -48,7 +48,8 @@
 	</ul>
 	
 	<% end %>
-	
-	<%= pager(@events, request.fullpath) %>
+	<% if !@events.is_a? Array %>
+		<%= pager(@events, request.fullpath) %>
+	<% end %>
 	
 </div>

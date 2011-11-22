@@ -52,9 +52,22 @@ class SettingsController < ApplicationController
     Delayed::Job.enqueue(Snorby::Jobs::GeoipUpdatedbJob.new(false), :priority => 1, :run_at => 1.week.from_now.beginning_of_day)
     redirect_to jobs_path
   end
+  
+  # Starts the Snmp Job like the others jobs.
+  def start_snmp
+    Snorby::Jobs.snmp.destroy! if Snorby::Jobs.snmp?
+    Delayed::Job.enqueue(Snorby::Jobs::SnmpJob.new(false), :priority => 1)
+    redirect_to jobs_path
+  end
 
   def restart_worker
     Snorby::Worker.restart if Snorby::Worker.running?
+    redirect_to jobs_path
+  end
+
+  # Stops the worker.
+  def stop_worker
+    Snorby::Worker.stop if Snorby::Worker.running?
     redirect_to jobs_path
   end
 

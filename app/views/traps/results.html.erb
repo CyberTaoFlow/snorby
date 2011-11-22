@@ -1,0 +1,7 @@
+<% if params[:title] %>
+	<%= title "#{truncate(h(params[:title]))} <i>#{pluralize(@traps.pager.total, 'trap')} found</i>".html_safe, "#{h(params[:title])}" %>
+<% else %>
+	<%= title "Search Results <i>#{pluralize(@traps.pager.total, 'trap')} found</i>".html_safe, 'Search Results' %>
+<% end %>
+	
+<%= render :partial => 'traps/traps' %>

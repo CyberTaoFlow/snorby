@@ -1,0 +1,5 @@
+<% @sensor_rules.each do |sr| %>
+<%= sr.action.name %> <%= sr.rule.protocol %> <%= sr.rule.l3l4 %> <%= sr.rule.rule %>
+<%= "#{sr.action.name} #{sr.rule.protocol} #{sr.rule.l3l4} #{sr.rule.rule}" %>
+<% end %>
+

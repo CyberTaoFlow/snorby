@@ -1,0 +1,16 @@
+<li id='trap_<%= trap.id %>' class='trap' data-trap-id='<%= trap.id %>' >    
+	<div class='row'>
+		<div class='select small'><%= check_box_tag 'trap-selector', nil, false, :class => "check_box_#{trap.id}" %></div>
+		<div class='click address' title='<%=h trap.ip %>'><%= trap.ip %></div>
+		<div class='click port' title='<%=h trap.port %>'><%= trap.port %></div>		
+		<div class='click port' title='<%=h trap.protocol %>'><%= trap.protocol %> </div>
+		<div class='click address' title='<%=h trap.hostname %>'><%= trap.hostname %> </div>
+		<div class='click address' title='<%=h trap.community %>'><%= trap.community %> </div>
+		<div class='click value' title='<%=h trap.message %>'><%= trap.message.slice(0,30) %> </div>		
+        <div class='click timestamp'>
+			<b title='Trap ID: <%= trap.id %> %> &nbsp; <%= trap.timestamp.strftime('%A, %b %d, %Y at %I:%M:%S %p') %>' class='add_tipsy'><%= trap.pretty_time %></b>
+            
+		</div>
+	</div>
+	<div style='display:none;' class='event-data' data='false'></div>
+</li>

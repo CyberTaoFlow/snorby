@@ -1,0 +1,22 @@
+<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' %>
+
+<div class=''>
+  <table class='ip-header' border='0' cellspacing='0' cellpadding='0'>
+    <tr>
+      <th class='first'>action</th>
+      <th>protocol</th>
+      <th>l3l4</th>
+      <th class='last'>rule</th>
+    </tr>
+    <tbody>
+      <% @sensor_rules.each do |sr| %>
+        <tr>
+          <td class='first'><%= sr.action.name %></td>
+          <td><%= sr.rule.protocol %></td>
+          <td><%= sr.rule.l3l4 %></td>
+          <td class='last'><%= sr.rule.rule %></td>
+        </tr>
+      <% end %>      
+    </tbody>
+  </table>
+</div>

@@ -3,6 +3,7 @@
 	<%= title "Listing Sensors" do -%>
 
 		<% if current_user.admin %>
+			<%= render :partial => 'sensors/add' %>
 			<%= render :partial => 'settings/menu' %>
 		<% end %>
 
@@ -14,11 +15,19 @@
 
 <% end %>
 
+<%= stylesheet_link_tag "jquery.treeTable" %>
+<%= javascript_include_tag "jquery.treeTable" %>
+<%= javascript_include_tag "jquery.ui.draggable" %>
+<%= javascript_include_tag "jquery.ui.droppable" %>
+<%= javascript_include_tag "jquery.ui.core.js" %>
+<%= javascript_include_tag "jquery.ui.mouse.js" %>
+<%= javascript_include_tag "jquery.ui.widget.js" %>
+
 <div id="sensors" class='boxit'>
 	
-	<table border="0" cellspacing="0" cellpadding="0">
-		<tr>		
-			<th>ID</th>
+	<table id="sensorTable" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<th></th>		
 			<th>Name</th>
 			<th>Hostname</th>
 			<th>Interface</th>
@@ -26,13 +35,12 @@
 			<th>Event Count</th>
 			<th>Event %</th>
 			<th>Events</th>
+			<th>Rules</th>
+			<th></th>
 		</tr>
 		<tbody class='sensors'>
 			<%= render @sensors %>
 		</tbody>
 	</table>
-
-
-	<%= pager(@sensors, request.fullpath) %>
 	
 </div>

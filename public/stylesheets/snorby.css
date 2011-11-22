@@ -1718,6 +1718,30 @@ ul.table li .row div img{
 	margin-top: -5px;
 }
 
+ul.table li .row div.address{
+	width: 105px;
+	padding-left: 12px;
+}
+
+/* RedBorder Added  */
+
+ul.table li .row div.oid{
+	width: 150px;
+	padding-left: 12px;
+}
+
+ul.table li .row div.value{
+	width: 200px;
+	padding-left: 12px;
+}
+
+ul.table li .row div.port{
+	width: 75px;
+	padding-left: 12px;
+}
+
+/* End RedBorder Added */
+
 ul.table li .row div.sensor{
 	padding-left: 12px;
 }

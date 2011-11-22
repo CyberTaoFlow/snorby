@@ -165,7 +165,8 @@ module ApplicationHelper
 
     validations = [{:check => Snorby::Jobs.sensor_cache?, :enabled => true, :desc => "Sensor Cache Job"},
                    {:check=> Snorby::Jobs.daily_cache?, :enabled => true, :desc => "Daily Cache Job"},
-                   {:check=> Snorby::Jobs.geoip_update?, :enabled => Setting.geoip?, :desc => "GeoIP Update Job"}
+                   {:check=> Snorby::Jobs.geoip_update?, :enabled => Setting.geoip?, :desc => "GeoIP Update Job"},
+                   {:check => Snorby::Jobs.snmp?, :enabled => true, :desc => "Snmp Job"}
                   ]
 
     # Just check for enabled jobs              

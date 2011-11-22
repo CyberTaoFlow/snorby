@@ -2,11 +2,11 @@
 SnortSchema.create(:vseq => 107, :ctime => Time.now, :version => "Snorby #{Snorby::VERSION}") if SnortSchema.first.blank?
 
 # Default user setup
-User.create(:name => 'Administrator', :email => 'snorby@snorby.org', :password => 'snorby', :password_confirmation => 'snorby', :admin => true) if User.all.blank?
+User.create(:name => 'Administrator', :email => 'admin@redborder.net', :password => 'redborder', :password_confirmation => 'redborder', :admin => true) if User.all.blank?
 
 # Snorby General Settings
-Setting.set(:company, 'Snorby.org') unless Setting.company?
-Setting.set(:email, 'snorby@snorby.org') unless Setting.email?
+Setting.set(:company, 'redBorder Networks') unless Setting.company?
+Setting.set(:email, 'admin@redborder.net') unless Setting.email?
 Setting.set(:signature_lookup, 'http://rootedyour.com/snortsid?sid=$$gid$$:$$sid$$') unless Setting.signature_lookup?
 Setting.set(:daily, 1) unless Setting.daily?
 Setting.set(:weekly, 1) unless Setting.weekly?
@@ -95,3 +95,16 @@ if Severity.all.blank?
   Severity.create(:id => 2, :sig_id => 2, :name => 'Medium Severity', :text_color => "#ffffff", :bg_color => "#fab908")
   Severity.create(:id => 3, :sig_id => 3, :name => 'Low Severity', :text_color => "#ffffff", :bg_color => "#3a781a")
 end
+
+# Load Default Action Rules
+if RuleAction.all.blank?
+  RuleAction.create(:id => 1, :name => 'pass'  , :description => 'Ignore the packet')
+  RuleAction.create(:id => 2, :name => 'alert' , :description => 'Generate an alert using the selected alert method, and then log the packet')
+  RuleAction.create(:id => 3, :name => 'drop'  , :description => 'Block and log the packet')
+  RuleAction.create(:id => 4, :name => 'log'   , :description => 'Log the packet')
+  RuleAction.create(:id => 5, :name => 'sdrop' , :description => 'Block the packet but do not log it')
+  RuleAction.create(:id => 6, :name => 'reject', :description => 'Block the packet, log it, and then send a TCP reset if the protocol is TCP or an ICMP port unreachable')
+end
+
+# Sensor root
+Sensor.create(:name => "root", :domain => true) if Sensor.first(:name => "root").nil?

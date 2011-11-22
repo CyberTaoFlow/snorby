@@ -14,6 +14,9 @@ module Snorby
   # Snorby Environment Specific Configurations
   raw_config = File.read("config/snorby_config.yml")
   CONFIG = YAML.load(raw_config)[Rails.env].symbolize_keys
+  
+  snmp_config = File.read("config/snmp_config.yml")
+  CONFIG_SNMP = YAML.load(snmp_config)[Rails.env].symbolize_keys
 
   class Application < Rails::Application
         

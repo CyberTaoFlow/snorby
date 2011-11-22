@@ -5,8 +5,8 @@
 #
 snorby: &snorby
   adapter: mysql
-  username: root
-  password: # Example: password: "s3cr3tsauce"
+  username: snorby
+  password: "redborder"
   host: localhost
 
 development:

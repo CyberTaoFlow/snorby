@@ -13,7 +13,10 @@
 			</script>
 			
 		<% end %>
-	
+		
+		<% if current_user.admin %>
+			<%= menu_item "Stop Worker", stop_worker_settings_path, 'icons/fp.png', :confirm => "Are you sure you want to stop the worker process?" %>
+		<% end %>
 		<%= menu_item "Restart Worker", restart_worker_settings_path, 'icons/restart.png', :confirm => "Are you sure you want to restart the worker process?" %>
 	<% end %>
 

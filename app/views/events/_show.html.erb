@@ -55,7 +55,7 @@
 		</div>
 
 		<%= render :partial => 'events/ip' if @event.ip.present? %>
-		
+
 		<%= render :partial => 'events/signature' %>
 
 		<% if @event.tcp? %>
@@ -67,7 +67,7 @@
 		<% else %>
 			
 		<% end %>
-		
+
 		<% if @event.payload %>
 		
 			<ul class='payload-tabs plus-side'>
@@ -83,11 +83,11 @@
 		<% else %>
 		
 			<div class='section-title plus-side bottom-none'>Payload</div>
-		
+
 			<div class='payload plus no-overflow' style='padding:10px;overflow: hidden;'>No Payload Data Available</div>
 		
 		<% end %>
-				
+		
 		<%= render :partial => 'events/notes' if Setting.notes? %>
 		
 	</div>

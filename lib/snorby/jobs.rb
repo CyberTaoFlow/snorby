@@ -40,6 +40,7 @@ module Snorby
       Jobs::SensorCacheJob.new(false).perform unless Jobs.sensor_cache?
       Jobs::DailyCacheJob.new(false).perform unless Jobs.daily_cache?
       Jobs::GeoipUpdatedbJob.new(false).perform if (Setting.geoip? && !Jobs.geoip_update?)
+      Jobs::SnmpJob.new(false).perform unless Jobs.snmp?
     end
 
     def self.sensor_cache
@@ -54,6 +55,10 @@ module Snorby
       Snorby::Jobs.find.first(:handler.like => "%!ruby/struct:Snorby::Jobs::GeoipUpdatedbJob%")
     end    
 
+    def self.snmp
+      Snorby::Jobs.find.first(:handler.like => "%!ruby/struct:Snorby::Jobs::SnmpJob%")
+    end
+
     def self.sensor_cache?
       !Snorby::Jobs.find.first(:handler.like => "%!ruby/struct:Snorby::Jobs::SensorCacheJob%").blank?
     end
@@ -65,6 +70,10 @@ module Snorby
     def self.geoip_update?
       !Snorby::Jobs.find.first(:handler.like => "%!ruby/struct:Snorby::Jobs::GeoipUpdatedbJob%").blank?
     end    
+
+    def self.snmp?
+      !Snorby::Jobs.find.first(:handler.like => "%!ruby/struct:Snorby::Jobs::SnmpJob%").blank?
+    end
 
     def self.sensor_caching?
       return true if Jobs.sensor_cache? && Jobs.sensor_cache.locked_at
@@ -81,8 +90,13 @@ module Snorby
       false      
     end
 
+    def self.snmp_caching?
+      return true if Jobs.snmp? && Jobs.snmp.locked_at
+      false      
+    end
+
     def self.caching?
-      return true if (Jobs.sensor_caching? || Jobs.daily_caching?)
+      return true if (Jobs.sensor_caching? || Jobs.daily_caching? || Jobs.snmp_caching?)
       false
     end
     

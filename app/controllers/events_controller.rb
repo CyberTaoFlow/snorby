@@ -3,11 +3,18 @@ class EventsController < ApplicationController
   
   helper_method :sort_column, :sort_direction
 
+  # If the sensor is indicated in the REST path, it will show the events related to that sensor.
+  # /sensors/:sensor_id/events
   def index
     params[:sort] = sort_column
     params[:direction] = sort_direction
+		
+		if params[:sensor_id]
+			@events = Sensor.get(params[:sensor_id]).events
+		else    
+			@events = Event.sorty(params)
+		end
 
-    @events = Event.sorty(params)
     @classifications ||= Classification.all
   end
 
@@ -40,7 +47,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.get(params['sid'], params['cid'])
+		@event = Event.get(params['sid'], params['cid'])
     @lookups ||= Lookup.all
     @notes = @event.notes.all.page(params[:page].to_i, 
                                    :per_page => 5, :order => [:id.desc])

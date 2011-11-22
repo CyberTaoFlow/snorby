@@ -1,6 +1,20 @@
 Snorby::Application.routes.draw do
 
   resources :lookups
+  
+  resources :snmps do
+    
+    collection do
+      post :mass_update
+    end
+    
+  end
+
+  match '/snmp_results', :controller => 'Snmps', :action => 'results'
+  match '/trap_results', :controller => 'Traps', :action => 'results'
+  match '/sensor/:sensor_id/last_compiled_rules', :controller => 'Rules', :action => 'last_compiled_rules'
+
+	resources :rules
 
   # This feature is not ready yet
   # resources :notifications
@@ -28,7 +42,11 @@ Snorby::Application.routes.draw do
 
   root :to => "page#dashboard"
 
+	match '/sensors/update_parent', :controller => 'Sensors', :action => 'update_parent'
+
   resources :sensors do
+		resources :rules
+		resources :events
   end
 
   resources :settings do
@@ -37,7 +55,9 @@ Snorby::Application.routes.draw do
       get :start_sensor_cache
       get :start_daily_cache
       get :start_geoip_update
+      get :start_snmp
       get :start_worker
+      get :stop_worker      
     end
   end
   

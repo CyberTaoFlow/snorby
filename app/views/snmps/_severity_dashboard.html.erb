@@ -1,0 +1,89 @@
+<% content_for :footer do %>
+
+	<script type="text/javascript">
+    $('#sev1-graph').sparkline([<%= @high.join(',') %>], { 
+        barWidth: 6, height: 40, type: 'bar', barColor: sev1_bg_color 
+     });
+    
+    $('#sev2-graph').sparkline([<%= @medium.join(',') %>], { 
+      barWidth: 6, height: 40, type: 'bar', barColor: sev2_bg_color 
+    });
+
+    $('#sev3-graph').sparkline([<%= @low.join(',') %>], { 
+      barWidth: 6, height: 40, type: 'bar', barColor: sev3_bg_color 
+    });
+	</script>
+
+<% end %>
+
+<div class='box grid_3 alpha shadow round' data-url='<%= snmp_results_path(:title => "High Severity Snmps", :search => { :severity => 1, :time_end => "#{@end_time.to_i}", :time_start => "#{@start_time.to_i}" }) %>'>
+	
+	<div class='content shadow-in'>
+		<div class='data'>
+			
+			<div id='box-count'>
+				<%= @high.sum %>
+			</div>
+			
+			<div id="box-title">
+				High Severity
+			</div>
+			
+			<div class='box-graph' id='sev1-graph'></div>
+			
+		</div>
+	</div>
+	
+	<div class='footer'>
+	<span><%= @high.sum %> / <%= @event_count %></span> 
+	</div>
+	
+</div>
+
+<div class='box grid_3 alpha shadow round' data-url='<%= snmp_results_path(:title => "Medium Severity Snmps", :search => { :severity => 2, :time_end => "#{@end_time.to_i}", :time_start => "#{@start_time.to_i}" }) %>'>
+	
+	<div class='content shadow-in'>
+		<div class='data'>
+			
+			<div id='box-count'>
+				<%= @medium.sum %>
+			</div>
+			
+			<div id="box-title">
+				Medium Severity
+			</div>
+			
+			<div class='box-graph' id='sev2-graph'></div>
+			
+		</div>
+	</div>
+	
+	<div class='footer'>
+	<span><%= @medium.sum %> / <%= @event_count %></span> 
+	</div>
+	
+</div>
+
+<div class='box grid_3 alpha shadow round' data-url='<%= snmp_results_path(:title => "Low Severity Snmps", :search => { :severity => 3, :time_end => "#{@end_time.to_i}", :time_start => "#{@start_time.to_i}" }) %>'>
+	
+	<div class='content shadow-in'>
+		<div class='data'>
+			
+			<div id='box-count'>
+				<%= @low.sum %>
+			</div>
+			
+			<div id="box-title">
+				Low Severity
+			</div>
+			
+			<div class='box-graph' id='sev3-graph'></div>
+			
+		</div>
+	</div>
+	
+	<div class='footer'>
+	<span><%= @low.sum %> / <%= @event_count %></span> 
+	</div>
+	
+</div>

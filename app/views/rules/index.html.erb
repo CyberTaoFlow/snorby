@@ -1,0 +1,32 @@
+<% content_for :footer do %>
+  <%= render :partial => 'layouts/notify' %>
+
+  <%= stylesheet_link_tag "jquery-ui" %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#rules").accordion({
+        change: function(event, ui) {
+          var category_id = $("#rules .catdata.ui-accordion-content-active").attr("data-category-id");
+          var sensor_id   = $("#rules").attr("data-sensor-sid");
+
+          alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
+          $.ajax({
+            url: "/rules/update_rule_category",
+            data: {category_id: category_id, sensor_id: sensor_id},
+            success: function(data){
+            }
+          });
+                      
+        }
+      });
+    });
+  </script>
+
+<% end %>
+
+<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' %>
+
+<div id="rules" class="boxit ui-accordion" data-sensor-sid=<%= @sensor.sid  %> >
+  <%= render :partial => 'rules/category', :collection => @categories %>
+</div>

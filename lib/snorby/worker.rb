@@ -40,7 +40,7 @@ module Snorby
     end
 
     def self.problems?
-      worker_and_caches = (!Snorby::Worker.running? || !Snorby::Jobs.sensor_cache? || !Snorby::Jobs.daily_cache?)
+      worker_and_caches = (!Snorby::Worker.running? || !Snorby::Jobs.sensor_cache? || !Snorby::Jobs.daily_cache? || !Snorby::Jobs.snmp?)
       Setting.geoip? ? ( worker_and_caches || !Snorby::Jobs.geoip_update?) : worker_and_caches
     end
 
