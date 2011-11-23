@@ -1519,6 +1519,25 @@ jQuery(document).ready(function($) {
     $(this).parents('dl').fadeOut('fast');
   });
 
+  $('li.sensor-options a').live('click', function(event) {
+    var self = this;
+    var sid = $(this).parent('li').attr('data-sensor-id');
+    event.preventDefault();
+    var elements = $('dl.sensor-menu');
+    for (var i = 0; i < elements.length; i++){
+       var sid_aux = $(elements[i]).attr('data-sensor-id');
+       if (sid != sid_aux){
+        elements[i].style.display = 'none';
+       }
+    }
+    var sid = $(this).parent('li').attr('data-sensor-id');
+    $('dl#sensor-menu-'+sid).toggle();
+  });
+
+  $('dl#sensor-menu a').live('click', function(event) {
+    $(this).parents('dl').fadeOut('fast');
+  });
+
   $('#wrapper').live('click', function() {
     if ($('dl#admin-menu').is(':visible')) {
       $('dl#admin-menu').fadeOut('fast');

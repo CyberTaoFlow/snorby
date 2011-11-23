@@ -31,10 +31,10 @@ Snorby::Application.routes.draw do
   devise_for :users, :path_names => { :sign_in => 'login', 
     :sign_out => 'logout', 
     :sign_up => 'register' }, :controllers => { 
-      :registrations => "registrations",
-      :sessions => "sessions", 
-      :passwords => 'passwords'
-    } do
+    :registrations => "registrations",
+    :sessions => "sessions",
+    :passwords => 'passwords'
+  } do
     get "/login" => "devise/sessions#new"
     get '/logout', :to => "devise/sessions#destroy"
     get '/reset/password', :to => "devise/passwords#edit"
@@ -45,8 +45,9 @@ Snorby::Application.routes.draw do
 	match '/sensors/update_parent', :controller => 'Sensors', :action => 'update_parent'
 
   resources :sensors do
-		resources :rules
-		resources :events
+    resources :rules
+    resources :events
+    resources :snmps
   end
 
   resources :settings do

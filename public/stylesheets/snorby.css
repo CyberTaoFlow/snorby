@@ -863,6 +863,30 @@ dl#admin-menu dd a{
 	font-style: normal;
 }
 
+dl.sensor-menu{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    min-width: 100px;
+    padding: 0;
+    opacity: 0.95;
+    display: block;
+    overflow: visible;
+    position: absolute;
+    background: #111;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#2b2b2b',endColorstr='#111');
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(#2b2b2b),to(#111));
+    background: -moz-linear-gradient(-90deg,#2b2b2b,#111);
+    z-index: 99999;
+    border: 1px solid #151515;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
 #header #header-inside #menu ul li:hover{
 	background: transparent url(../images/header/menu-bg.png) repeat-x 0 bottom;
 }
