@@ -1,9 +1,10 @@
 <tr id='sensor_<%= sensor.sid %>' class='sensor <%= "child-of-sensor_#{sensor.parent.sid}" unless sensor.parent.nil? or sensor.parent.is_root? %> <%= sensor.domain ? " domain" : "" %> <%= sensor.domain && !sensor.is_virtual_sensor? ? "folder parent" : "" %>' data-sensor-id='<%= sensor.sid %>'>
-  <td></td>
-  <td class='name <%= "edit-sensor-name" if current_user.admin %>' data-sensor-id='<%= sensor.sid %>'><%= sensor.name %></td>
+  <td class='name' data-sensor-id='<%= sensor.sid %>'><%= sensor.name %></td>
 
   <td class='hostname'><%= sensor.hostname %></td>
   <td class='interface'><%= sensor.interface %></td>
+
+  <td class='hostname <%= "edit-sensor-name" if current_user.admin and sensor.is_virtual_sensor? %>' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
 
   <% if sensor.last %>
     <td class='last_event_time'><%= sensor.last.timestamp.strftime('%m/%d/%Y %l:%M %p') %></td>

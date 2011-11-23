@@ -40,6 +40,8 @@ class Sensor
 
   property :events_count, Integer, :index => true, :default => 0
 
+  property :ipdir, String
+
   has n, :events, :child_key => :sid, :constraint => :destroy
 
   has n, :ips, :child_key => :sid, :constraint => :destroy

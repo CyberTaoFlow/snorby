@@ -17,6 +17,12 @@ class SensorsController < ApplicationController
     @sensor.update!(:name => params[:name]) if @sensor
     render :text => @sensor.name
   end
+
+  def update_ip
+    @sensor = Sensor.get(params[:id])
+    @sensor.update!(:ipdir => params[:ip]) if @sensor
+    render :text => @sensor.ipdir
+  end
   
   # It destroys a sensor and its childs.
   def destroy

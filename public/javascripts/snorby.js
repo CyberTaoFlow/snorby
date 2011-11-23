@@ -201,6 +201,23 @@ var Snorby = {
       }
     });
 
+    $('.edit-sensor-ip').editable("/sensors/update_ip", {
+      height: '20px',
+      width: '100px',
+      name: "ip",
+      indicator: '<img src="/images/icons/pager.gif">',
+      data: function(value) {
+        var retval = value.replace(/<br[\s\/]?>/gi, '\n');
+        return retval;
+      },
+      submitdata : function() {
+        return {
+          id: $(this).attr('data-sensor-id'),
+          authenticity_token: csrf
+        };
+      }
+    });
+
     $(document).ready(function()  {
 			if ($("#sensorTable").length > 0) {
 	      $("#sensorTable").treeTable();
