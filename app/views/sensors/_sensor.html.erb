@@ -7,7 +7,9 @@
   <td class='hostname <%= "edit-sensor-ip" if current_user.admin and sensor.is_virtual_sensor? %>' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
 
   <% if sensor.last %>
-    <td class='last_event_time'><%= sensor.last.timestamp.strftime('%m/%d/%Y %l:%M %p') %></td>
+    <td>
+      <b title='<%= sensor.last.timestamp.strftime('%A, %b %d, %Y at %I:%M:%S %p') %>' class='add_tipsy'><%= sensor.last_pretty_time %></b>
+    </td>
   <% else %>
     <td class='last_event_time'>N/A</td>
   <% end %>

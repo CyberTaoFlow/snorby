@@ -80,6 +80,11 @@ class Sensor
       false
     end
   end
+
+  def last_pretty_time
+    return "#{self.last.timestamp.strftime('%l:%M %p')}" if Date.today.to_date == self.last.timestamp.to_date
+    "#{self.last.timestamp.strftime('%m/%d/%Y')}"
+  end
   
   def event_percentage
     begin
