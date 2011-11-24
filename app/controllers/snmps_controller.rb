@@ -4,19 +4,23 @@ class SnmpsController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
+    @sensor = Sensor.get(params[:sensor_id]) unless params[:sensor_id].nil?
+
     @now = Time.now
 
     @range = params[:range].blank? ? 'last_3_hours' : params[:range]
 
     set_defaults
 
-    @last_snmp = Snmp.all.sort{|a, b| a.timestamp <=> b.timestamp}.last
+    @snmp = @snmp.all(:sid => params[:sensor_id]) unless params[:sensor_id].nil?
+
+    @last_snmp = @snmp.sort{|a, b| a.timestamp <=> b.timestamp}.last
     
     # TODO the snorby_config.yml will change for more dynamic info.
-    @cpu_metrics = @snmp.cpu_metrics(@range.to_sym)
-    @user_cpu_metrics = @snmp.user_cpu_metrics(@range.to_sym)
-    @disk_metrics = @snmp.disk_metrics(@range.to_sym)
-    @memory_metrics = @snmp.memory_metrics(@range.to_sym)
+    @cpu_metrics = Snmp.cpu_metrics(@range.to_sym, @snmp.sensors)
+    @user_cpu_metrics = Snmp.user_cpu_metrics(@range.to_sym, @snmp.sensors)
+    @disk_metrics = @snmp.disk_metrics(@range.to_sym, @snmp.sensors)
+    @memory_metrics = @snmp.memory_metrics(@range.to_sym, @snmp.sensors)
     
     @high = @snmp.severity_count(:high, @range.to_sym)
     @medium = @snmp.severity_count(:medium, @range.to_sym)

@@ -111,26 +111,26 @@ class Snmp
     all(:timestamp.gte => Time.now.beginning_of_year, :timestamp.lte => Time.now.end_of_year)  
   end
 
-  def self.cpu_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.10.0", type) 
+  def self.cpu_metrics(type=:week, collection = Sensor.all)
+    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.10.0", type, collection)
   end
 
-  def self.user_cpu_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.9.0", type) 
+  def self.user_cpu_metrics(type=:week, collection = Sensor.all)
+    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.9.0", type, collection)
   end
 
-  def self.disk_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.9.1.9.1", type)
+  def self.disk_metrics(type=:week, collection = Sensor.all)
+    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.9.1.9.1", type, collection)
   end
   
-  def self.memory_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.4.5.5", type)
+  def self.memory_metrics(type=:week, collection = Sensor.all)
+    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.4.5.5", type, collection)
   end
   
-  def self.snmp_metrics(oid, type)
+  def self.snmp_metrics(oid, type, collection)
     metrics = []
 
-    Sensor.all(:domain => false, :limit => 5).each do |sensor|
+    collection.each do |sensor|
       count = []
       time_range = []
 
