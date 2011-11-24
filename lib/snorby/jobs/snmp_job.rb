@@ -7,10 +7,10 @@ module Snorby
 
         time = Snorby::CONFIG_SNMP[:time].to_f
 
-        Sensor.all.each do |sensor|
+        Sensor.all.select{|x| x.is_virtual_sensor? and x.ipdir.present?}.each do |sensor|
 
           Snorby::CONFIG_SNMP[:oids].each_key do |oid|
-            value = Snmp.get_value(sensor.name, oid)
+            value = Snmp.get_value(sensor.ipdir, oid)
             Snmp.create(:sid => sensor.sid, :timestamp => Time.now, :oid => oid, :value => value)
           end  
 
