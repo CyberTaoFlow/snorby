@@ -23,6 +23,7 @@
   <td>
     <li class="sensor-options" data-sensor-id='<%= sensor.sid %>'><%= link_to "Options", sensors_path %></li>
     <dl id="sensor-menu-<%= sensor.sid %>" class="sensor-menu" data-sensor-id='<%= sensor.sid %>' style='display:none;'>
+      <div class="admin-arrow"></div>
       <dd>
         <%= link_to "Events", sensor_events_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
         <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) unless sensor.domain %>
