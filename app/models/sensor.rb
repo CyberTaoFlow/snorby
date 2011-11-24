@@ -187,7 +187,6 @@ class Sensor
     end
   end
 
-
   def hierarchy(deep)
     # 'sensors = childs' causes problems instead of 'sensors = childs.map{|x| x}' because of the class DataMapper::Associations::OneToMany::Collection
     sensors = childs.map{|x| x} unless childs.blank? 
@@ -220,40 +219,23 @@ class Sensor
     sensorRules.compilations
   end
 
-  def discard_pending_rules
-    pending_rules.destroy
-  end
-
   def deep
     parent.nil? ? 0 : 1 + parent.deep
   end
 
   def events
     if domain
-      events = Array.new
-      childs.each{|x| events << x.events}
-      events.flatten
+      childs.events
     else
       super
     end
-  end		
+  end
 
   # A "virtual sensor" is the first parent of a real sensor
   # A "real sensor" is a sensor with domain property set to false
   #    - it cannot contains other sensor (cannot be parent of other sensor)
   def is_virtual_sensor?
-    if domain
-      s = childs.first
-      if s.nil?
-        ret = false
-      else
-        ret = !s.domain
-      end
-    else 
-      ret = false
-    end
-
-    return ret
+    domain and childs.present? and childs.select{|x| x.domain}.empty?
   end
 
   # Return the root sensor (first parent)
@@ -262,7 +244,13 @@ class Sensor
   end
 
   def is_root?
-    name == 'root'
+    parent.nil? and self.name == 'root'
   end
+
+  private
+
+    def discard_pending_rules
+      pending_rules.destroy
+    end
 
 end
