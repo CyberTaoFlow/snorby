@@ -1519,6 +1519,41 @@ jQuery(document).ready(function($) {
     $(this).parents('dl').fadeOut('fast');
   });
 
+  $('dl.rule_actions dd').live('click', function(event) {
+    var self = this;
+    event.preventDefault();
+    $(this).parent().next('.rule_actions-menu').toggle('slow');
+  });
+
+  $('dd.rule_action-button').live('click', function(event) {
+    var self = $(this);
+    var action_id = self.attr("data-action-id");
+    var rule_id   = self.parentsUntil("tr").parent().attr("data-rule-id");
+    var sensor_id = $("#rules").attr("data-sensor-sid");
+    var action_cmp = self.parent().prev("dl.rule_actions").children("dd");
+    $(this).parent().toggle('slow');
+    action_cmp.html('<img src="/images/icons/pager.gif">');
+    
+    if (action_id>=0 && rule_id>=0 && sensor_id>0) {
+      if (!self.parent().hasClass("loading")) {
+        self.parent().addClass("loading")
+        
+        $.ajax({
+          url: "/sensors/" +sensor_id +"/update_rule_action",
+          data: {action_id: action_id, rule_id: rule_id, sensor_id: sensor_id},
+          success: function(data){
+            self.parent().removeClass("loading")
+            var action_str = self.html();
+            action_cmp.html(action_str);
+            action_cmp.addClass(action_str.toLowerCase())
+            self.parentsUntil("tr").parent().addClass("rule_pending");
+            $("#rules").accordion("resize");
+          }
+        });
+      }
+    }
+  });
+
   $('li.sensor-options a').live('click', function(event) {
     var self = this;
     var sid = $(this).parent('li').attr('data-sensor-id');

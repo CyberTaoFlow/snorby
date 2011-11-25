@@ -56,7 +56,11 @@ config["verbose"]   = false    if config["verbose"].nil?
 config["cache_dir"] = "/opt/rb/var/www/snortrules/cache" if config["cache_dir"].nil?
 
 includeRuleDir = []
-includeRuleDir << opt["d"] if opt["d"]
+if opt["d"]
+  source = RuleSource.first(:name => "local")
+  source = RuleSource.create(:name => "local") if source.nil?
+  includeRuleDir << {:name => "local", :dir => opt["d"], :id => source.id}
+end
 
 if opt["f"]
   config["force"] = true
@@ -68,63 +72,62 @@ printf("Starting rule2rbIPS\n") if config["verbose"]
 newRules=false
 
 #Download rules
-config["url_rules"].each do |rule_source|
-  begin 
-    if !rule_source["domain"].nil? && !rule_source["name"].nil?
-      tgzLocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.tgz"
-      dFile = true
-      if File.exists?(tgzLocalFile)
-        md5Content = ""
-        md5LocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.md5"
-        if !rule_source["md5"].nil?
-          printf("Downloading #{rule_source["md5"]}\n") if config["verbose"]
-          downloadFile(rule_source["domain"], rule_source["md5"], md5LocalFile)
-          md5Content = File.open(md5LocalFile).first.chop
-          localMd5Content = Digest::MD5.hexdigest(File.read(tgzLocalFile));
+unless config["url_rules"].nil?
+  config["url_rules"].each do |rule_source|
+    begin
+      if !rule_source["domain"].nil? && !rule_source["name"].nil?
+        tgzLocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.tgz"
+        dFile = true
+        if File.exists?(tgzLocalFile)
+          md5Content = ""
+          md5LocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.md5"
+          if !rule_source["md5"].nil?
+            printf("Downloading #{rule_source["md5"]}\n") if config["verbose"]
+            downloadFile(rule_source["domain"], rule_source["md5"], md5LocalFile)
+            md5Content = File.open(md5LocalFile).first.chop
+            localMd5Content = Digest::MD5.hexdigest(File.read(tgzLocalFile));
 
-          if (localMd5Content==md5Content) 
-            printf("The local file #{tgzLocalFile} is the same than remote file. ") if config["verbose"]
-            printf("Ignoring it!!") if config["verbose"] && !config["force"]
-            printf("\n") if config["verbose"]
-            dFile = false
+            if (localMd5Content==md5Content)
+              printf("The local file #{tgzLocalFile} is the same than remote file. ") if config["verbose"]
+              printf("Ignoring it!!") if config["verbose"] && !config["force"]
+              printf("\n") if config["verbose"]
+              dFile = false
+            end
           end
         end
-      end
 
-      if (dFile || config["force"])
-        if (dFile) 
-          printf("Downloading #{rule_source["tgz"]}\n") if config["verbose"]
-          downloadFile(rule_source["domain"], rule_source["tgz"], tgzLocalFile)
+        if (dFile || config["force"])
+          if (dFile)
+            printf("Downloading #{rule_source["tgz"]}\n") if config["verbose"]
+            downloadFile(rule_source["domain"], rule_source["tgz"], tgzLocalFile)
+          end
+
+          #Extracting rules
+          dirExtract = "#{config["cache_dir"]}/#{rule_source["name"]}"
+          `rm -rf #{dirExtract}` if File.directory? dirExtract
+          `mkdir #{dirExtract}`
+          printf("Extracting #{tgzLocalFile}\n") if config["verbose"]
+          `tar xzf #{tgzLocalFile} -C #{dirExtract}`
+          newRules=true
         end
-
-        #Extracting rules
-        dirExtract = "#{config["cache_dir"]}/#{rule_source["name"]}"
-        `rm -rf #{dirExtract}` if File.directory? dirExtract
-        `mkdir #{dirExtract}`
-        printf("Extracting #{tgzLocalFile}\n") if config["verbose"]
-        `tar xzf #{tgzLocalFile} -C #{dirExtract}`
-	newRules=true
       end
+    rescue => err
+      printf("Error with the url #{rule_source["name"]} (#{err})\n")
     end
-  rescue => err
-    printf("Error with the url #{rule_source["name"]} (#{err})\n")
   end
 end
 
 if newRules
   config["url_rules"].each do |rule_source|
     source = RuleSource.first(:name => rule_source["name"])
-    if source.nil?
-      source = RuleSource.new();
-      source.name = rule_source["name"]
-      source.save
-    end
-
+    source = RuleSource.create(:name => rule_source["name"]) if source.nil?
     rule_source["search"].each do |rs|
       includeRuleDir << {:name => rule_source["name"], :dir => "#{config["cache_dir"]}/#{rule_source["name"]}/#{rs}", :id => source.id}
     end
   end
+end
 
+unless includeRuleDir.blank?
   timenow   = Time.now
   dbVersion = RuleDbversion.new()
   dbVersion.timestamp = timenow
@@ -161,44 +164,52 @@ includeRuleDir.each do |rulesDir|
             unless ruleMatch.nil?
               sidRuleMatch = /; sid:(?<sid>\d+);/.match(ruleMatch[:rule])
               unless sidRuleMatch.nil?
-                classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
-                if classtypeRuleMatch.nil?
-                  category2="unknown"
-                else
-                  category2=classtypeRuleMatch[:classtype].strip
-                end
-    
-                rc2 = RuleCategory2.first(:name => category2)
-    
-                if rc2.nil?
-                  rc2 = RuleCategory2.new();
-                  rc2.name = category2
-                  rc2.save
-                end
-    
-                rev=0
-                revRuleMatch = /; rev:(?<rev>\d+);/.match(ruleMatch[:rule])
-                if revRuleMatch.nil?
-                  rev=0
-                else
-                  rev = revRuleMatch[:rev].to_i
-                end
-           
-                r = Rule.new()
-                r.rule_id      = sidRuleMatch[:sid].to_i
-                r.category1_id = rc1.id
-                r.category2_id = rc2.id
-                r.protocol     = ruleMatch[:protocol]
-                r.l3l4         = ruleMatch[:l3l4]
-                r.rev          = rev.to_i
-                r.dbversion_id = dbVersion.id
-                r.rule         = ruleMatch[:rule]
-                r.source_id    = rulesDir[:id]
+                msgRuleMatch = /\(msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
+                unless msgRuleMatch.nil?
+                  classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
+                  if classtypeRuleMatch.nil?
+                    category2="unknown"
+                  else
+                    category2=classtypeRuleMatch[:classtype].strip
+                  end
 
-                #printf("    - rule sid: %d\n", r.rule_id) if config["verbose"]
-  
-                if !r.save && config["verbose"]
-                  printf("The rule has not been saved: \n   Rule: %s\n   Errors:%s\n\n", ruleLine, r.errors.inspect);
+                  rc2 = RuleCategory2.first(:name => category2)
+
+                  if rc2.nil?
+                    rc2 = RuleCategory2.new();
+                    rc2.name = category2
+                    rc2.save
+                  end
+
+                  rev=0
+                  revRuleMatch = /; rev:(?<rev>\d+);/.match(ruleMatch[:rule])
+                  if revRuleMatch.nil?
+                    rev=0
+                  else
+                    rev = revRuleMatch[:rev].to_i
+                  end
+
+                  r = Rule.new()
+                  r.rule_id      = sidRuleMatch[:sid].to_i
+                  r.msg          = msgRuleMatch[:msg]
+                  r.category1_id = rc1.id
+                  r.category2_id = rc2.id
+                  r.protocol     = ruleMatch[:protocol]
+                  r.l3l4         = ruleMatch[:l3l4]
+                  r.rev          = rev.to_i
+                  r.dbversion_id = dbVersion.id
+                  r.rule         = ruleMatch[:rule]
+                  r.source_id    = rulesDir[:id]
+
+                  #printf("    - rule sid: %d\n", r.rule_id) if config["verbose"]
+
+                  if !r.save && config["verbose"]
+                    printf("The rule has not been saved: \n   Rule: %s\n   Errors:%s\n\n", ruleLine, r.errors.inspect);
+                  end
+                else
+                  if config["verbose"]
+                    printf("MSG not found!! \n%s\n", ruleLine)
+                  end
                 end
               else 
                 if config["verbose"]

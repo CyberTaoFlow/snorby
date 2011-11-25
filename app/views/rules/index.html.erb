@@ -2,22 +2,33 @@
   <%= render :partial => 'layouts/notify' %>
 
   <%= stylesheet_link_tag "jquery-ui" %>
+  <%= stylesheet_link_tag "jquery.treeTable" %>
+  <%= javascript_include_tag "jquery.treeTable" %>
 
   <script type="text/javascript">
     $(document).ready(function() {
       $("#rules").accordion({
+        active: false,
+        collapsible: true,
         change: function(event, ui) {
-          var category_id = $("#rules .catdata.ui-accordion-content-active").attr("data-category-id");
+          var active_comps= $("#rules .catdata.ui-accordion-content-active");
+          var category_id = active_comps.attr("data-category-id");
           var sensor_id   = $("#rules").attr("data-sensor-sid");
+          active_comps.html('<img src="/images/icons/pager.gif">')
 
-          alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
-          $.ajax({
-            url: "/rules/update_rule_category",
-            data: {category_id: category_id, sensor_id: sensor_id},
-            success: function(data){
+          if (category_id>=0 && sensor_id>=0) {
+            if (!active_comps.hasClass("load")) {
+              active_comps.addClass("loaded")
+              //alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
+              $.ajax({
+                url: "/sensors/" +sensor_id +"/update_rule_category",
+                data: {category_id: category_id, sensor_id: sensor_id},
+                success: function(data){
+                  $( "#rules" ).accordion("resize");
+                }
+              });
             }
-          });
-                      
+          }                      
         }
       });
     });
@@ -30,3 +41,7 @@
 <div id="rules" class="boxit ui-accordion" data-sensor-sid=<%= @sensor.sid  %> >
   <%= render :partial => 'rules/category', :collection => @categories %>
 </div>
+
+<%= link_to 'View active rules', {:controller=>"Rules", :action=>"last_compiled_rules"  , :sensor_id=>@sensor.sid} %>
+<%= link_to 'Compile'          , {:controller=>"Rules", :action=>"compile_rules"        , :sensor_id=>@sensor.sid} %>
+<%= link_to 'Revert'           , {:controller=>"Rules", :action=>"discard_pending_rules", :sensor_id=>@sensor.sid} %>
