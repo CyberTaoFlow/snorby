@@ -4,11 +4,11 @@
   <td class='hostname'><%= sensor.hostname %></td>
   <td class='interface'><%= sensor.interface %></td>
 
-  <td class='hostname <%= "edit-sensor-ip" if current_user.admin and sensor.is_virtual_sensor? %>' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
+  <td class='ip <%= "edit-sensor-ip" if current_user.admin and sensor.is_virtual_sensor? %>' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
 
   <% if sensor.last %>
-    <td>
-      <b title='<%= sensor.last.timestamp.strftime('%A, %b %d, %Y at %I:%M:%S %p') %>' class='add_tipsy'><%= sensor.last_pretty_time %></b>
+    <td class="last_event_time">
+      <span title='<%= sensor.last.timestamp.strftime('%A, %b %d, %Y at %I:%M:%S %p') %>' class='add_tipsy'><%= sensor.last_pretty_time %></span>
     </td>
   <% else %>
     <td class='last_event_time'>N/A</td>
@@ -20,8 +20,8 @@
     <%= css_chart(sensor.event_percentage) %>
   </td>
 
-  <td>
-    <li class="sensor-options" data-sensor-id='<%= sensor.sid %>'><%= link_to "Options", sensors_path %></li>
+  <td class="icons">
+    <li class="sensor-options" data-sensor-id='<%= sensor.sid %>'><%= link_to image_tag("icons/admin.png", :size => '16x16', :class => 'trash'), sensors_path %></li>
     <dl id="sensor-menu-<%= sensor.sid %>" class="sensor-menu" data-sensor-id='<%= sensor.sid %>' style='display:none;'>
       <div class="admin-arrow"></div>
       <dd>
@@ -37,6 +37,6 @@
     </dl>
   </td>
 
-  <td class='last'><%= link_to image_tag("icons/destroy.png", :size => '16x16', :class => 'trash'), sensor_path(sensor), :method => :delete, :confirm => "Are you sure you want to remove this sensor?" %></td>
+  <td class='icons last'><%= link_to image_tag("icons/destroy.png", :size => '16x16', :class => 'trash'), sensor_path(sensor), :method => :delete, :confirm => "Are you sure you want to remove this sensor?" %></td>
 
 </tr>

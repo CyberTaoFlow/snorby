@@ -889,7 +889,7 @@ dl.sensor-menu{
     margin-right: 0;
     margin-left: 0;
     margin-bottom: 0;
-    margin-left: -20px;
+    margin-left: -30px;
 }
 
 dl.sensor-menu div.admin-arrow{
@@ -905,6 +905,32 @@ dl.sensor-menu div.admin-arrow{
 dl.sensor-menu dd{
     text-align: center;
     width: 100%;
+}
+
+dl.sensor-menu dd a {
+    padding: 3px 5px;
+    background: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff',endColorstr='#e0e0e0');
+    color: #ECECEC;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    font-variant: normal;
+    border: 0px;
+    position: relative;
+    display: block;
+    overflow: visible;
+}
+
+dl.sensor-menu dd:hover{
+    background-color: rgba(66,66,66,0.4);
+}
+
+dl.sensor-menu a:hover{
+    background-color: rgba(66,66,66,0.4);
+    filter: none;
+    background: none;
+    border: 0px;
 }
 
 #header #header-inside #menu ul li:hover{
@@ -2959,6 +2985,22 @@ input[type='text']{
 
 /* @group CSS Charts */
 
+td.interface{
+    width: 80px;
+}
+
+td.ip{
+    width: 120px;
+}
+
+td.last_event_time{
+    width: 80px;
+}
+
+td.event_count{
+    width: 80px;
+}
+
 td.chart{
 	position: relative;
 	width: 120px;
@@ -2966,10 +3008,21 @@ td.chart{
 	padding-bottom: 0;
 }
 
+td.icons{
+	position: relative;
+	width: 40px;
+	padding-left: 10px;
+	padding-bottom: 0;
+}
+
+td.last{
+    padding-left: 5px;
+}
+
 div.progress-container {
 	vertical-align: middle;
   	border: 1px solid #c0c0c0;
-  	width: 100px;
+  	width: 150px;
   	float: left; 
 	background: #fff;
 	display: block;
