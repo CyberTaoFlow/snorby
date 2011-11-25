@@ -1,0 +1,24 @@
+<div id="rules_category_<%=category.id%>" class='boxit'>
+  <table id="rules_category_<%=category.id%>_table" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th>Action</th>
+      <th>Message</th>
+      <th>Protocol</th>
+      <th></th>
+    </tr>
+    <tbody class='rules_category'>
+      <%# groups.each do |group| %>
+        <%#= render :partial => 'rules/rule_group', :locals => {:sensor => @sensor, :category => category, :group => group, :actions => @actions} %>
+      <%# end %>
+      <% category.rules.all(:dbversion=>RuleDbversion.last).each do |rule| %>
+        <%= render :partial => 'rules/rule', :locals => {:sensor => @sensor, :category => category, :rule => rule, :group => rule.category2, :actions => @actions, :pending_rules => @pending_rules, :last_compiled_rules => @last_compiled_rules} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#rules_category_<%=category.id%>_table").treeTable();
+  });
+</script>

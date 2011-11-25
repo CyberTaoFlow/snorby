@@ -1,15 +1,16 @@
 class RulesController < ApplicationController
 
   # Get all categories and their rules. 
-	def index
-		@sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-		@categories = RuleCategory2.all(:order => [:name.asc])
-	end
+  def index
+    @sensor     = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @categories = RuleCategory1.all(:order => [:name.asc])
+  end
 
   # Get last compiled rules for the sensor indicated
   def last_compiled_rules
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @sensor_rules  = @sensor.last_compiled_rules
+    @sensor_rules = @sensor.last_compiled_rules
+    @sensor_rules = [] if @sensor_rules.nil?
 
     respond_to do |format|
       format.html {render :layout => true}
@@ -22,7 +23,35 @@ class RulesController < ApplicationController
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     
     unless params["category_id"].nil?
-      @category = RuleCategory2.get(params["category_id"].to_i)
+      @category = RuleCategory1.get(params["category_id"].to_i)
+    end
+
+    @groups = RuleCategory2.all()
+
+    @actions             = RuleAction.all
+    @pending_rules       = @sensor.pending_rules unless @sensor.nil?
+    @last_compiled_rules = @sensor.last_compiled_rules unless @sensor.nil?
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_rule_action
+    @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
+    @action = RuleAction.get(params["action_id"].to_i)
+    @rule   = Rule.get(params["rule_id"].to_i)
+
+    sr = @sensor.pending_rule?@rule
+
+    if sr.nil?
+      sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => @rule)
+    else
+      sr.update(:action => @action)
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
 

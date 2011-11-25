@@ -8,19 +8,20 @@ url_rules:
   #  md5: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz.md5"
   #  search:
   #    - "rules"
-  -
-    name: "etpro" 
-    domain: "https://rules.emergingthreats.net"
-    tgz: "https://rules.emergingthreats.net/6493238004209107/snort-2.9.1/etpro.rules.tar.gz"
-    md5: "https://rules.emergingthreats.net/6493238004209107/snort-2.9.1/etpro.rules.tar.gz.md5"
-    search:
-      - "rules"
+
+  #-
+  #  name: "etpro" 
+  #  domain: "https://rules.emergingthreats.net"
+  #  tgz: "https://rules.emergingthreats.net/<etpro_oinkcode>/snort-2.9.1/etpro.rules.tar.gz"
+  #  md5: "https://rules.emergingthreats.net/<etpro_oinkcode>/snort-2.9.1/etpro.rules.tar.gz.md5"
+  #  search:
+  #    - "rules"
 
   #-
   #  name: "snortrules" 
   #  domain: "https://www.snort.org"
-  #  tgz: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz/62e93f8e9c9d967df78091a2315d945befbc894c"
-  #  md5: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz.md5/62e93f8e9c9d967df78091a2315d945befbc894c"
+  #  tgz: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz/<snort_oinkcode>"
+  #  md5: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz.md5/<snort_oinkcode>"
   #  search:
   #    - "rules"
   

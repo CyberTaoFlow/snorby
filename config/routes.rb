@@ -12,9 +12,12 @@ Snorby::Application.routes.draw do
 
   match '/snmp_results', :controller => 'Snmps', :action => 'results'
   match '/trap_results', :controller => 'Traps', :action => 'results'
-  match '/sensor/:sensor_id/last_compiled_rules', :controller => 'Rules', :action => 'last_compiled_rules'
 
-	resources :rules
+  match '/sensors/:sensor_id/last_compiled_rules' , :controller => 'Rules', :action => 'last_compiled_rules'
+  match '/sensors/:sensor_id/update_rule_category', :controller => 'Rules', :action => 'update_rule_category'
+  match '/sensors/:sensor_id/update_rule_action'  , :controller => 'Rules', :action => 'update_rule_action'
+
+  resources :rules
 
   # This feature is not ready yet
   # resources :notifications

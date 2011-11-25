@@ -247,6 +247,12 @@ class Sensor
     parent.nil? and self.name == 'root'
   end
 
+  # Return nil if this rule is not pending.
+  # In case this rule is pending it will return the sensorRule asociated
+  def pending_rule?(rule)
+    self.pending_rules.first(:rule => rule)
+  end
+
   private
 
     def discard_pending_rules
