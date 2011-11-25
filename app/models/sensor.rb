@@ -215,6 +215,22 @@ class Sensor
     childs.map{|x| x.domain ? x.real_sensors : x}.flatten.compact unless self.childs.blank?
   end
 
+  # Return an array with all childs virtual sensors for this sensor, including self sensor.
+  def virtual_sensors
+    sensors = childs.map do |x|
+      if x.is_virtual_sensor?
+        x
+      elsif x.domain
+        x.virtual_sensors
+      end
+    end
+
+    sensors << self if self.is_virtual_sensor?
+
+    sensors.flatten.compact
+
+  end
+
   def compilations
     sensorRules.compilations
   end
