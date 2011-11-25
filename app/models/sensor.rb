@@ -253,10 +253,8 @@ class Sensor
     self.pending_rules.first(:rule => rule)
   end
 
-  private
-
-    def discard_pending_rules
-      pending_rules.destroy
-    end
+  def discard_pending_rules
+    pending_rules.destroy
+  end
 
 end

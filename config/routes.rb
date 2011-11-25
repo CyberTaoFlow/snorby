@@ -13,9 +13,11 @@ Snorby::Application.routes.draw do
   match '/snmp_results', :controller => 'Snmps', :action => 'results'
   match '/trap_results', :controller => 'Traps', :action => 'results'
 
-  match '/sensors/:sensor_id/last_compiled_rules' , :controller => 'Rules', :action => 'last_compiled_rules'
-  match '/sensors/:sensor_id/update_rule_category', :controller => 'Rules', :action => 'update_rule_category'
-  match '/sensors/:sensor_id/update_rule_action'  , :controller => 'Rules', :action => 'update_rule_action'
+  match '/sensors/:sensor_id/last_compiled_rules'  , :controller => 'Rules', :action => 'last_compiled_rules'
+  match '/sensors/:sensor_id/update_rule_category' , :controller => 'Rules', :action => 'update_rule_category'
+  match '/sensors/:sensor_id/update_rule_action'   , :controller => 'Rules', :action => 'update_rule_action'
+  match '/sensors/:sensor_id/compile_rules'        , :controller => 'Rules', :action => 'compile_rules'
+  match '/sensors/:sensor_id/discard_pending_rules', :controller => 'Rules', :action => 'discard_pending_rules'
 
   resources :rules
 

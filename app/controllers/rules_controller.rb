@@ -1,5 +1,7 @@
 class RulesController < ApplicationController
 
+  before_filter :require_administrative_privileges, :only => [:compile_rules, :discard_pending_rules]
+
   # Get all categories and their rules. 
   def index
     @sensor     = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
@@ -55,4 +57,20 @@ class RulesController < ApplicationController
     end
   end
 
+  def compile_rules
+    @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
+    unless @sensor.nil?
+      @sensor.compile_rules
+    end
+    redirect_to sensor_rules_path(@sensor.sid)
+  end
+
+  def discard_pending_rules
+    @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
+    unless @sensor.nil?
+      @sensor.discard_pending_rules
+    end
+    redirect_to sensor_rules_path(@sensor.sid)
+  end
+  
 end
