@@ -171,7 +171,7 @@ includeRuleDir.each do |rulesDir|
                   if category3RuleMatch.nil?
                     category3="unknown"
                   else
-                    category3=category3RuleMatch[0]
+                    category3=category3RuleMatch[0][0..63].downcase
                   end                    
 
                   rc3 = RuleCategory3.first(:name => category3)
