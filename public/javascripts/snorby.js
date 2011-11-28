@@ -1522,7 +1522,7 @@ jQuery(document).ready(function($) {
   $('dl.rule_actions dd').live('click', function(event) {
     var self = this;
     event.preventDefault();
-    $(this).parent().next('.rule_actions-menu').toggle('slow');
+    $(this).parent().next('.rule_actions-menu').toggle();
   });
 
   $('dd.rule_action-button').live('click', function(event) {

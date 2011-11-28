@@ -16,9 +16,10 @@
       </dd>
     </dl>
     <dl class="rule_actions-menu" style='display:none;'>
+      <div class="arrow"></div>
       <% actions.each do |action| %>
         <dd class="rule_action-button" data-action-id="<%= action.id %>">
-          <%= action.name %>
+          <%= link_to action.name, '#' %>
         </dd>
       <%end%>
     </dl>
