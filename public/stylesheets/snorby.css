@@ -892,16 +892,6 @@ dl.sensor-menu{
     margin-left: -30px;
 }
 
-dl.sensor-menu div.admin-arrow{
-	background: url(../images/menu-arrow.png) no-repeat;
-	width: 23px;
-	height: 13px;
-	position: absolute;
-	display: block;
-	top: -10px;
-	right: 42%;
-}
-
 dl.sensor-menu dd{
     text-align: center;
     width: 100%;
@@ -927,6 +917,76 @@ dl.sensor-menu dd:hover{
 }
 
 dl.sensor-menu a:hover{
+    background-color: rgba(66,66,66,0.4);
+    filter: none;
+    background: none;
+    border: 0px;
+}
+
+dl.rule_actions-menu{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    box-shadow: 0px 1px 20px rgba(0,0,0,0.4);
+    min-width: 60px;
+    padding: 0;
+    opacity: 0.95;
+    display: block;
+    overflow: visible;
+    position: absolute;
+    background: #111;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#2b2b2b',endColorstr='#111');
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(#2b2b2b),to(#111));
+    background: -moz-linear-gradient(-90deg,#2b2b2b,#111);
+    z-index: 99999;
+    border: 1px solid #151515;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-left: -20px;
+}
+
+dl.rule_actions-menu dd{
+    text-align: center;
+    width: 100%;
+}
+
+dl div.arrow{
+	background: url(../images/menu-arrow.png) no-repeat;
+	width: 23px;
+	height: 13px;
+	position: absolute;
+	display: block;
+	top: -10px;
+	right: 42%;
+}
+
+dl.rule_actions-menu div.arrow{
+    right: 30%;
+}
+
+dl.rule_actions-menu dd a {
+    padding: 3px 5px;
+    background: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff',endColorstr='#e0e0e0');
+    color: #ECECEC;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    font-variant: normal;
+    border: 0px;
+    position: relative;
+    display: block;
+    overflow: visible;
+}
+
+dl.rule_actions-menu dd:hover{
+    background-color: rgba(66,66,66,0.4);
+}
+
+dl.rule_actions-menu a:hover{
     background-color: rgba(66,66,66,0.4);
     filter: none;
     background: none;
