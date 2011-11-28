@@ -1,24 +1,14 @@
-<div id="rules_category_<%=category.id%>" class='boxit'>
-  <table id="rules_category_<%=category.id%>_table" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <th>Action</th>
-      <th>Message</th>
-      <th>Protocol</th>
-      <th></th>
-    </tr>
-    <tbody class='rules_category'>
-      <%# groups.each do |group| %>
-        <%#= render :partial => 'rules/rule_group', :locals => {:sensor => @sensor, :category => category, :group => group, :actions => @actions} %>
-      <%# end %>
-      <% category.rules.all(:dbversion=>RuleDbversion.last).each do |rule| %>
-        <%= render :partial => 'rules/rule', :locals => {:sensor => @sensor, :category => category, :rule => rule, :group => rule.category2, :actions => @actions, :pending_rules => @pending_rules, :last_compiled_rules => @last_compiled_rules} %>
-      <% end %>
-    </tbody>
-  </table>
+<div id="rules_category_<%=  category.id %>" class='boxit'>
+  <ul class="table">
+    <li class="header">
+      <div class="row">
+        <div class="action">Actions</div>
+        <div class="message">Message</div>
+        <div class="nrules"></div>
+      </div>
+    </li>
+    <div class="content">
+      <%= render :partial => 'rules/group', :collection => @groups, :locals => {:category => category, :actions => @actions} %>
+    </div>
+  </ul>
 </div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#rules_category_<%=category.id%>_table").treeTable();
-  });
-</script>

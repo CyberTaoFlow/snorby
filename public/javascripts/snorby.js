@@ -1519,11 +1519,11 @@ jQuery(document).ready(function($) {
     $(this).parents('dl').fadeOut('fast');
   });
 
-  $('dl.rule_actions dd').live('click', function(event) {
-    var self = this;
-    event.preventDefault();
-    $(this).parent().next('.rule_actions-menu').toggle();
-  });
+//  $('dl.rule_actions dd').live('click', function(event) {
+//    var self = this;
+//    event.preventDefault();
+//    $(this).parent().next('.rule_actions-menu').toggle();
+//  });
 
   $('dd.rule_action-button').live('click', function(event) {
     var self = $(this);
@@ -1571,6 +1571,20 @@ jQuery(document).ready(function($) {
 
   $('dl#sensor-menu a').live('click', function(event) {
     $(this).parents('dl').fadeOut('fast');
+  });
+
+  $('dl.rule_actions').live('click', function(event) {
+    var self = this;
+    var gid = $(this).attr('data-group-id');
+    event.preventDefault();
+    var elements = $('ul.table div.content dl.rule_actions-menu');
+    for (var i = 0; i < elements.length; i++){
+       var gid_aux = $(elements[i]).attr('data-group-id');
+       if (gid != gid_aux){
+        elements[i].style.display = 'none';
+       }
+    }
+    $('dl#rule_actions-menu-'+gid).toggle();
   });
 
   $('#wrapper').live('click', function() {

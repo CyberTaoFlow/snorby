@@ -4463,6 +4463,28 @@ div.map{
 #sensorTable .folder{
     font-weight: bold;
 }
+
+#rules ul.table{
+    width: auto;
+}
+
+#rules div.row{
+    overflow: visible;
+}
+
+#rules div.action{
+    width: 60px;
+    margin-left: 5px;
+}
+
+#rules div.message{
+    width: 400px;
+}
+
+#rules div.nrules{
+    width: 60px;
+    float: right;
+}
 /* @end */
 
 /* @end */
