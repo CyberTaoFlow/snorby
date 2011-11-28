@@ -1,0 +1,24 @@
+<li id='group-<%= category.id %>-<%= group.id %>' data-category-id='<%= category.id %>' data-group-id='<%= group.id %>' class="group">
+  <div class="row">
+    <div class="action">
+
+      <dl class="rule_actions" data-group-id='<%= group.id %>'>
+        <dd>
+          actions
+        </dd>
+      </dl>
+      <dl id='rule_actions-menu-<%= group.id%>' data-group-id='<%= group.id %>' class='rule_actions-menu' style='display:none;'>
+        <div class="arrow"></div>
+        <% actions.each do |action| %>
+          <dd class="rule_action-button" data-action-id="<%= action.id %>">
+            <%= link_to action.name, '#' %>
+          </dd>
+        <%end%>
+      </dl>
+
+    </div>
+    <div class="message"><%= group.name.upcase %></div>
+    <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
+  </div>
+  <div style="display: none;" class="rule-data">Reglas</div>
+</li>
