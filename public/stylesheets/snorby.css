@@ -4425,6 +4425,42 @@ div.map{
   background: url('chosen-sprite.png') no-repeat -38px -20px, linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   padding: 4px 5px 4px 20px;
 }
+
+
+
+/* Redborder */
+
+#rules-menu{
+    border: 1px solid #999/*{borderColorHover}*/;
+    font-weight: normal/*{fwDefault}*/;
+    color: #212121/*{fcHover}*/;
+    margin-top: 1px;
+    zoom: 1;
+    height: 50px;
+    text-align: center;
+    position: relative;
+}
+
+#rules-menu a{
+    padding: 3px 5px;
+    background: -moz-linear-gradient(-90deg,white,#E0E0E0);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff',endColorstr='#e0e0e0');
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(white),to(#E0E0E0));
+    background: -moz-linear-gradient(-90deg,white,#E0E0E0);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color: #575757;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    font-variant: normal;
+    border: 1px solid #9A9A9B;
+    position: relative;
+    top: 50%;
+}
+
+
 /* @end */
 
 /* @end */

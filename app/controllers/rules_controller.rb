@@ -9,13 +9,13 @@ class RulesController < ApplicationController
   end
 
   # Get last compiled rules for the sensor indicated
-  def last_compiled_rules
+  def active_rules
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     @sensor_rules = @sensor.last_compiled_rules
     @sensor_rules = [] if @sensor_rules.nil?
 
     respond_to do |format|
-      format.html {render :layout => true}
+      format.html
       format.text 
     end
   end
@@ -63,6 +63,17 @@ class RulesController < ApplicationController
       @sensor.compile_rules
     end
     redirect_to sensor_rules_path(@sensor.sid)
+  end
+
+  def pending_rules
+    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @sensor_rules = @sensor.pending_rules unless @sensor.nil?
+    @sensor_rules = [] if @sensor_rules.nil?
+
+    respond_to do |format|
+      format.html {render :active_rules}
+      format.text {render :active_rules}
+    end
   end
 
   def discard_pending_rules

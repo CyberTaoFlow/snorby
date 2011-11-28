@@ -42,6 +42,4 @@
   <%= render :partial => 'rules/category', :collection => @categories %>
 </div>
 
-<%= link_to 'View active rules', {:controller=>"Rules", :action=>"last_compiled_rules"  , :sensor_id=>@sensor.sid} %>
-<%= link_to 'Compile'          , {:controller=>"Rules", :action=>"compile_rules"        , :sensor_id=>@sensor.sid} %>
-<%= link_to 'Revert'           , {:controller=>"Rules", :action=>"discard_pending_rules", :sensor_id=>@sensor.sid} %>
+<%= render :partial => 'rules/rules_menu' %>
