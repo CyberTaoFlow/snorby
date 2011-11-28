@@ -172,6 +172,15 @@ class Sensor
     self.compiled_rules(self.last_compilation.id) unless self.last_compilation.nil?
   end
 
+  def rollback_last_rules(index=1)
+    c = self.compilations
+    unless c.nil?
+      if c.size>index
+        rollback_rules(c[c.size-index-1])
+      end
+    end
+  end
+
   # This sensor will generate a new compilation with a copy of the rules compiled for the compilation passed. 
   def rollback_rules(compilation)
     if self.domain && !compilation.nil?

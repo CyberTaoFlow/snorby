@@ -17,6 +17,7 @@ class Rule
 
   belongs_to :category1, :model => 'RuleCategory1', :parent_key => :id, :child_key => :category1_id, :required => true
   belongs_to :category2, :model => 'RuleCategory2', :parent_key => :id, :child_key => :category2_id, :required => true
+  belongs_to :category3, :model => 'RuleCategory3', :parent_key => :id, :child_key => :category3_id, :required => true
   belongs_to :dbversion, :model => 'RuleDbversion', :parent_key => :id, :child_key => :dbversion_id, :required => true
   belongs_to :source   , :model => 'RuleSource'   , :parent_key => :id, :child_key => :source_id   , :required => true
 

@@ -22,8 +22,9 @@
 ###########################################################################################################	
 
 # Example of use:
-#   * ./script/rules2rbIPS -D     -> execute it in verbose mode 
-#   * ./script/rules2rbIPS -Df    -> execute it in verbose mode and force an update 
+#   ./script/rules2rbIPS -D     -> execute it in verbose mode 
+#   ./script/rules2rbIPS -Df    -> execute it in verbose mode and force an update 
+#   ./script/rules2rbIPS -Dd path_to_rules_directory  -> execute it reading the rules from the directory
 
 require 'getopt/std'
 require 'yaml'
@@ -166,6 +167,16 @@ includeRuleDir.each do |rulesDir|
               unless sidRuleMatch.nil?
                 msgRuleMatch = /\(msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
                 unless msgRuleMatch.nil?
+                  category3RuleMatch = /([^ ]*( [^ ]*)?( [^ ]*)?)/.match(msgRuleMatch[:msg])
+                  if category3RuleMatch.nil?
+                    category3="unknown"
+                  else
+                    category3=category3RuleMatch[0]
+                  end                    
+
+                  rc3 = RuleCategory3.first(:name => category3)
+                  rc3 = RuleCategory3.create(:name=>category3) if rc3.nil?
+	
                   classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
                   if classtypeRuleMatch.nil?
                     category2="unknown"
@@ -174,12 +185,7 @@ includeRuleDir.each do |rulesDir|
                   end
 
                   rc2 = RuleCategory2.first(:name => category2)
-
-                  if rc2.nil?
-                    rc2 = RuleCategory2.new();
-                    rc2.name = category2
-                    rc2.save
-                  end
+                  rc2 = RuleCategory2.create(:name=>category2) if rc2.nil?
 
                   rev=0
                   revRuleMatch = /; rev:(?<rev>\d+);/.match(ruleMatch[:rule])
@@ -194,6 +200,7 @@ includeRuleDir.each do |rulesDir|
                   r.msg          = msgRuleMatch[:msg]
                   r.category1_id = rc1.id
                   r.category2_id = rc2.id
+                  r.category3_id = rc3.id
                   r.protocol     = ruleMatch[:protocol]
                   r.l3l4         = ruleMatch[:l3l4]
                   r.rev          = rev.to_i
