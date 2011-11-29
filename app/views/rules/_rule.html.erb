@@ -1,7 +1,8 @@
-<li>
-  <div class="row rule">
-    <div class="action">Action</div>
+<li id='rule-<%= rule.id %>' data-rule-id='<%= rule.id %>' class="rule">
+  <div class="row">
+    <div class="action">actions</div>
     <div class="message"><%= truncate(rule.msg, :length => 50, :omission => '...') %></div>
   </div>
-  <div class="rule-data">Rule Data</div>
+  <div class="rule-data" style='display:none;'>
+  </div>
 </li>

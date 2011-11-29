@@ -9,15 +9,14 @@
         active: false,
         collapsible: true,
         change: function(event, ui) {
-          var active_comps= $("#rules .catdata.ui-accordion-content-active");
-          var category_id = active_comps.attr("data-category-id");
-          var sensor_id   = $("#rules").attr("data-sensor-sid");
+          var active_comps = $(ui.newHeader).next();
+          var category_id  = active_comps.attr("data-category-id");
+          var sensor_id    = $("#rules").attr("data-sensor-sid");
           active_comps.html('<img src="/images/icons/pager.gif">')
-
+          //alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
           if (category_id>=0 && sensor_id>=0) {
-            if (!active_comps.hasClass("load")) {
+            if (!active_comps.hasClass("loaded")) {
               active_comps.addClass("loaded")
-              //alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
               $.ajax({
                 url: "/sensors/" +sensor_id +"/update_rule_category",
                 data: {category_id: category_id, sensor_id: sensor_id},
@@ -29,7 +28,59 @@
           }                      
         }
       });
-			
+
+      $('.content > li.group > div.row > .message').live('click', function(event) {
+        var self = this
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var group_id    = $(self).parents(".group").attr("data-group-id");
+        var category_id = $(self).parents(".category").attr("data-category-id");
+        var content     = $("#group-" +category_id +"-" +group_id +" > ul > .content");
+
+        //alert("sensor_id: " +sensor_id +"  group_id: " +group_id +"  category_id: " +category_id );
+        
+        if (category_id>=0 && sensor_id>=0 && group_id>0) {
+          if (!$(self).hasClass("loaded")) {
+            $(self).addClass("loaded");
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_group",
+              data: {category_id: category_id, sensor_id: sensor_id, group_id: group_id},
+              success: function(data){
+                content.toggle()
+                $( "#rules" ).accordion("resize");
+              }
+            });
+          } else {
+            content.toggle('slow')
+            $( "#rules" ).accordion("resize");
+          }
+        }
+      });
+
+      $('.content > li.rule > div.row > .message').live('click', function(event) {
+        var self = this
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var rule_id     = $(self).parents(".rule").attr("data-rule-id");
+        var content     = $("#rule-" +rule_id +" > .rule-data");
+        
+        //alert("sensor_id: " +sensor_id +"  rule_id: " +rule_id );
+
+        if (sensor_id>=0 && rule_id>0) {
+          if (!$(self).hasClass("loaded")) {
+            $(self).addClass("loaded");
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_details",
+              data: {sensor_id: sensor_id, rule_id: rule_id},
+              success: function(data){
+                content.toggle()
+                $( "#rules" ).accordion("resize");
+              }
+            });
+          } else {
+            content.toggle('slow')
+            $( "#rules" ).accordion("resize");
+          }
+        }
+      });
     });
   </script>
 
