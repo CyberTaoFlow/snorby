@@ -4485,6 +4485,15 @@ div.map{
     width: 60px;
     float: right;
 }
+
+ul.table div.content li .row {
+    border-top: 1px solid #CDCDCD;
+}
+
+ul.table div.content li .rule{
+    border: none;
+    background: white;
+}
 /* @end */
 
 /* @end */
