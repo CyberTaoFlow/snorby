@@ -28,7 +28,7 @@ class RulesController < ApplicationController
       @category = RuleCategory1.get(params["category_id"].to_i)
     end
 
-    @groups = @category.rules.category3
+    @groups = @category.rules.category3.all(:limit => 2)
 
     @actions             = RuleAction.all
     @pending_rules       = @sensor.pending_rules unless @sensor.nil?
