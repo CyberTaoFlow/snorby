@@ -1,29 +1,7 @@
-<% p = pending_rules.first(:rule_id => rule.id) unless pending_rules.nil? %>
-<% l = last_compiled_rules.first(:rule_id => rule.id) unless last_compiled_rules.nil? %>
-<tr class='chid_of_group-<%= category.id %>-<%= group.id %> <%= p.nil? ? "" : "rule_pending" %> <%= l.nil? ? "" : ( l.inherited ? "rule_inherited" : "rule_compiled") %>' data-rule-id='<%= rule.id %>'>
-  <td class='first'>
-    <dl class="rule_actions" >
-      <dd>
-        <% if p.nil? %>
-          <% if l.nil? %>
-            actions
-          <% else %>
-            <%= l.action.name %>
-          <% end%>
-        <% else %>
-          <%= p.action.name %>
-        <% end%>
-      </dd>
-    </dl>
-    <dl class="rule_actions-menu" style='display:none;'>
-      <div class="arrow"></div>
-      <% actions.each do |action| %>
-        <dd class="rule_action-button" data-action-id="<%= action.id %>">
-          <%= link_to action.name, '#' %>
-        </dd>
-      <%end%>
-    </dl>
-  </td>
-  <td><%= rule.msg %></td>
-  <td class='last'><%= rule.protocol %></td>
-</tr>
+<li>
+  <div class="row rule">
+    <div class="action">Action</div>
+    <div class="message"><%= truncate(rule.msg, :length => 50, :omission => '...') %></div>
+  </div>
+  <div class="rule-data">Rule Data</div>
+</li>

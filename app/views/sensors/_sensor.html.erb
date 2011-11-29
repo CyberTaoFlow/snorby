@@ -29,7 +29,10 @@
         <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) unless sensor.domain %>
       </dd>
       <dd>
-        <%= link_to "Config", sensor_rules_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
+        <%= link_to "Config", '#' if sensor.domain %>
+      </dd>
+			<dd>
+        <%= link_to "Rules", sensor_rules_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
       </dd>
       <dd>
         <%= drop_down_item "Snmp"  , sensor_snmps_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
