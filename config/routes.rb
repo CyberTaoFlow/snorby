@@ -22,7 +22,13 @@ Snorby::Application.routes.draw do
   match '/sensors/:sensor_id/compile_rules'        , :controller => 'Rules', :action => 'compile_rules'
   match '/sensors/:sensor_id/discard_pending_rules', :controller => 'Rules', :action => 'discard_pending_rules'
 
-  resources :rules
+  resources :rules do
+
+    collection do
+      post :mass_update
+    end
+
+  end
 
   # This feature is not ready yet
   # resources :notifications

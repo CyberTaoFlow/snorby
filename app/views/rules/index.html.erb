@@ -84,7 +84,9 @@
 
 <% end %>
 
-<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' %>
+<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' do -%>
+  <%= render :partial => 'rules/menu' %>
+<%- end -%>
 
 <div id="rules" class="boxit ui-accordion" data-sensor-sid=<%= @sensor.sid  %> >
   <%= render :partial => 'rules/category', :collection => @categories %>

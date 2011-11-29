@@ -4478,7 +4478,7 @@ div.map{
 }
 
 #rules div.message{
-    width: 400px;
+    width: 700px;
 }
 
 #rules div.nrules{
@@ -4524,6 +4524,14 @@ div.map{
     margin: 10px;
     display: block;
     position: relative;
+}
+
+#rules li.header {
+    border: 1px solid #DDD;
+}
+
+#rules ul.table.rules {
+    border: 1px solid #F3F3F3;
 }
 /* @end */
 

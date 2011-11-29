@@ -1,5 +1,6 @@
 <li id='group-<%= category.id %>-<%= group.id %>' data-group-id='<%= group.id %>' class="group">
   <div class="row">
+    <div class="select small"><%= check_box_tag 'group-selector', nil, false, :class => "check_box_#{category.id}_#{group.id}" %></div>
     <div class="action">
       <dl class="rule_actions">
         <dd>
@@ -19,11 +20,11 @@
     <div class="message"><%= group.name.upcase %></div>
     <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
   </div>
-  <ul class="table">
+  <ul class="table rules">
     <div class="content" style='display:none;'>
-      <% group.rules.all(:category1 => category).each do |rule| %>
-        <%= render :partial => 'rules/rule', :locals => {:rule => rule} %>
-      <% end %>
+      <%# group.rules.all(:category1 => category).each do |rule| %>
+        <%#= render :partial => 'rules/rule', :locals => {:rule => rule} %>
+      <%# end %>
     </div>
   </ul>
 </li>
