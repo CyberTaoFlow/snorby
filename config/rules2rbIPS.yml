@@ -1,13 +1,14 @@
 verbose: false
 cache_dir: "/opt/rb/var/www/snortrules/cache"
 url_rules:
-  #-
-  #  name: "emergingthreats" 
-  #  domain: "https://rules.emergingthreats.net"
-  #  tgz: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz"
-  #  md5: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz.md5"
-  #  search:
-  #    - "rules"
+  -
+    name: "emergingthreats" 
+    domain: "https://rules.emergingthreats.net"
+    regexp_category_ignore: "emerging-"
+    tgz: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz"
+    md5: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz.md5"
+    search:
+      - "rules"
 
   #-
   #  name: "etpro" 

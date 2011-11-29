@@ -50,6 +50,8 @@ def downloadFile(domain, url, local_file)
   end
 end
 
+timenow   = Time.now
+
 config = YAML.load_file("/opt/rb/var/www/snorby/config/rules2rbIPS.yml")
 opt = Getopt::Std.getopts("d:Df")
 config["verbose"]   = true     if opt["D"]
@@ -60,6 +62,7 @@ includeRuleDir = []
 if opt["d"]
   source = RuleSource.first(:name => "local")
   source = RuleSource.create(:name => "local") if source.nil?
+  source.update(:timestamp => timenow)
   includeRuleDir << {:name => "local", :dir => opt["d"], :id => source.id}
 end
 
@@ -85,8 +88,9 @@ unless config["url_rules"].nil?
           if !rule_source["md5"].nil?
             printf("Downloading #{rule_source["md5"]}\n") if config["verbose"]
             downloadFile(rule_source["domain"], rule_source["md5"], md5LocalFile)
-            md5Content = File.open(md5LocalFile).first.chop
+            md5Content      = File.open(md5LocalFile).first.chop
             localMd5Content = Digest::MD5.hexdigest(File.read(tgzLocalFile));
+            rule_source[:md5_value] = md5Content
 
             if (localMd5Content==md5Content)
               printf("The local file #{tgzLocalFile} is the same than remote file. ") if config["verbose"]
@@ -121,19 +125,15 @@ end
 if newRules
   config["url_rules"].each do |rule_source|
     source = RuleSource.first(:name => rule_source["name"])
-    source = RuleSource.create(:name => rule_source["name"]) if source.nil?
+    source = RuleSource.create(:name => rule_source["name"], :timestamp => timenow) if source.nil?
+    source.update(:md5 => rule_source[:md5_value], :timestamp => timenow)
     rule_source["search"].each do |rs|
-      includeRuleDir << {:name => rule_source["name"], :dir => "#{config["cache_dir"]}/#{rule_source["name"]}/#{rs}", :id => source.id}
+      includeRuleDir << {:name => rule_source["name"], :dir => "#{config["cache_dir"]}/#{rule_source["name"]}/#{rs}", :id => source.id, :regexp_category_ignore => rule_source["regexp_category_ignore"], :md5_value=>rule_source[:md5_value]}
     end
   end
 end
 
-unless includeRuleDir.blank?
-  timenow   = Time.now
-  dbVersion = RuleDbversion.new()
-  dbVersion.timestamp = timenow
-  dbVersion.save
-end
+dbVersion = RuleDbversion.create(:timestamp => timenow ) unless includeRuleDir.blank?
 
 includeRuleDir.each do |rulesDir|
   printf("Processing %s rules (%s)\n", rulesDir[:name], rulesDir[:dir]) if config["verbose"]
@@ -148,14 +148,11 @@ includeRuleDir.each do |rulesDir|
           next if file == "." or file == ".."
           next unless file =~ /\.rules$/
           ruleFile = pathRulesDir + "/" + file
-          category = file.gsub(".rules","").strip
+          category = file.gsub(".rules","").strip.downcase
+          category = category.gsub /#{rulesDir[:regexp_category_ignore]}/, "" unless rulesDir[:regexp_category_ignore].nil?
 
           rc1 = RuleCategory1.first(:name => category)
-          if rc1.nil?
-            rc1 = RuleCategory1.new();
-            rc1.name = category
-            rc1.save
-          end
+          rc1 = RuleCategory1.create(:name=> category) if rc1.nil?
 
           ruleFile = File.open(ruleFile)
 
@@ -166,7 +163,17 @@ includeRuleDir.each do |rulesDir|
               sidRuleMatch = /; sid:(?<sid>\d+);/.match(ruleMatch[:rule])
               unless sidRuleMatch.nil?
                 msgRuleMatch = /\(msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
-                unless msgRuleMatch.nil?
+                unless msgRuleMatch.nil?	
+                  classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
+                  if classtypeRuleMatch.nil?
+                    category2="unknown"
+                  else
+                    category2=classtypeRuleMatch[:classtype].strip.downcase
+                  end
+
+                  rc2 = RuleCategory2.first(:name => category2)
+                  rc2 = RuleCategory2.create(:name=>category2) if rc2.nil?
+
                   category3RuleMatch = /([^ ]*( [^ ]*)?( [^ ]*)?)/.match(msgRuleMatch[:msg])
                   if category3RuleMatch.nil?
                     category3="unknown"
@@ -176,16 +183,6 @@ includeRuleDir.each do |rulesDir|
 
                   rc3 = RuleCategory3.first(:name => category3)
                   rc3 = RuleCategory3.create(:name=>category3) if rc3.nil?
-	
-                  classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
-                  if classtypeRuleMatch.nil?
-                    category2="unknown"
-                  else
-                    category2=classtypeRuleMatch[:classtype].strip
-                  end
-
-                  rc2 = RuleCategory2.first(:name => category2)
-                  rc2 = RuleCategory2.create(:name=>category2) if rc2.nil?
 
                   rev=0
                   revRuleMatch = /; rev:(?<rev>\d+);/.match(ruleMatch[:rule])
