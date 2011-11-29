@@ -28,7 +28,7 @@ class RulesController < ApplicationController
       @category = RuleCategory1.get(params["category_id"].to_i)
     end
 
-    @groups = @category.rules.category3.all(:limit => 2)
+    @groups = @category.rules.category3.all(:limit => 4)
 
     @actions             = RuleAction.all
     @pending_rules       = @sensor.pending_rules unless @sensor.nil?
@@ -62,16 +62,38 @@ class RulesController < ApplicationController
   end
 
   def update_rule_action
-    @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
-    @action = RuleAction.get(params["action_id"].to_i)
-    @rule   = Rule.get(params["rule_id"].to_i)
+    @sensor   = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
+    @action   = RuleAction.get(params[:action_id].to_i) if params[:action_id].present?
+    @rule     = Rule.get(params[:rule_id].to_i) if params[:rule_id].present?
+    @group    = RuleCategory3.get(params[:group_id].to_i) if params[:group_id].present?
+    @category = RuleCategory1.get(params[:category_id].to_i) if params[:category_id].present?
 
-    sr = @sensor.pending_rule?@rule
+    unless @sensor.nil?
+      array = []
+      if @group.nil? && @category.nil? && !@rule.nil?
+        array << @rule
+      elsif !@group.nil? && @category.nil?
+        array = @group.rules
+      elsif @group.nil? && !@category.nil?
+        array = @category.rules
+      elsif !@group.nil? && !@category.nil?
+        array = Rule.all(:category1_id => @category.id, :category3_id => @group.id)
+      end
 
-    if sr.nil?
-      sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => @rule)
-    else
-      sr.update(:action => @action)
+      Rule.transaction do |t|
+        begin
+          array.each do |r|
+            sr = @sensor.pending_rule?r
+            if sr.nil?
+              sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => r)
+            else
+              sr.update(:action => @action)
+            end
+          end
+        rescue DataObjects::Error => e
+          t.rollback
+        end
+      end
     end
 
     respond_to do |format|
