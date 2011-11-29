@@ -1,7 +1,9 @@
-<li>
+<li class="rule">
   <div class="row rule">
     <div class="action">Action</div>
-    <div class="message"><%= truncate(rule.msg, :length => 50, :omission => '...') %></div>
+    <div class="message click"><%= truncate(rule.msg, :length => 50, :omission => '...') %></div>
   </div>
-  <div class="rule-data">Rule Data</div>
+  <div class="rule-data event-data">
+    <%= render :partial => 'rules/show', :locals => {:rule => rule} %>
+  </div>
 </li>

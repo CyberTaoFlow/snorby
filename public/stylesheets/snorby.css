@@ -4486,13 +4486,44 @@ div.map{
     float: right;
 }
 
-ul.table div.content li .row {
+#rules ul.table div.content li .row {
     border-top: 1px solid #CDCDCD;
 }
 
-ul.table div.content li .rule{
+#rules ul.table div.content li .rule{
     border: none;
     background: white;
+}
+
+#rules ul.table div.content li.currently-over .rule{
+	background: #fcfed7;
+}
+
+#rules ul.table div.content div.rule-data div.rule-data-holder {
+    float: none;
+    position: relative;
+    border: 1px solid #CDCDCD;
+    background-color: #2D2F31;
+    border-top-style: none;
+    color: white;
+}
+
+#rules ul.table div.content div.rule-data div.rule-data-holder .section-title {
+    margin: 5px 0;
+    padding: 0 0 5px;
+    font-size: 1.2em;
+    color: #FFFBFE;
+    font-weight: bold;
+    text-decoration: none;
+    font-variant: normal;
+    text-shadow: black 0 1px 0;
+    width: 500px;
+}
+
+#rules ul.table div.content div.rule-data div.rule-data-holder div.rule-data-holder-inside .plus {
+    margin: 10px;
+    display: block;
+    position: relative;
 }
 /* @end */
 

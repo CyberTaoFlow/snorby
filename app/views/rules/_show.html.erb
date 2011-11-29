@@ -1,0 +1,26 @@
+<div class='rule-data-holder'>
+  <div class='rule-data-holder-inside'>
+    <div id="rule-menu"></div>
+    <div class="section-title plus">Rule Information</div>
+    <div class="rule-info plus">
+      <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
+        <tr>
+          <th class='first'>RuleId</th>
+          <th>Protocol</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th class='last'>Revision</th>
+        </tr>
+        <tbody>
+          <tr>
+            <td><%= rule.rule_id %></td>
+            <td><%= rule.protocol %></td>
+            <td><%= rule.l3l4.match(/(.+\s.+) -> /)[1] %></td>
+            <td><%= rule.l3l4.match(/ -> (.+\s.+)/)[1] %></td>
+            <td><%= rule.rev %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

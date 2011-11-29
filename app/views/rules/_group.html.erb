@@ -20,7 +20,7 @@
     <div class="message"><%= group.name.upcase %></div>
     <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
   </div>
-  <ul>
+  <ul class="table">
     <div class="content">
       <% group.rules.all(:category1 => category).each do |rule| %>
         <%= render :partial => 'rules/rule', :locals => {:rule => rule} %>
