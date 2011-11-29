@@ -6,6 +6,7 @@ class RulesController < ApplicationController
   def index
     @sensor     = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     @categories = RuleCategory1.all(:order => [:name.asc])
+    @actions    = RuleAction.all
   end
 
   # Get last compiled rules for the sensor indicated
