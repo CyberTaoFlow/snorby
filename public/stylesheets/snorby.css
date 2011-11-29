@@ -4490,12 +4490,12 @@ div.map{
     border-top: 1px solid #CDCDCD;
 }
 
-#rules ul.table div.content li .rule{
+#rules ul.table div.content li.rule div.row{
     border: none;
     background: white;
 }
 
-#rules ul.table div.content li.currently-over .rule{
+#rules ul.table div.content li.currently-over div.row{
 	background: #fcfed7;
 }
 

@@ -50,7 +50,7 @@
               }
             });
           } else {
-            content.toggle('slow')
+            content.toggle()
             $( "#rules" ).accordion("resize");
           }
         }
@@ -61,8 +61,6 @@
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var rule_id     = $(self).parents(".rule").attr("data-rule-id");
         var content     = $("#rule-" +rule_id +" > .rule-data");
-        
-        alert("sensor_id: " +sensor_id +"  rule_id: " +rule_id );
 
         if (sensor_id>=0 && rule_id>0) {
           if (!$(self).hasClass("loaded")) {
@@ -76,7 +74,7 @@
               }
             });
           } else {
-            content.toggle('slow')
+            content.toggle()
             $( "#rules" ).accordion("resize");
           }
         }
