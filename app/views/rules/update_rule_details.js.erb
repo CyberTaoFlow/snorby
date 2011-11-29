@@ -1,0 +1,1 @@
+$("#rule-<%= @rule.id %> .rule-data").html("<%= escape_javascript(render(:partial => 'rules/rule_details', :locals => {:rule => @rule})) %>")
