@@ -39,6 +39,28 @@ class RulesController < ApplicationController
     end
   end
 
+  def update_rule_group
+    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @category = RuleCategory1.get(params["category_id"].to_i) unless params["category_id"].nil?
+    @group = RuleCategory3.get(params["group_id"].to_i) unless params["group_id"].nil?
+    @actions             = RuleAction.all
+    @pending_rules       = @sensor.pending_rules unless @sensor.nil?
+    @last_compiled_rules = @sensor.last_compiled_rules unless @sensor.nil?
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_rule_details
+    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @rule = Rule.get(params["rule_id"].to_i) unless params["rule_id"].nil?
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def update_rule_action
     @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
     @action = RuleAction.get(params["action_id"].to_i)
