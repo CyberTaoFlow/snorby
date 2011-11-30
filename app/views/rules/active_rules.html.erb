@@ -2,7 +2,7 @@
   <%= render :partial => 'rules/menu' %>
 <%- end -%>
 
-<div id="rules" data-sensor-sid=<%= @sensor.sid  %> >
+<div id="rules" class="<%= @rulestype %>" data-sensor-sid=<%= @sensor.sid  %> >
   <%= form_tag mass_update_rules_path do %>
     <%= hidden_field_tag :selected_rules, [] %>
     <ul class="table">

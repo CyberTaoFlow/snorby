@@ -1599,6 +1599,7 @@ jQuery(document).ready(function($) {
     var sensor_id   = $("#rules").attr("data-sensor-sid");
     var action_str  = self.html();
 
+
     if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0) {
       var box_cmp = self.parent().parent()
 
@@ -1638,6 +1639,7 @@ jQuery(document).ready(function($) {
         box_cmp.addClass("loading");
         box_cmp.fadeOut();
         var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+        var last_action=action_cmp.html();
         action_cmp.html('<img src="/images/icons/pager.gif">');
 
         $.ajax({
@@ -1645,9 +1647,16 @@ jQuery(document).ready(function($) {
           data: {action_id: action_id, rule_id: rule_id, sensor_id: sensor_id},
           success: function(data){
             box_cmp.removeClass("loading");
-            action_cmp.html(action_str);
+            
+            if ($("#rules").hasClass("compiled_rules")) {              
+              action_cmp.html(last_action);              
+              flash_message.push({type: 'info', message: 'Added to pending rules'});
+              flash();
+            } else {
+              action_cmp.html(action_str);
+              self.parentsUntil("tr").parent().addClass("rule_pending");
+            }
             //action_cmp.addClass(action_str.toLowerCase())
-            self.parentsUntil("tr").parent().addClass("rule_pending");
           }
         });
       }
@@ -1713,6 +1722,7 @@ jQuery(document).ready(function($) {
     if ($(this).attr('checked')) {
         $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', true);
     } else {
+        $(this).parents('ul.table').children('li.header').children('div.row').children('div.small').children('input').attr('checked', false);
         $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', false);
     }
   });
