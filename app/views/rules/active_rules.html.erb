@@ -1,24 +1,30 @@
-<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' %>
+<%= title "Listing Rules from #{@sensor.name}".html_safe, 'Listing Rules' do -%>
+  <%= render :partial => 'rules/menu' %>
+<%- end -%>
 
-<ul class="table">
-  <li class="header">
-    <div class="row">
-      <div class="action">Actions</div>
-      <div class="message">Message</div>
-      <div class="nrules"></div>
-    </div>
-  </li>
-  <div class="content">
-    <% @sensor_rules.each do |sr| %>
-      <li id='rule-<%= sr.rule.id %>' data-rule-id='<%= sr.rule.id %>' class="rule">
+<div id="rules" data-sensor-sid=<%= @sensor.sid  %> >
+  <%= form_tag mass_update_rules_path do %>
+    <%= hidden_field_tag :selected_rules, [] %>
+    <ul class="table">
+      <li class="header">
         <div class="row">
-          <div class="action"><%= sr.action.name %></div>
-          <div class="message click"><%= truncate(sr.rule.msg, :length => 100, :omission => '...') %></div>
-        </div>
-        <div class="rule-data event-data" style='display:none;'>
-          <%= render :partial => 'rules/show', :locals => {:rule => sr.rule} %>
+          <div class="small">
+            <%= check_box_tag 'rule-select-all', nil, false, :class => 'rule-select-all' %>
+          </div>
+          <div class="action">Actions</div>
+          <div class="message">Message</div>
+          <div class="nrules"></div>
         </div>
       </li>
-    <% end %>
-  </div>
-</ul>
+      <div class="content">
+        <% @sensor_rules.each do |sr| %>
+          <% unless sr.rule.nil? %>
+            <%= render :partial => 'rules/rule', :locals => {:rule => sr.rule, :actions => @actions, :action => sr.action.name} %>
+          <% end %>
+        <% end %>
+      </div>
+    </ul>
+  <% end %>
+</div>
+
+<%= render :partial => 'rules/rules_menu' %>

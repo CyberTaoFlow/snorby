@@ -2,29 +2,13 @@
   <div class="row">
     <div class="select small"><%= check_box_tag 'group-selector', nil, false, :class => "check_box_#{category.id}_#{group.id}" %></div>
     <div class="action">
-      <dl class="rule_actions">
-        <dd>
-          actions
-        </dd>
-      </dl>
-      <dl id='rule_actions-menu-<%= group.id%>' class='rule_actions-menu' style='display:none;'>
-        <div class="arrow"></div>
-        <% actions.each do |action| %>
-          <dd class="rule_action-button" data-action-id="<%= action.id %>">
-            <%= link_to action.name, '#' %>
-          </dd>
-        <%end%>
-      </dl>
-
+      <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => "actions"} %>
     </div>
     <div class="message"><%= group.name.upcase %></div>
     <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
   </div>
   <ul class="table rules">
     <div class="content" style='display:none;'>
-      <%# group.rules.all(:category1 => category).each do |rule| %>
-        <%#= render :partial => 'rules/rule', :locals => {:rule => rule} %>
-      <%# end %>
     </div>
   </ul>
 </li>
