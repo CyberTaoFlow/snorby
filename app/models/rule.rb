@@ -22,7 +22,9 @@ class Rule
   belongs_to :source   , :model => 'RuleSource'   , :parent_key => :id, :child_key => :source_id   , :required => true
 
   has n, :sensorRules
-  has n, :sensors, :model => 'Sensor', :child_key => [ :sid ], :parent_key => [ :rule_id ], :through => :sensorRules
+  has n, :sensors, :model => 'Sensor'  , :child_key => [ :sid ], :parent_key => [ :rule_id ], :through => :sensorRules
+
+  has n, :notes  , :model => 'RuleNote', :child_key => [ :rule_sid ], :parent_key => [ :rule_id ]
 
   # array with all versions for one single rule
   def dbversions
