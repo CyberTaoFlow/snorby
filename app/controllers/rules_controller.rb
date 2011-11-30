@@ -14,6 +14,8 @@ class RulesController < ApplicationController
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     @sensor_rules = @sensor.last_compiled_rules
     @sensor_rules = [] if @sensor_rules.nil?
+    @actions = RuleAction.all
+    @rulestype = "compiled_rules"
 
     respond_to do |format|
       format.html
@@ -114,6 +116,8 @@ class RulesController < ApplicationController
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     @sensor_rules = @sensor.pending_rules unless @sensor.nil?
     @sensor_rules = [] if @sensor_rules.nil?
+    @actions = RuleAction.all
+    @rulestype = "pending_rules"
 
     respond_to do |format|
       format.html {render :active_rules}

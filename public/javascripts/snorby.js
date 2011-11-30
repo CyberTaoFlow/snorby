@@ -1571,20 +1571,97 @@ jQuery(document).ready(function($) {
     $(this).parents('dl').fadeOut('fast');
   });
   
-//
-//  $('dl.rule_actions').live('click', function(event) {
+//  $('dl.rule_actions dd').live('click', function(event) {
 //    var self = this;
-//    var gid = $(this).attr('data-group-id');
 //    event.preventDefault();
-//    var elements = $('ul.table div.content dl.rule_actions-menu');
+//    var elements = $('ul.table div.content dl.rule_actions-menu dd');
 //    for (var i = 0; i < elements.length; i++){
-//       var gid_aux = $(elements[i]).attr('data-group-id');
-//       if (gid != gid_aux){
+//      if (elements[i]!=self) {
+//
 //        elements[i].style.display = 'none';
-//       }
+//      } else {
+//        alert("hola")
+//      }
 //    }
-//    $('dl#rule_actions-menu-'+gid).toggle();
+//    $(self).parent().next('.rule_actions-menu').toggle();
 //  });
+
+  $('dl.rule_actions dd').live('click', function(event) {
+    event.preventDefault();
+    $(this).parent().next('.rule_actions-menu').toggle();
+  });
+
+  $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+    var self = $(this);
+    var action_id   = self.parent().attr("data-action-id");
+    var group_id    = self.parents("li.group").attr("data-group-id");
+    var category_id = self.parents(".category").attr("data-category-id");
+    var sensor_id   = $("#rules").attr("data-sensor-sid");
+    var action_str  = self.html();
+
+
+    if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0) {
+      var box_cmp = self.parent().parent()
+
+      if (!box_cmp.hasClass("loading")) {
+        box_cmp.addClass("loading");
+        box_cmp.fadeOut();
+        var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+        action_cmp.html('<img src="/images/icons/pager.gif">');
+
+        $.ajax({
+          url: "/sensors/" +sensor_id +"/update_rule_action",
+          data: {action_id: action_id, group_id: group_id, category_id: category_id, sensor_id: sensor_id},
+          success: function(data){
+            box_cmp.removeClass("loading");
+            action_cmp.html(action_str);
+            //action_cmp.addClass(action_str.toLowerCase())
+            self.parentsUntil("tr").parent().addClass("rule_pending");
+            self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
+            self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+          }
+        });
+      }
+    }
+  });
+
+  $('li.rule > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+    var self = $(this);
+    var action_id   = self.parent().attr("data-action-id");
+    var rule_id     = self.parents("li.rule").attr("data-rule-id");
+    var sensor_id   = $("#rules").attr("data-sensor-sid");
+    var action_str  = self.html();
+
+    if (action_id>=0 && rule_id>=0 && sensor_id>0) {
+      var box_cmp = self.parent().parent()
+
+      if (!box_cmp.hasClass("loading")) {
+        box_cmp.addClass("loading");
+        box_cmp.fadeOut();
+        var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+        var last_action=action_cmp.html();
+        action_cmp.html('<img src="/images/icons/pager.gif">');
+
+        $.ajax({
+          url: "/sensors/" +sensor_id +"/update_rule_action",
+          data: {action_id: action_id, rule_id: rule_id, sensor_id: sensor_id},
+          success: function(data){
+            box_cmp.removeClass("loading");
+            
+            if ($("#rules").hasClass("compiled_rules")) {              
+              action_cmp.html(last_action);              
+              flash_message.push({type: 'info', message: 'Added to pending rules'});
+              flash();
+            } else {
+              action_cmp.html(action_str);
+              self.parentsUntil("tr").parent().addClass("rule_pending");
+            }
+            //action_cmp.addClass(action_str.toLowerCase())
+          }
+        });
+      }
+    }
+  });
 
   $('#wrapper').live('click', function() {
     if ($('dl#admin-menu').is(':visible')) {
