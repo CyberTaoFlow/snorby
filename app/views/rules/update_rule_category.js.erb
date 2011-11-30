@@ -1,1 +1,1 @@
-$("#rules div.category.ui-accordion-content-active").html("<%= escape_javascript(render(:partial => 'rules/rules_category', :locals => {:sensor => @sensor, :category => @category, :groups => @groups, :actions => @actions})) %>")
+$('li.category[data-category-id="<%=@category.id%>"] .groups .content').html("<%= escape_javascript(render(:partial => 'rules/rules_category', :locals => {:sensor => @sensor, :category => @category, :groups => @groups, :actions => @actions})) %>")

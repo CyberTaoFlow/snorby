@@ -5,6 +5,7 @@
 
   <script type="text/javascript">
     $(document).ready(function() {
+/*
       $("#rules").accordion({
         active: false,
         collapsible: true,
@@ -28,17 +29,46 @@
           }                      
         }
       });
+*/
+      $('.content > li.category > div.row > .message').live('click', function(event) {
+        var self = this
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var category_id = $(self).parents("li.category").attr("data-category-id");
+
+        if (category_id>=0 && sensor_id>=0) {
+          if (!$(self).hasClass("loaded")) {
+            $(self).addClass("loaded");
+            $(self).parents("li.category").toggleClass("highlight");
+            var content     = $(self).parent().next()
+            var select_comp = $(self).parents(".row").children(".select");
+            var select_html = select_comp.html();
+            select_comp.html('<img src="/images/icons/loading.gif">');
+            
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_category",
+              data: {category_id: category_id, sensor_id: sensor_id},
+              success: function(data) {
+                content.toggle('fast')
+                select_comp.html(select_html);
+              }
+            });
+          } else {
+            content.toggle('fast')
+          }
+        }
+      });
 
       $('.content > li.group > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var group_id    = $(self).parents(".group").attr("data-group-id");
         var category_id = $(self).parents(".category").attr("data-category-id");
-        var content  = $("#group-" +category_id +"-" +group_id +" > ul.table.rules");
 
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
+            $(self).parents("li.group").toggleClass("highlight");
+            var content     = $(self).parent().next()
             var select_comp = $(self).parents(".row").children(".select");
             var select_html = select_comp.html();
             select_comp.html('<img src="/images/icons/loading.gif">');
@@ -49,12 +79,10 @@
               success: function(data){
                 content.toggle('fast')
                 select_comp.html(select_html);
-                $( "#rules" ).accordion("resize");
               }
             });
           } else {
             content.toggle('fast')
-            $( "#rules" ).accordion("resize");
           }
         }
       });
@@ -63,7 +91,6 @@
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var rule_id     = $(self).parents(".rule").attr("data-rule-id");
-        var content     = $("#rule-" +rule_id +" > .rule-data");
 
         if (sensor_id>=0 && rule_id>0) {
           var elements = $('li.rule.highlight');
@@ -71,7 +98,7 @@
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
             $(self).parents("li.rule").toggleClass("highlight");
-
+            var content     = $(self).parent().next()
             var select_comp = $(self).parents(".row").children(".select");
             var select_html = select_comp.html();
             select_comp.html('<img src="/images/icons/loading.gif">');
@@ -82,7 +109,7 @@
               success: function(data){
                 content.toggle('fast');
                 //Hide rest of rule highlight components if any
-                /*for (var i = 0; i < elements.length; i++){
+                /* for (var i = 0; i < elements.length; i++){
                   var id_aux = $(elements[i]).attr('data-rule-id');
                   if (id_aux != rule_id){
                     $(elements[i]).removeClass("highlight");
@@ -90,13 +117,11 @@
                   }
                 }*/
                 select_comp.html(select_html);
-                $( "#rules" ).accordion("resize");
               }
             });
           } else {
             $(self).parents("li.rule").toggleClass("highlight")
             content.toggle('fast')
-            $( "#rules" ).accordion("resize");
           }
         }
       });
@@ -110,8 +135,26 @@
   <%= render :partial => 'rules/menu' %>
 <%- end -%>
 
-<div id="rules" class="boxit ui-accordion" data-sensor-sid=<%= @sensor.sid  %> >
-  <%= render :partial => 'rules/category', :collection => @categories %>
+<div id="rules" class="boxit" data-sensor-sid=<%= @sensor.sid  %> >
+  <%= form_tag mass_update_rules_path do %>
+    <%= hidden_field_tag :selected_rules, [] %>
+    <ul class="table categories">
+      <li class="header">
+        <div class="row">
+          <div class="small">
+            <%= check_box_tag 'rule-select-all', nil, false, :class => 'rule-select-all' %>
+          </div>
+          <div class="action">Actions</div>
+          <div class="message">Message</div>
+          <div class="nrules"></div>
+        </div>
+      </li>
+      <div class="content">
+        <%= render :partial => 'rules/category', :collection => @categories, :locals => {:actions => @actions} %>
+        <%#= render :partial => 'rules/group', :collection => @groups, :locals => {:category => category, :actions => @actions} %>
+      </div>
+    </ul>
+  <% end %>
 </div>
 
 <%= render :partial => 'rules/rules_menu' %>

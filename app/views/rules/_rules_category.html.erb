@@ -1,21 +1,4 @@
-<div id="rules_category_<%=  category.id %>" class='boxit'>
+<% groups.each do |group| %>
+  <%= render :partial => 'rules/group', :locals => {:category => category, :actions => actions, :group => group} %>
+<% end %>
 
-  <%= form_tag mass_update_rules_path do %>
-    <%= hidden_field_tag :selected_rules, [] %>
-    <ul class="table">
-      <li class="header">
-        <div class="row">
-          <div class="small">
-            <%= check_box_tag 'rule-select-all', nil, false, :class => 'rule-select-all' %>
-          </div>
-          <div class="action">Actions</div>
-          <div class="message">Message</div>
-          <div class="nrules"></div>
-        </div>
-      </li>
-      <div class="content">
-        <%= render :partial => 'rules/group', :collection => @groups, :locals => {:category => category, :actions => @actions} %>
-      </div>
-    </ul>
-  <% end %>  
-</div>

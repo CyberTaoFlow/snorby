@@ -1,2 +1,13 @@
-<h3><%= link_to category.name, '#' %></h3>
-<div class="category" data-category-id=<%= category.id %> ></div>
+<li data-category-id='<%= category.id %>' class="category">
+  <div class="row">
+    <div class="select small"><%= check_box_tag 'category-selector-#{category.id}', nil, false, :class => "check_box_#{category.id}" %></div>
+    <div class="action">
+      <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => "actions"} %>
+    </div>
+    <div class="message"><%= category.name %></div>
+    <div class="nrules"><%#= category.rules.all().size %></div>
+  </div>
+  <ul class="table groups" style='display:none;'>
+    <div class="content"></div>
+  </ul>
+</li>
