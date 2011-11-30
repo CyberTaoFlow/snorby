@@ -1,35 +1,8 @@
 <% content_for :footer do %>
   <%= render :partial => 'layouts/notify' %>
 
-  <%= stylesheet_link_tag "jquery-ui" %>
-
   <script type="text/javascript">
     $(document).ready(function() {
-/*
-      $("#rules").accordion({
-        active: false,
-        collapsible: true,
-        change: function(event, ui) {
-          var active_comps = $(ui.newHeader).next();
-          var category_id  = active_comps.attr("data-category-id");
-          var sensor_id    = $("#rules").attr("data-sensor-sid");
-          active_comps.html('<img src="/images/icons/pager.gif">')
-          //alert("category_id: " +category_id +"   sensor_id: " +sensor_id);
-          if (category_id>=0 && sensor_id>=0) {
-            if (!active_comps.hasClass("loaded")) {
-              active_comps.addClass("loaded")
-              $.ajax({
-                url: "/sensors/" +sensor_id +"/update_rule_category",
-                data: {category_id: category_id, sensor_id: sensor_id},
-                success: function(data){
-                  $( "#rules" ).accordion("resize");
-                }
-              });
-            }
-          }                      
-        }
-      });
-*/
       $('.content > li.category > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
@@ -151,7 +124,6 @@
       </li>
       <div class="content">
         <%= render :partial => 'rules/category', :collection => @categories, :locals => {:actions => @actions} %>
-        <%#= render :partial => 'rules/group', :collection => @groups, :locals => {:category => category, :actions => @actions} %>
       </div>
     </ul>
   <% end %>

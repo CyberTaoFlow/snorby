@@ -4552,6 +4552,10 @@ div.map{
 	background-image: none;
 	color: #fff;
 }
+
+#rules ul.table li .row div.timestamp{
+    overflow: visible;
+}
 /* @end */
 
 /* @end */

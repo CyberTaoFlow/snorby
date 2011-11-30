@@ -5,6 +5,11 @@
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => action } %>
     </div>
     <div class="message click"><%= truncate(rule.msg, :length => 100, :omission => '...') %></div>
+    <div class="timestamp click">
+      <% if rule.notes.present? %>
+        <span title="This rule has <%= pluralize(rule.notes.size, 'note') %>" class='add_tipsy round notes-count'><%= image_tag("icons/notes.png", :size => '16x16') %></span>
+      <% end %>
+    </div>
   </div>
   <div class="rule-data event-data" style='display:none;'>
     <div class="content"></div>
