@@ -4492,7 +4492,7 @@ div.map{
 
 #rules ul.table div.content li.rule div.row{
     border: none;
-    background: white;
+    background: #CCC;
 }
 
 #rules ul.table div.content li.currently-over div.row{

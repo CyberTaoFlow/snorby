@@ -34,10 +34,8 @@
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var group_id    = $(self).parents(".group").attr("data-group-id");
         var category_id = $(self).parents(".category").attr("data-category-id");
-        var content     = $("#group-" +category_id +"-" +group_id +" > ul > .content");
+        var content  = $("#group-" +category_id +"-" +group_id +" > ul.table.rules");
 
-        //alert("sensor_id: " +sensor_id +"  group_id: " +group_id +"  category_id: " +category_id );
-        
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
@@ -49,7 +47,7 @@
               url: "/sensors/" +sensor_id +"/update_rule_group",
               data: {category_id: category_id, sensor_id: sensor_id, group_id: group_id},
               success: function(data){
-                content.toggle()
+                content.toggle();
                 select_comp.html(select_html);
                 $( "#rules" ).accordion("resize");
               }
