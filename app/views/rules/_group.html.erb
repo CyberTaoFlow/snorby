@@ -21,10 +21,6 @@
     <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
   </div>
   <ul class="table rules">
-    <div class="content" style='display:none;'>
-      <%# group.rules.all(:category1 => category).each do |rule| %>
-        <%#= render :partial => 'rules/rule', :locals => {:rule => rule} %>
-      <%# end %>
-    </div>
+    <div class="content" style='display:none;'></div>
   </ul>
 </li>
