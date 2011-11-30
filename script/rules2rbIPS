@@ -128,7 +128,7 @@ if newRules
     source = RuleSource.create(:name => rule_source["name"], :timestamp => timenow) if source.nil?
     source.update(:md5 => rule_source[:md5_value], :timestamp => timenow)
     rule_source["search"].each do |rs|
-      includeRuleDir << {:name => rule_source["name"], :dir => "#{config["cache_dir"]}/#{rule_source["name"]}/#{rs}", :id => source.id, :regexp_category_ignore => rule_source["regexp_category_ignore"], :md5_value=>rule_source[:md5_value]}
+      includeRuleDir << {:name => rule_source["name"], :dir => "#{config["cache_dir"]}/#{rule_source["name"]}/#{rs}", :id => source.id, :regexp_category1_ignore => rule_source["regexp_category1_ignore"], :regexp_category2_ignore => rule_source["regexp_category2_ignore"], :regexp_category3_ignore => rule_source["regexp_category3_ignore"], :md5_value=>rule_source[:md5_value], :category3_groups => rule_source["category3_groups"] }
     end
   end
 end
@@ -149,7 +149,7 @@ includeRuleDir.each do |rulesDir|
           next unless file =~ /\.rules$/
           ruleFile = pathRulesDir + "/" + file
           category = file.gsub(".rules","").strip.downcase
-          category = category.gsub /#{rulesDir[:regexp_category_ignore]}/, "" unless rulesDir[:regexp_category_ignore].nil?
+          category = category.gsub /#{rulesDir[:regexp_category1_ignore]}/, "" unless rulesDir[:regexp_category1_ignore].nil?
 
           rc1 = RuleCategory1.first(:name => category)
           rc1 = RuleCategory1.create(:name=> category) if rc1.nil?
@@ -168,18 +168,35 @@ includeRuleDir.each do |rulesDir|
                   if classtypeRuleMatch.nil?
                     category2="unknown"
                   else
-                    category2=classtypeRuleMatch[:classtype].strip.downcase
+                    category2 = classtypeRuleMatch[:classtype].strip.downcase
+                    category2 = category2.gsub /#{rulesDir[:regexp_category2_ignore]}/, "" unless rulesDir[:regexp_category2_ignore].nil?
                   end
 
                   rc2 = RuleCategory2.first(:name => category2)
                   rc2 = RuleCategory2.create(:name=>category2) if rc2.nil?
 
-                  category3RuleMatch = /([^ ]*( [^ ]*)?( [^ ]*)?)/.match(msgRuleMatch[:msg])
-                  if category3RuleMatch.nil?
-                    category3="unknown"
-                  else
-                    category3=category3RuleMatch[0][0..63].downcase
-                  end                    
+                  rule_msg = msgRuleMatch[:msg].downcase
+                  rule_msg = rule_msg.gsub /#{rulesDir[:regexp_category3_ignore]}/, "" unless rulesDir[:regexp_category3_ignore].nil?
+                  rule_msg = rule_msg.gsub /^#{category} /, ""
+
+                  category3=nil
+
+                  unless rulesDir[:category3_groups].nil?
+                    rulesDir[:category3_groups].each do |catgr|
+                      unless /#{catgr["regexp"]}/.match(rule_msg).nil?
+                        category3 = catgr["name"]
+                      end
+                    end                   
+                  end
+
+                  if category3.nil?
+                    category3RuleMatch = /([^ ]*( [^ ]*)?( [^ ]*)?)/.match(rule_msg)
+                    if category3RuleMatch.nil?
+                      category3="unknown"
+                    else
+                      category3 = category3RuleMatch[0][0..63].strip
+                    end
+                  end
 
                   rc3 = RuleCategory3.first(:name => category3)
                   rc3 = RuleCategory3.create(:name=>category3) if rc3.nil?

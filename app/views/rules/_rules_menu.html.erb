@@ -1,5 +1,5 @@
 <div id="rules-menu">
-  <%= link_to 'Active rules' , {:controller=>"Rules", :action=>"active_rules"  , :sensor_id=>@sensor.sid} %>
+  <%= link_to 'Active rules' , {:controller=>"Rules", :action=>"active_rules"         , :sensor_id=>@sensor.sid} %>
   <%= link_to 'Pending rules', {:controller=>"Rules", :action=>"pending_rules"        , :sensor_id=>@sensor.sid} %>
   <%= link_to 'Compile'      , {:controller=>"Rules", :action=>"compile_rules"        , :sensor_id=>@sensor.sid} %>
   <%= link_to 'Revert'       , {:controller=>"Rules", :action=>"discard_pending_rules", :sensor_id=>@sensor.sid} %>

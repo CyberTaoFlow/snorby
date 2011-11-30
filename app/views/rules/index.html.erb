@@ -41,11 +41,16 @@
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
+            var select_comp = $(self).parents(".row").children(".select");
+            var select_html = select_comp.html();
+            select_comp.html('<img src="/images/icons/loading.gif">');
+            
             $.ajax({
               url: "/sensors/" +sensor_id +"/update_rule_group",
               data: {category_id: category_id, sensor_id: sensor_id, group_id: group_id},
               success: function(data){
                 content.toggle()
+                select_comp.html(select_html);
                 $( "#rules" ).accordion("resize");
               }
             });
@@ -67,7 +72,12 @@
           
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
-            $(self).parents("li.rule").toggleClass("highlight")
+            $(self).parents("li.rule").toggleClass("highlight");
+
+            var select_comp = $(self).parents(".row").children(".select");
+            var select_html = select_comp.html();
+            select_comp.html('<img src="/images/icons/loading.gif">');
+
             $.ajax({
               url: "/sensors/" +sensor_id +"/update_rule_details",
               data: {sensor_id: sensor_id, rule_id: rule_id},
@@ -81,6 +91,7 @@
                     $(elements[i]).children(".rule-data").fadeOut();
                   }
                 }*/
+                select_comp.html(select_html);
                 $( "#rules" ).accordion("resize");
               }
             });
@@ -120,8 +131,10 @@
               success: function(data){
                 box_cmp.removeClass("loading");
                 action_cmp.html(action_str);
-                action_cmp.addClass(action_str.toLowerCase())
+                //action_cmp.addClass(action_str.toLowerCase())
                 self.parentsUntil("tr").parent().addClass("rule_pending");
+                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
+                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
                 $("#rules").accordion("resize");
               }
             });
