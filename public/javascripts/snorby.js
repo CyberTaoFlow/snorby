@@ -1648,6 +1648,13 @@ jQuery(document).ready(function($) {
     }
   });
 
+  $('input#rule-selector').live('change', function() {
+      if ($(this).attr('checked')) {
+      } else {
+        $(this).parents('li.group').children('div.row').children('div.select').children('input').attr('checked', false);
+      }
+
+  });
 
 //  $('input#event-select-all').live('change', function() {
 //
