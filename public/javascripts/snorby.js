@@ -1645,6 +1645,7 @@ jQuery(document).ready(function($) {
     if ($(this).attr('checked')) {
         $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', true);
     } else {
+        $(this).parents('ul.table').children('li.header').children('div.row').children('div.small').children('input').attr('checked', false);
         $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', false);
     }
   });
