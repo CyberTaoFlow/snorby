@@ -4533,6 +4533,13 @@ div.map{
 #rules ul.table.rules {
     border: 1px solid #F3F3F3;
 }
+
+#rules ul.table.rules div.content li.highlight div.row{
+	background-color: #414346;
+	border-bottom: 1px solid #414346;
+	background-image: none;
+	color: #fff;
+}
 /* @end */
 
 /* @end */

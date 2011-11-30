@@ -1554,22 +1554,23 @@ jQuery(document).ready(function($) {
 //    }
 //  });
 
-//  $('li.sensor-options a').live('click', function(event) {
-//    var sid = $(this).parent('li').attr('data-sensor-id');
-//    event.preventDefault();
-//    var elements = $('dl.sensor-menu');
-//    for (var i = 0; i < elements.length; i++){
-//       var sid_aux = $(elements[i]).attr('data-sensor-id');
-//       if (sid != sid_aux){
-//        elements[i].style.display = 'none';
-//       }
-//    }
-//    $('dl#sensor-menu-'+sid).toggle();
-//  });
-//
-//  $('dl#sensor-menu a').live('click', function(event) {
-//    $(this).parents('dl').fadeOut('fast');
-//  });
+  $('li.sensor-options a').live('click', function(event) {
+    var sid = $(this).parent('li').attr('data-sensor-id');
+    event.preventDefault();
+    var elements = $('dl.sensor-menu');
+    for (var i = 0; i < elements.length; i++){
+       var sid_aux = $(elements[i]).attr('data-sensor-id');
+       if (sid != sid_aux){
+        elements[i].style.display = 'none';
+       }
+    }
+    $('dl#sensor-menu-'+sid).toggle();
+  });
+
+  $('dl#sensor-menu a').live('click', function(event) {
+    $(this).parents('dl').fadeOut('fast');
+  });
+  
 //
 //  $('dl.rule_actions').live('click', function(event) {
 //    var self = this;
