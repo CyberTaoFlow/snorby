@@ -5,19 +5,21 @@
     <div class="rule-info plus">
       <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
         <tr>
-          <th class='first'>RuleId</th>
+          <th class='first'>Sid</th>
           <th>Protocol</th>
           <th>Source</th>
           <th>Destination</th>
-          <th class='last'>Revision</th>
+          <th>Revision</th>
+          <th class='last'>Source</th>
         </tr>
         <tbody>
           <tr>
             <td><%= rule.rule_id %></td>
-            <td><%= rule.protocol %></td>
+            <td><%= rule.protocol.upcase %></td>
             <td><%= rule.l3l4.match(/(.+\s.+) -> /)[1] %></td>
             <td><%= rule.l3l4.match(/ -> (.+\s.+)/)[1] %></td>
             <td><%= rule.rev %></td>
+            <td><%= rule.source.name.capitalize %></td>
           </tr>
         </tbody>
       </table>
