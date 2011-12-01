@@ -1,14 +1,17 @@
 <div class='rule-data-holder'>
   <div class='rule-data-holder-inside'>
     <div id="rule-menu"></div>
+
     <div class="section-title plus">Rule Information</div>
     <div class="rule-info plus">
       <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
         <tr>
           <th class='first'>Sid</th>
           <th>Protocol</th>
-          <th>Source</th>
-          <th>Destination</th>
+          <th>Source Addr</th>
+          <th>Source Port</th>
+          <th>Dest Addr</th>
+          <th>Dest Port</th>
           <th>Revision</th>
           <th class='last'>Source</th>
         </tr>
@@ -16,14 +19,35 @@
           <tr>
             <td><%= rule.rule_id %></td>
             <td><%= rule.protocol.upcase %></td>
-            <td><%= rule.l3l4.match(/(.+\s.+) -> /)[1] %></td>
-            <td><%= rule.l3l4.match(/ -> (.+\s.+)/)[1] %></td>
+            <td><%= rule.l3l4.match(/(.+)\s(.+) -> /)[1] %></td>
+            <td><%= rule.l3l4.match(/(.+)\s(.+) -> /)[2] %></td>
+            <td><%= rule.l3l4.match(/ -> (.+)\s(.+)/)[1] %></td>
+            <td><%= rule.l3l4.match(/ -> (.+)\s(.+)/)[2] %></td>
             <td><%= rule.rev %></td>
             <td><%= rule.source.name.capitalize %></td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <div class="section-title plus">More Rule Information</div>
+    <div class='rule-info plus'>
+      <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
+        <tr>
+          <th class="first">Column</th>
+          <th class="last">Value</th>
+        </tr>
+        <tbody>
+          <% rule.rule.split(';').each do |x| %>
+            <tr>
+              <td><strong><%= x.split(':')[0] %></strong></td>
+              <td><%= x.split(':')[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
     <div class='section-title plus'>Notes</div>
     <div id='notes_<%= rule.id %>' class='notes plus'>
       <% if rule.notes.blank? %>
