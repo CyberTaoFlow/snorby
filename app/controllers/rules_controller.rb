@@ -1,6 +1,7 @@
 class RulesController < ApplicationController
 
   before_filter :require_administrative_privileges, :only => [:compile_rules, :discard_pending_rules]
+  skip_before_filter :authenticate_user!, :only => [:active_rules]
 
   # Get all categories and their rules. 
   def index
@@ -11,15 +12,19 @@ class RulesController < ApplicationController
 
   # Get last compiled rules for the sensor indicated
   def active_rules
-    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @sensor_rules = @sensor.last_compiled_rules
-    @sensor_rules = [] if @sensor_rules.nil?
-    @actions = RuleAction.all
-    @rulestype = "compiled_rules"
-
     respond_to do |format|
-      format.html
-      format.text 
+      format.html{
+        @sensor = Sensor.get(params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @actions = RuleAction.all
+        @rulestype = "compiled_rules"
+      }
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @actions = RuleAction.all
+        @rulestype = "compiled_rules"
+      }
     end
   end
 
