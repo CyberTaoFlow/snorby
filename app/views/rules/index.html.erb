@@ -7,12 +7,12 @@
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var category_id = $(self).parents("li.category").attr("data-category-id");
+        var content     = $(self).parent().next()
 
         if (category_id>=0 && sensor_id>=0) {
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
             $(self).parents("li.category").toggleClass("highlight");
-            var content     = $(self).parent().next()
             var select_comp = $(self).parents(".row").children(".select");
             var select_html = select_comp.html();
             select_comp.html('<img src="/images/icons/loading.gif">');
@@ -36,12 +36,12 @@
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var group_id    = $(self).parents(".group").attr("data-group-id");
         var category_id = $(self).parents(".category").attr("data-category-id");
+        var content     = $(self).parent().next()
 
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
             $(self).parents("li.group").toggleClass("highlight");
-            var content     = $(self).parent().next()
             var select_comp = $(self).parents(".row").children(".select");
             var select_html = select_comp.html();
             select_comp.html('<img src="/images/icons/loading.gif">');
@@ -64,6 +64,7 @@
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var rule_id     = $(self).parents(".rule").attr("data-rule-id");
+        var content     = $(self).parent().next()
 
         if (sensor_id>=0 && rule_id>0) {
           var elements = $('li.rule.highlight');
@@ -71,7 +72,6 @@
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
             $(self).parents("li.rule").toggleClass("highlight");
-            var content     = $(self).parent().next()
             var select_comp = $(self).parents(".row").children(".select");
             var select_html = select_comp.html();
             select_comp.html('<img src="/images/icons/loading.gif">');
