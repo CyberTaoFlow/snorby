@@ -13,9 +13,9 @@ class Sensor
       #    The hostname format should be: sensor_name:interface (barnyard2 format)
 
       pname = /(.+):/.match(sensor.hostname)[1]
-      p_sensor = Sensor.first(:name => pname, :domain => true)
+      p_sensor = Sensor.first(:name => pname.capitalize, :hostname => pname, :domain => true)
       p_sensor = Sensor.create(:name => pname, :domain => true, :parent => Sensor.root) if p_sensor.nil?
-      sensor.name = hostname
+      sensor.name = sensor.hostname
       sensor.parent = p_sensor
     end
   end
