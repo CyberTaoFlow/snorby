@@ -1,16 +1,56 @@
 verbose: false
 cache_dir: "/opt/rb/var/www/snortrules/cache"
+category4_groups:
+  - 
+    name: "email"
+    desc: ""
+    regexp: "imap|pop2|pop3|smtp"
+  - 
+    name: "web"
+    regexp: "web-|web_"
+  - 
+    name: "services"
+    regexp: "dns|ftp|finger|netbios|nntp|scada|snmp|telnet|tftp|voip|x11|icmp|icmp-info|rpc|rservices"
+  - 
+    name: "policy"
+    regexp: "chat|p2p|multimedia|policy|content-replace"
+  - 
+    name: "attacks"
+    regexp: "attack-responses|backdoor|bad-traffic|botnet-cnc|exploit|shellcode|spyware-put|specific-threats|virus|scan|misc|info|phishing-spam"
+  - 
+    name: "special"
+    regexp: "blacklist"
+  - 
+    name: "sql"
+    regexp: "sql|mysql|oracle"
+  - 
+    name: "dos"
+    regexp: "dos|ddos"
+
+
 url_rules:
-  -
-    name: "emergingthreats" 
-    domain: "https://rules.emergingthreats.net"
-    regexp_category1_ignore: "emerging-"
-    regexp_category3_ignore: "^et |^gpl "
-    tgz: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz"
-    md5: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz.md5"
+  - 
+    name: "etpro" 
+    tgzfile: "/opt/rb/var/www/snortrules/cache/etpro.tgz"
+    regexp_category3_ignore: "^et |^gpl |^etpro "
+    search:
+      - "rules"
+  - 
+    name: "vrt" 
+    tgzfile: "/opt/rb/var/www/snortrules/cache/vrt.tar.gz"
+    regexp_category3_ignore: "^et |^gpl |^etpro "
     search:
       - "rules"
 
+  #-
+  #  name: "emergingthreats" 
+  #  domain: "https://rules.emergingthreats.net"
+  #  regexp_category1_ignore: "emerging-"
+  #  regexp_category3_ignore: "^et |^gpl "
+  #  tgz: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz"
+  #  md5: "https://rules.emergingthreats.net/open/snort-2.9.1/emerging.rules.tar.gz.md5"
+  #  search:
+  #    - "rules"
   #-
   #  name: "etpro" 
   #  domain: "https://rules.emergingthreats.net"
@@ -30,7 +70,7 @@ url_rules:
   #      name: "ibm lotus"
   #      regexp: "ibm lotus"
   #-
-  #  name: "snortrules" 
+  #  name: "vrt" 
   #  domain: "https://www.snort.org"
   #  tgz: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz/<snort_oinkcode>"
   #  md5: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz.md5/<snort_oinkcode>"

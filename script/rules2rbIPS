@@ -79,13 +79,20 @@ newRules=false
 unless config["url_rules"].nil?
   config["url_rules"].each do |rule_source|
     begin
-      if !rule_source["domain"].nil? && !rule_source["name"].nil?
-        tgzLocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.tgz"
-        dFile = true
+      unless rule_source["name"].nil?
+        if rule_source["tgzfile"].nil?
+          tgzLocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.tgz"
+        else
+          tgzLocalFile = rule_source["tgzfile"]
+        end
+
+        dFile      = true
+        dLocalFile = false
+
         if File.exists?(tgzLocalFile)
           md5Content = ""
           md5LocalFile = "#{config["cache_dir"]}/#{rule_source["name"]}.md5"
-          if !rule_source["md5"].nil?
+          if !rule_source["md5"].nil? && !rule_source["domain"].nil?
             printf("Downloading #{rule_source["md5"]}\n") if config["verbose"]
             downloadFile(rule_source["domain"], rule_source["md5"], md5LocalFile)
             md5Content      = File.open(md5LocalFile).first.chop
@@ -98,22 +105,27 @@ unless config["url_rules"].nil?
               printf("\n") if config["verbose"]
               dFile = false
             end
+          else
+            dLocalFile = true
+            dFile      = false
           end
         end
 
-        if (dFile || config["force"])
-          if (dFile)
+        if (dFile || dLocalFile || config["force"])
+          if dFile
             printf("Downloading #{rule_source["tgz"]}\n") if config["verbose"]
             downloadFile(rule_source["domain"], rule_source["tgz"], tgzLocalFile)
           end
 
           #Extracting rules
-          dirExtract = "#{config["cache_dir"]}/#{rule_source["name"]}"
-          `rm -rf #{dirExtract}` if File.directory? dirExtract
-          `mkdir #{dirExtract}`
-          printf("Extracting #{tgzLocalFile}\n") if config["verbose"]
-          `tar xzf #{tgzLocalFile} -C #{dirExtract}`
-          newRules=true
+          if File.exists?(tgzLocalFile)
+            dirExtract = "#{config["cache_dir"]}/#{rule_source["name"]}"
+            `rm -rf #{dirExtract}` if File.directory? dirExtract
+            `mkdir #{dirExtract}`
+            printf("Extracting #{tgzLocalFile}\n") if config["verbose"]
+            `tar xzf #{tgzLocalFile} -C #{dirExtract}`
+            newRules=true
+          end
         end
       end
     rescue => err
@@ -144,6 +156,7 @@ includeRuleDir.each do |rulesDir|
       begin 
         rulesDirectory = Dir.open(rulesDir[:dir])
         pathRulesDir   = rulesDirectory.to_path
+
         rulesDirectory.to_a.each do |file|
           next if file == "." or file == ".."
           next unless file =~ /\.rules$/
@@ -153,6 +166,23 @@ includeRuleDir.each do |rulesDir|
 
           rc1 = RuleCategory1.first(:name => category)
           rc1 = RuleCategory1.create(:name=> category) if rc1.nil?
+
+          category4=nil
+          category4_desc=nil
+          unless config["category4_groups"].nil?
+            config["category4_groups"].each do |catgr|
+              unless /#{catgr["regexp"]}/.match(category).nil?
+                category4      = catgr["name"]
+                category4_desc = catgr["desc"]
+                break
+              end
+            end
+          end
+
+          category4="others" if category4.nil?
+          rc4 = RuleCategory4.first(:name => category4)
+          rc4 = RuleCategory4.create(:name=> category4) if rc4.nil?
+          rc4.update(:description => category4_desc) unless category4_desc.nil?
 
           ruleFile = File.open(ruleFile)
 
@@ -215,6 +245,7 @@ includeRuleDir.each do |rulesDir|
                   r.category1_id = rc1.id
                   r.category2_id = rc2.id
                   r.category3_id = rc3.id
+                  r.category4_id = rc4.id
                   r.protocol     = ruleMatch[:protocol]
                   r.l3l4         = ruleMatch[:l3l4]
                   r.rev          = rev.to_i

@@ -5,7 +5,7 @@ class RulesController < ApplicationController
   # Get all categories and their rules. 
   def index
     @sensor     = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @categories = RuleCategory1.all(:order => [:name.asc])
+    @categories = RuleCategory4.all(:order => [:name.asc])
     @actions    = RuleAction.all
   end
 
@@ -28,10 +28,10 @@ class RulesController < ApplicationController
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     
     unless params["category_id"].nil?
-      @category = RuleCategory1.get(params["category_id"].to_i)
+      @category = RuleCategory4.get(params["category_id"].to_i)
     end
 
-    @groups = @category.rules.category3.all(:order => [:name.asc])
+    @groups = @category.rules.category1.all(:order => [:name.asc])
 
     @actions             = RuleAction.all
     @pending_rules       = @sensor.pending_rules unless @sensor.nil?
@@ -43,11 +43,11 @@ class RulesController < ApplicationController
   end
 
   def update_rule_group
-    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @category = RuleCategory1.get(params["category_id"].to_i) unless params["category_id"].nil?
-    @group = RuleCategory3.get(params["group_id"].to_i) unless params["group_id"].nil?
-    @actions             = RuleAction.all
-    @pending_rules       = @sensor.pending_rules unless @sensor.nil?
+    @sensor   = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @category = RuleCategory4.get(params["category_id"].to_i) unless params["category_id"].nil?
+    @group    = RuleCategory1.get(params["group_id"].to_i) unless params["group_id"].nil?
+    @actions  = RuleAction.all
+    @pending_rules = @sensor.pending_rules unless @sensor.nil?
     @last_compiled_rules = @sensor.last_compiled_rules unless @sensor.nil?
 
     respond_to do |format|
@@ -68,8 +68,8 @@ class RulesController < ApplicationController
     @sensor   = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
     @action   = RuleAction.get(params[:action_id].to_i) if params[:action_id].present?
     @rule     = Rule.get(params[:rule_id].to_i) if params[:rule_id].present?
-    @group    = RuleCategory3.get(params[:group_id].to_i) if params[:group_id].present?
-    @category = RuleCategory1.get(params[:category_id].to_i) if params[:category_id].present?
+    @group    = RuleCategory1.get(params[:group_id].to_i) if params[:group_id].present?
+    @category = RuleCategory4.get(params[:category_id].to_i) if params[:category_id].present?
 
     unless @sensor.nil?
       array = []
@@ -80,7 +80,7 @@ class RulesController < ApplicationController
       elsif @group.nil? && !@category.nil?
         array = @category.rules
       elsif !@group.nil? && !@category.nil?
-        array = Rule.all(:category1_id => @category.id, :category3_id => @group.id)
+        array = Rule.all(:category1_id => @category.id, :category4_id => @group.id)
       end
 
       Rule.transaction do |t|
