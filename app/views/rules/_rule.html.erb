@@ -1,4 +1,4 @@
-<li data-rule-id='<%= rule.id %>' class="rule">
+<li id='rule_<%= rule.id %>' data-rule-id='<%= rule.id %>' class="rule">
   <div class="row">
     <div class="select small"><%= check_box_tag 'rule-selector', nil, false, :class => "check_box_rule_#{rule.id}" %></div>
     <div class="action">

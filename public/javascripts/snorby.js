@@ -558,6 +558,22 @@ var Snorby = {
 				
         return false;
       });
+
+      $('a.destroy-rule-note').live('click', function(e) {
+        e.preventDefault();
+        var note_id = $(this).attr('data-note-id');
+
+        if ( confirm("Are you sure you want to delete this note?") ) {
+          $('div.notes').fadeTo(500, 0.4);
+          $.post('/rule_notes/destroy', {
+            id: note_id,
+            authenticity_token: csrf,
+            '_method': 'delete'
+          }, null, 'script');
+        };
+
+        return false;
+      });
 			
       $('button.add_new_note-working').live('click', function(e) {
         e.preventDefault();
