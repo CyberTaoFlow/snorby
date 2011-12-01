@@ -1,3 +1,3 @@
-<% group.rules.all(:category1 => category).each do |rule| %>
-  <%= render :partial => 'rules/rule', :locals => {:rule => rule, :actions => actions, :action => "actions"} %>
+<% families.each do |family| %>
+  <%= render :partial => 'rules/family', :locals => {:category => category, :group => group, :family => family, :actions => actions, :action => "actions"} %>
 <% end %>

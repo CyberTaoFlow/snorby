@@ -161,17 +161,28 @@ includeRuleDir.each do |rulesDir|
           next if file == "." or file == ".."
           next unless file =~ /\.rules$/
           ruleFile = pathRulesDir + "/" + file
-          category = file.gsub(".rules","").strip.downcase
-          category = category.gsub /#{rulesDir[:regexp_category1_ignore]}/, "" unless rulesDir[:regexp_category1_ignore].nil?
+          category1 = file.gsub(".rules","").strip.downcase
+          category1 = category1.gsub /#{rulesDir[:regexp_category1_ignore]}/, "" unless rulesDir[:regexp_category1_ignore].nil?
 
-          rc1 = RuleCategory1.first(:name => category)
-          rc1 = RuleCategory1.create(:name=> category) if rc1.nil?
+          category1_tmp = category1
+
+          unless config["category1_groups"].nil?
+            config["category1_groups"].each do |catgr|
+              unless /#{catgr["regexp"]}/.match(category1).nil?
+                category1_tmp = catgr["name"]
+                break
+              end
+            end
+          end
+
+          rc1 = RuleCategory1.first(:name => category1_tmp)
+          rc1 = RuleCategory1.create(:name=> category1_tmp) if rc1.nil?
 
           category4=nil
           category4_desc=nil
           unless config["category4_groups"].nil?
             config["category4_groups"].each do |catgr|
-              unless /#{catgr["regexp"]}/.match(category).nil?
+              unless /#{catgr["regexp"]}/.match(category1_tmp).nil?
                 category4      = catgr["name"]
                 category4_desc = catgr["desc"]
                 break
@@ -188,11 +199,11 @@ includeRuleDir.each do |rulesDir|
 
           while ruleLine = ruleFile.gets
             ruleLine.chop!
-            ruleMatch = /^(?<action>\w+)\s+(?<protocol>\w+)\s+(?<l3l4>[^(]+)\s+(?<rule>\(.+\))\s*$/.match(ruleLine)
+            ruleMatch = /^(?<action>\w+)\s+(?<protocol>\w+)\s+(?<source_addr>[^\s]+)\s+(?<source_port>[^\s]+)\s+->\s+(?<target_addr>[^\s]+)\s+(?<target_port>[^\s]+)\s+\((?<rule>.+)\)\s*$/.match(ruleLine)
             unless ruleMatch.nil?
               sidRuleMatch = /; sid:(?<sid>\d+);/.match(ruleMatch[:rule])
               unless sidRuleMatch.nil?
-                msgRuleMatch = /\(msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
+                msgRuleMatch = /msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
                 unless msgRuleMatch.nil?	
                   classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
                   if classtypeRuleMatch.nil?
@@ -207,7 +218,7 @@ includeRuleDir.each do |rulesDir|
 
                   rule_msg = msgRuleMatch[:msg].downcase
                   rule_msg = rule_msg.gsub /#{rulesDir[:regexp_category3_ignore]}/, "" unless rulesDir[:regexp_category3_ignore].nil?
-                  rule_msg = rule_msg.gsub /^#{category} /, ""
+                  rule_msg = rule_msg.gsub /^#{category1} /, ""
 
                   category3=nil
 
@@ -247,7 +258,10 @@ includeRuleDir.each do |rulesDir|
                   r.category3_id = rc3.id
                   r.category4_id = rc4.id
                   r.protocol     = ruleMatch[:protocol]
-                  r.l3l4         = ruleMatch[:l3l4]
+                  r.source_addr  = ruleMatch[:source_addr]
+                  r.source_port  = ruleMatch[:source_port]
+                  r.target_addr  = ruleMatch[:target_addr]
+                  r.target_port  = ruleMatch[:target_port]
                   r.rev          = rev.to_i
                   r.dbversion_id = dbVersion.id
                   r.rule         = ruleMatch[:rule]

@@ -4,28 +4,46 @@ category4_groups:
   - 
     name: "email"
     desc: ""
-    regexp: "imap|pop2|pop3|smtp"
+    regexp: "imap|pop|smtp"
   - 
     name: "web"
-    regexp: "web-|web_"
+    regexp: "^web-|^web_|activex"
   - 
     name: "services"
-    regexp: "dns|ftp|finger|netbios|nntp|scada|snmp|telnet|tftp|voip|x11|icmp|icmp-info|rpc|rservices"
+    regexp: "^dns$|^ftp$|^finger$|netbios|^nntp$|^scada$|^scada_special$|^snmp$|telnet|tftp|^voip$|^x11$|^icmp|^rpc$|rservices"
   - 
     name: "policy"
-    regexp: "chat|p2p|multimedia|policy|content-replace"
+    regexp: "^chat|^p2p|multimedia|^policy$|content-replace|games|inappropriate"
   - 
     name: "attacks"
-    regexp: "attack-responses|backdoor|bad-traffic|botnet-cnc|exploit|shellcode|spyware-put|specific-threats|virus|scan|misc|info|phishing-spam"
+    regexp: "attack|backdoor|bad-traffic|botnet-cnc|botcc|exploit|shellcode|spyware-put|specific-threats|virus|scan|^misc$|^info$|phishing|^drop$|spamhaus|malware|trojan|^worm$|^tor$|^rbn$|^rbn-malvertisers$|user_agents|^ciarmy$|compromised|^current_events$|dshield"
   - 
     name: "special"
-    regexp: "blacklist"
+    regexp: "blacklist|deleted|^local$"
   - 
     name: "sql"
     regexp: "sql|mysql|oracle"
   - 
     name: "dos"
-    regexp: "dos|ddos"
+    regexp: "^dos$|^ddos$"
+
+category1_groups:
+  - 
+    name: "web-activex"
+    regexp: "^activex$"
+  -
+    name: "attack-responses"
+    regexp: "^attack-response$"
+  -
+    name: "botnet-cnc"
+    regexp: "^botcc$"
+  -
+    name: "spamhaus"
+    regexp: "^drop$"
+  -
+    name: "icmp-info"
+    regexp: "^icmp_info$"
+ 
 
 
 url_rules:

@@ -4,8 +4,8 @@
     <div class="action">
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => "actions"} %>
     </div>
-    <div class="message"><%= category.name %></div>
-    <div class="nrules"><%#= category.rules.all().size %></div>
+    <div class="message"><%= category.name.upcase %></div>
+    <div class="nrules"><%= category.rules.all().size %></div>
   </div>
   <ul class="table groups" style='display:none;'>
     <div class="content"></div>

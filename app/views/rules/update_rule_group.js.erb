@@ -1,1 +1,1 @@
-$("#group-<%= @category.id %>-<%= @group.id %> ul .content").html("<%= escape_javascript(render(:partial => 'rules/rules_group', :locals => {:sensor => @sensor, :category => @category, :group => @group, :actions => @actions})) %>")
+$("#group-<%= @category.id %>-<%= @group.id %> ul .content").html("<%= escape_javascript(render(:partial => 'rules/rules_group', :locals => {:sensor => @sensor, :category => @category, :group => @group, :families => @families, :actions => @actions})) %>")

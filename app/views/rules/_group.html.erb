@@ -5,9 +5,9 @@
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => "actions"} %>
     </div>
     <div class="message"><%= group.name.upcase %></div>
-    <div class="nrules"><%= group.rules.all(:category1 => category).size %> </div>
+    <div class="nrules"><%= group.rules.all(:category4 => category).size %> </div>
   </div>
-  <ul class="table rules" style='display:none;'>
+  <ul class="table families" style='display:none;'>
     <div class="content"></div>
   </ul>
 </li>

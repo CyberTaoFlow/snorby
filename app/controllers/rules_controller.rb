@@ -46,6 +46,24 @@ class RulesController < ApplicationController
     @sensor   = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
     @category = RuleCategory4.get(params["category_id"].to_i) unless params["category_id"].nil?
     @group    = RuleCategory1.get(params["group_id"].to_i) unless params["group_id"].nil?
+    @families = @category.rules.all(:category1 => @group).category3.all(:order => [:name.asc])
+    
+    @actions  = RuleAction.all
+    @pending_rules = @sensor.pending_rules unless @sensor.nil?
+    @last_compiled_rules = @sensor.last_compiled_rules unless @sensor.nil?
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_rule_family
+    @sensor   = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
+    @category = RuleCategory4.get(params["category_id"].to_i) unless params["category_id"].nil?
+    @group    = RuleCategory1.get(params["group_id"].to_i) unless params["group_id"].nil?
+    @family   = RuleCategory3.get(params["family_id"].to_i) unless params["family_id"].nil?
+    @rules    = @family.rules.all(:category4 => @category, :category1=>@group).all(:order => [:msg.asc])
+
     @actions  = RuleAction.all
     @pending_rules = @sensor.pending_rules unless @sensor.nil?
     @last_compiled_rules = @sensor.last_compiled_rules unless @sensor.nil?

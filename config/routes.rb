@@ -15,9 +15,10 @@ Snorby::Application.routes.draw do
 
   match '/sensors/:sensor_id/active_rules'         , :controller => 'Rules', :action => 'active_rules'
   match '/sensors/:sensor_id/pending_rules'        , :controller => 'Rules', :action => 'pending_rules'
-  match '/sensors/:sensor_id/update_rule_category' , :controller => 'Rules', :action => 'update_rule_category'
   match '/sensors/:sensor_id/update_rule_action'   , :controller => 'Rules', :action => 'update_rule_action'
+  match '/sensors/:sensor_id/update_rule_category' , :controller => 'Rules', :action => 'update_rule_category'
   match '/sensors/:sensor_id/update_rule_group'    , :controller => 'Rules', :action => 'update_rule_group'
+  match '/sensors/:sensor_id/update_rule_family'   , :controller => 'Rules', :action => 'update_rule_family'
   match '/sensors/:sensor_id/update_rule_details'  , :controller => 'Rules', :action => 'update_rule_details'
   match '/sensors/:sensor_id/compile_rules'        , :controller => 'Rules', :action => 'compile_rules'
   match '/sensors/:sensor_id/discard_pending_rules', :controller => 'Rules', :action => 'discard_pending_rules'

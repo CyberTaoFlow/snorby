@@ -62,6 +62,37 @@
         }
       });
 
+      $('.content > li.family > div.row > .message').live('click', function(event) {
+        var self = this
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var category_id = $(self).parents(".category").attr("data-category-id");
+        var group_id    = $(self).parents(".group").attr("data-group-id");
+        var family_id   = $(self).parents(".family").attr("data");
+        var content     = $(self).parent().next()
+
+        if (category_id>=0 && sensor_id>=0 && group_id>0) {
+          if (!$(self).hasClass("loaded")) {
+            $(self).addClass("loaded");
+            $(self).parents("li.family").toggleClass("highlight");
+            var select_comp = $(self).parents(".row").children(".select");
+            var select_html = select_comp.html();
+            select_comp.html('<img src="/images/icons/loading.gif">');
+
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_family",
+              data: {category_id: category_id, sensor_id: sensor_id, group_id: group_id, family_id: family_id},
+              success: function(data){
+                content.toggle('fast')
+                select_comp.html(select_html);
+              }
+            });
+          } else {
+            $(self).parents("li.family").toggleClass("highlight");
+            content.toggle('fast')
+          }
+        }
+      });
+
       $('.content > li.rule > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
@@ -69,8 +100,6 @@
         var content     = $(self).parent().next()
 
         if (sensor_id>=0 && rule_id>0) {
-          var elements = $('li.rule.highlight');
-          
           if (!$(self).hasClass("loaded")) {
             $(self).addClass("loaded");
             $(self).parents("li.rule").toggleClass("highlight");
@@ -83,14 +112,6 @@
               data: {sensor_id: sensor_id, rule_id: rule_id},
               success: function(data){
                 content.toggle('fast');
-                //Hide rest of rule highlight components if any
-                /* for (var i = 0; i < elements.length; i++){
-                  var id_aux = $(elements[i]).attr('data-rule-id');
-                  if (id_aux != rule_id){
-                    $(elements[i]).removeClass("highlight");
-                    $(elements[i]).children(".rule-data").fadeOut();
-                  }
-                }*/
                 select_comp.html(select_html);
               }
             });
