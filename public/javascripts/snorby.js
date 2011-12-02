@@ -310,30 +310,18 @@ var Snorby = {
           }
         }
         $('dl#sensor-menu-'+sid).toggle();
+        return false;
       });
 
       $('dl#sensor-menu a').live('click', function(event) {
         $(this).parents('dl').fadeOut('fast');
+        return false;
       });
-
-      //  $('dl.rule_actions dd').live('click', function(event) {
-      //    var self = this;
-      //    event.preventDefault();
-      //    var elements = $('ul.table div.content dl.rule_actions-menu dd');
-      //    for (var i = 0; i < elements.length; i++){
-      //      if (elements[i]!=self) {
-      //
-      //        elements[i].style.display = 'none';
-      //      } else {
-      //        alert("hola")
-      //      }
-      //    }
-      //    $(self).parent().next('.rule_actions-menu').toggle();
-      //  });
 
       $('dl.rule_actions dd').live('click', function(event) {
         event.preventDefault();
         $(this).parent().next('.rule_actions-menu').toggle();
+        return false;
       });
 
       $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
@@ -343,7 +331,6 @@ var Snorby = {
         var category_id = self.parents(".category").attr("data");
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var action_str  = self.html();
-
 
         if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0) {
           var box_cmp = self.parent().parent()
@@ -372,7 +359,15 @@ var Snorby = {
               }
             });
           }
+        } else {
+          flash_message.push({
+            type: 'error',
+            message: "Cannot obtain rule data"
+          });
+          flash();
+          $.scrollTo('#header', 500);
         }
+        return false;
       });
 
       $('li.rule > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
@@ -413,11 +408,19 @@ var Snorby = {
                   action_cmp.html(action_str);
                   self.parentsUntil("tr").parent().addClass("rule_pending");
                 }
-              //action_cmp.addClass(action_str.toLowerCase())
+                //action_cmp.addClass(action_str.toLowerCase())
               }
             });
           }
+        } else {
+          flash_message.push({
+            type: 'error',
+            message: "Cannot obtain rule data"
+          });
+          flash();
+          $.scrollTo('#header', 500);
         }
+        return false;
       });
 
       $('#wrapper').live('click', function() {
@@ -1754,6 +1757,7 @@ jQuery(document).ready(function($) {
       $(this).parents('li.category').children('div.row').children('div.select').children('input').attr('checked', false);
       $('input#rule-select-all').attr('checked', false);
     }
+    return true;
   });
 
   $('input#family-selector').live('change', function() {
@@ -1773,6 +1777,7 @@ jQuery(document).ready(function($) {
       $(this).parents('li.category').children('div.row').children('div.select').children('input').attr('checked', false);
       $('input#rule-select-all').attr('checked', false);
     }
+    return true;
   });
 
   $('#title-menu #incident dd a.action').live('click', function(event) {

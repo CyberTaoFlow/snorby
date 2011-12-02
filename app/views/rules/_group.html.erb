@@ -2,7 +2,7 @@
   <div class="row">
     <div class="select small"><%= check_box_tag 'group-selector', nil, false, :class => "check_box_#{category.id}_#{group.id}" %></div>
     <div class="action">
-      <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => "actions"} %>
+      <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
     </div>
     <div class="message"><%= group.name.upcase %></div>
     <div class="nrules"><%= group.rules.all(:category4 => category).size %> </div>
