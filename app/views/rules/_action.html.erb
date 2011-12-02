@@ -4,7 +4,7 @@
 <dl class='rule_actions-menu' style='display:none;'>
   <div class="arrow"></div>
   <% actions.each do |a| %>
-    <dd class="rule_action-button" data-action-id="<%= a.id %>">
+    <dd class="rule_action-button" data="<%= a.id %>">
       <%= link_to a.name, '#' %>
     </dd>
   <%end%>

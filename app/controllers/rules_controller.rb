@@ -10,24 +10,6 @@ class RulesController < ApplicationController
     @actions    = RuleAction.all
   end
 
-  # Get last compiled rules for the sensor indicated
-  def active_rules
-    respond_to do |format|
-      format.html{
-        @sensor = Sensor.get(params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
-        @actions = RuleAction.all
-        @rulestype = "compiled_rules"
-      }
-      format.text{
-        @sensor = Sensor.first(:hostname => params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
-        @actions = RuleAction.all
-        @rulestype = "compiled_rules"
-      }
-    end
-  end
-
   # Method used when the category is showed in the index view. Partial Method
   def update_rule_category
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
@@ -127,6 +109,83 @@ class RulesController < ApplicationController
     end
   end
 
+  def update_rules_action
+    @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
+    @action = RuleAction.get(params[:action_id].to_i) if params[:action_id].present?
+    
+    @selected_categories = params[:selected_categories] if params[:selected_categories].present?
+    @selected_groups     = params[:selected_groups] if params[:selected_groups].present?
+    @selected_families   = params[:selected_families] if params[:selected_families].present?
+    @selected_rules      = params[:selected_rules] if params[:selected_rules].present?
+
+    unless @sensor.nil?
+      array = []
+
+      unless @selected_categories.nil?
+        @selected_categories.each do |x|
+          ob = RuleCategory4.get(x.to_i)
+          unless ob.nil?
+            ob.rules.each do |r|
+              array << r
+            end
+          end
+        end
+      end
+
+      unless @selected_groups.nil?
+        @selected_groups.each do |x|
+          ob = RuleCategory1.get(x.to_i)
+          unless ob.nil?
+            ob.rules.each do |r|
+              array << r
+            end
+          end
+        end
+      end
+
+      unless @selected_families.nil?
+        @selected_families.each do |x|
+          ob = RuleCategory3.get(x.to_i)
+          unless ob.nil?
+            ob.rules.each do |r|
+              array << r
+            end
+          end
+        end
+      end
+
+      unless @selected_categories.nil?
+        @selected_categories.each do |x|
+          ob = RuleCategory4.get(x.to_i)
+          unless ob.nil?
+            ob.rules.each do |r|
+              array << r
+            end
+          end
+        end
+      end
+
+      Rule.transaction do |t|
+        begin
+          array.each do |r|
+            sr = @sensor.pending_rule?r
+            if sr.nil?
+              sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => r)
+            else
+              sr.update(:action => @action)
+            end
+          end
+        rescue DataObjects::Error => e
+          t.rollback
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def compile_rules
     @sensor = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
     unless @sensor.nil?
@@ -136,15 +195,40 @@ class RulesController < ApplicationController
   end
 
   def pending_rules
-    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @sensor_rules = @sensor.pending_rules unless @sensor.nil?
-    @sensor_rules = [] if @sensor_rules.nil?
-    @actions = RuleAction.all
-    @rulestype = "pending_rules"
+    respond_to do |format|
+      format.html{
+        @sensor = Sensor.get(params[:sensor_id])
+        @sensor_rules = @sensor.pending_rules.all(:order => [:rule_id.asc]) or []
+        @actions = RuleAction.all
+        @rulestype = "pending_rules"
+      }
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @rulestype = "pending_rules"
+      }
+    end
 
     respond_to do |format|
       format.html {render :active_rules}
       format.text {render :active_rules}
+    end
+  end
+
+  # Get last compiled rules for the sensor indicated
+  def active_rules
+    respond_to do |format|
+      format.html{
+        @sensor = Sensor.get(params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules.all(:order => [:rule_id.asc]) or []
+        @actions = RuleAction.all
+        @rulestype = "compiled_rules"
+      }
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @rulestype = "compiled_rules"
+      }
     end
   end
 

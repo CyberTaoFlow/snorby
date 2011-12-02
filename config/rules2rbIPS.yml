@@ -3,7 +3,6 @@ cache_dir: "/opt/rb/var/www/snortrules/cache"
 category4_groups:
   - 
     name: "email"
-    desc: "email properties"
     regexp: "imap|pop|smtp"
   - 
     name: "web"

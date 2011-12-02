@@ -338,7 +338,7 @@ var Snorby = {
 
       $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
         var self = $(this);
-        var action_id   = self.parent().attr("data-action-id");
+        var action_id   = self.parent().attr("data");
         var group_id    = self.parents("li.group").attr("data");
         var category_id = self.parents(".category").attr("data");
         var sensor_id   = $("#rules").attr("data-sensor-sid");
@@ -377,7 +377,7 @@ var Snorby = {
 
       $('li.rule > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
         var self = $(this);
-        var action_id   = self.parent().attr("data-action-id");
+        var action_id   = self.parent().attr("data");
         var rule_id     = self.parents("li.rule").attr("data");
         var sensor_id   = $("#rules").attr("data-sensor-sid");
         var action_str  = self.html();
@@ -1775,62 +1775,57 @@ jQuery(document).ready(function($) {
     }
   });
 
-  $('dd a.action').live('click', function(event) {
-    var action_id = $(this).attr('data-action-id');
+  $('#title-menu #incident dd a.action').live('click', function(event) {
+    var action_id = $(this).attr('data');
     var sensor_id = $("#rules").attr("data-sensor-sid");
-    
-    if (action_id>=0 && sensor_id>0) {      
-      //$('div.content').fadeTo(500, 0.4);
-      var i;
-      var selected_categories = [];
-      var inputs = $("input#category-selector:checked");
-      for (i = 0; i < inputs.length; i++){
-        if (!$("#rule-select-all").attr('checked') && $(inputs[i]).is(':visible'))
-          selected_categories.push($(inputs[i]).parents(".category").attr("data"));
-      }
-      alert(selected_categories);
+    var box_cmp   = $(this).parent().parent()
 
-      var selected_groups = [];
-      inputs = $("input#group-selector:checked");
-      for (i = 0; i < inputs.length; i++){
-        if (!$(inputs[i]).parents("li.category").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
-          selected_groups.push($(inputs[i]).parents(".group").attr("data"));
+    if (!box_cmp.hasClass("loading")) {
+      box_cmp.addClass("loading");
+      if (action_id>=0 && sensor_id>0) {
+        $.blockUI();
+        $('div.content').fadeTo(500, 0.4);
+        var i;
+        var selected_categories = [];
+        var inputs = $("input#category-selector:checked");
+        for (i = 0; i < inputs.length; i++){
+          if (!$("#rule-select-all").attr('checked') && $(inputs[i]).is(':visible'))
+            selected_categories.push($(inputs[i]).parents(".category").attr("data"));
+        }
+        var selected_groups = [];
+        inputs = $("input#group-selector:checked");
+        for (i = 0; i < inputs.length; i++){
+          if (!$(inputs[i]).parents("li.category").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+            selected_groups.push($(inputs[i]).parents(".group").attr("data"));
+        }
+        var selected_families = [];
+        inputs = $("input#family-selector:checked");
+        for (i = 0; i < inputs.length; i++){
+          if (!$(inputs[i]).parents("li.group").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+            selected_families.push($(inputs[i]).parents(".family").attr("data"));
+        }
+        var selected_rules = [];
+        inputs = $("input#rule-selector:checked");
+        for (i = 0; i < inputs.length; i++){
+          if (!$(inputs[i]).parents("li.family").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+            selected_rules.push($(inputs[i]).parents(".rule").attr("data"));
+        }
+        $.ajax({
+          url: "/sensors/" +sensor_id +"/update_rules_action",
+          data: {
+            action_id: action_id,
+            selected_rules: selected_rules,
+            selected_families: selected_families,
+            selected_groups: selected_groups,
+            selected_categories: selected_categories,
+            sensor_id: sensor_id
+          },success: function(data){
+            box_cmp.removeClass("loading");
+            //$('div.content').fadeTo(500, 1);
+            window.location.reload();
+          }
+        });
       }
-      alert(selected_groups);
-
-      var selected_families = [];
-      inputs = $("input#family-selector:checked");
-      for (i = 0; i < inputs.length; i++){
-        if (!$(inputs[i]).parents("li.group").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
-          selected_families.push($(inputs[i]).parents(".family").attr("data"));
-      }
-      alert(selected_families);
-
-      var selected_rules = [];
-      inputs = $("input#rule-selector:checked");
-      for (i = 0; i < inputs.length; i++){
-        if (!$(inputs[i]).parents("li.family").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
-          selected_rules.push($(inputs[i]).parents(".rule").attr("data"));
-      }
-      alert(selected_rules);
-
-//      $.ajax({
-//        url: "/sensors/" +sensor_id +"/update_rule_action",
-//        data: {
-//          action_id: action_id,
-//          group_id: group_id,
-//          category_id: category_id,
-//          sensor_id: sensor_id
-//        },
-//        success: function(data){
-//          box_cmp.removeClass("loading");
-//          action_cmp.html(action_str);
-//          //action_cmp.addClass(action_str.toLowerCase())
-//          self.parentsUntil("tr").parent().addClass("rule_pending");
-//          self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
-//          self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
-//        }
-//      });
     }
     return false;
   });

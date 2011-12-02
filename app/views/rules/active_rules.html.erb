@@ -21,7 +21,7 @@
           <% unless sr.rule.nil? %>
             <%= render :partial => 'rules/rule', :locals => {:rule => sr.rule, :actions => @actions, :action => sr.action.name} %>
           <% end %>
-        <% end %>
+        <% end unless @sensor_rules.nil?%>
       </div>
     </ul>
   <% end %>
