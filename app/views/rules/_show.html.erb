@@ -19,10 +19,10 @@
           <tr>
             <td><%= rule.rule_id %></td>
             <td><%= rule.protocol.upcase %></td>
-            <td><%= rule.l3l4.match(/(.+)\s(.+) -> /)[1] %></td>
-            <td><%= rule.l3l4.match(/(.+)\s(.+) -> /)[2] %></td>
-            <td><%= rule.l3l4.match(/ -> (.+)\s(.+)/)[1] %></td>
-            <td><%= rule.l3l4.match(/ -> (.+)\s(.+)/)[2] %></td>
+            <td><%= rule.source_addr %></td>
+            <td><%= rule.source_port %></td>
+            <td><%= rule.target_addr %></td>
+            <td><%= rule.target_port %></td>
             <td><%= rule.rev %></td>
             <td><%= rule.source.name.capitalize %></td>
           </tr>
@@ -55,7 +55,7 @@
           This rule currently has zero notes - You can add a note by clicking the button below.<br /><br />
         </strong>
       <% else %>
-        <%= render :partial => 'notes/note', :collection => rule.notes %>
+        <%= render :partial => 'rule_notes/note', :collection => rule.notes %>
 
         <%#= pager(rule.notes, "rules/#{rule.id}", false) %>
       <% end %>

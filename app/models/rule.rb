@@ -35,4 +35,8 @@ class Rule
   def dbversions
     Rule.all(:rule_id => self.rule_id, :source => self.source).map{|x| x.dbversion}.uniq
   end
+
+  def html_id
+    "rule_#{id}"
+  end
 end

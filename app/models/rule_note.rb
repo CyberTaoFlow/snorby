@@ -11,4 +11,8 @@ class RuleNote
 
   validates_presence_of :body
 
+  def html_id
+    "note_#{id}"
+  end
+
 end
