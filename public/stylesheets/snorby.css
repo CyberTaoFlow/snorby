@@ -1770,7 +1770,8 @@ ul.table div.content li .row{
 	line-height: 30px;
 	border-bottom: 1px solid #cdcdcd;
 	color: #474747;
-	background: #fff url(../images/page/table-bg.png) repeat-x 0 bottom;
+/*	background: #fff url(../images/page/table-bg.png) repeat-x 0 bottom;*/
+	background: #fff url(../images/page/table-bg.png) repeat-x 0;
 	border-left: 1px solid #cdcdcd;
 	border-right: 1px solid #cdcdcd;
 	position: relative;
@@ -4466,6 +4467,7 @@ div.map{
 
 #rules ul.table{
     width: auto;
+    background-color: #F3F3F3;
 }
 
 #rules div.row{
@@ -4488,6 +4490,29 @@ div.map{
 
 #rules ul.table div.content li .row {
     border-top: 1px solid #CDCDCD;
+}
+
+#rules ul.groups{
+    margin-left: 20px;
+    border: none;
+}
+
+#rules ul.groups li.group .row{
+    background-color: #E0E0E0;
+}
+
+#rules ul.families{
+    margin-left: 20px;
+    border: none;
+}
+
+#rules ul.families li.family .row{
+    background-color: #D0D0D0;
+}
+
+#rules ul.rules{
+    margin-left: 10px;
+    border: none;
 }
 
 #rules ul.table div.content li.rule div.row{
@@ -4555,6 +4580,10 @@ div.map{
 
 #rules ul.table li .row div.timestamp{
     overflow: visible;
+}
+
+#rules ul.groups li.rule {
+    border: 1px solid #AAA;
 }
 
 /* @end */
