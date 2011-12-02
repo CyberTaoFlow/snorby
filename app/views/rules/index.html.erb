@@ -72,7 +72,6 @@
 
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
           if (!$(self).hasClass("loaded")) {
-            $.blockUI();
             $(self).addClass("loaded");
             $(self).parents("li.family").toggleClass("highlight");
             var select_comp = $(self).parents(".row").children(".select");
@@ -102,7 +101,6 @@
 
         if (sensor_id>=0 && rule_id>0) {
           if (!$(self).hasClass("loaded")) {
-            $.blockUI();
             $(self).addClass("loaded");
             $(self).parents("li.rule").toggleClass("highlight");
             var select_comp = $(self).parents(".row").children(".select");
