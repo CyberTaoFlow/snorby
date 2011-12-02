@@ -154,7 +154,7 @@ class Sensor
 
   # Returns an array with all pending rules (not compiled). 
   def pending_rules
-    sensorRules.all(:compilation => nil)
+    sensorRules.all(:compilation => nil) or []
   end
 
   # Return the last compilation object for this sensor
@@ -169,7 +169,7 @@ class Sensor
 
   # Return an array with the rules for the last compilation (the oldest modifications)
   def last_compiled_rules
-    self.compiled_rules(self.last_compilation.id) unless self.last_compilation.nil?
+    self.compiled_rules(self.last_compilation.id) unless self.last_compilation.nil? or []
   end
 
   def rollback_last_rules(index=1)
@@ -282,4 +282,19 @@ class Sensor
     pending_rules.destroy
   end
 
+  def action_for_rule(rule)
+    sr     = self.pending_rules.first(:rule_id => rule.id)
+    action = nil
+
+    if sr.nil?
+      lcr = self.last_compiled_rules
+      unless lcr.nil?
+        sr = lcr.first(:rule_id => rule.id)
+        action = sr.action unless sr.nil?
+      end
+    else
+      action = sr.action
+    end    
+    action
+  end
 end
