@@ -10,24 +10,6 @@ class RulesController < ApplicationController
     @actions    = RuleAction.all
   end
 
-  # Get last compiled rules for the sensor indicated
-  def active_rules
-    respond_to do |format|
-      format.html{
-        @sensor = Sensor.get(params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
-        @actions = RuleAction.all
-        @rulestype = "compiled_rules"
-      }
-      format.text{
-        @sensor = Sensor.first(:hostname => params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
-        @actions = RuleAction.all
-        @rulestype = "compiled_rules"
-      }
-    end
-  end
-
   # Method used when the category is showed in the index view. Partial Method
   def update_rule_category
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
@@ -213,15 +195,40 @@ class RulesController < ApplicationController
   end
 
   def pending_rules
-    @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?
-    @sensor_rules = @sensor.pending_rules unless @sensor.nil?
-    @sensor_rules = [] if @sensor_rules.nil?
-    @actions = RuleAction.all
-    @rulestype = "pending_rules"
+    respond_to do |format|
+      format.html{
+        @sensor = Sensor.get(params[:sensor_id])
+        @sensor_rules = @sensor.pending_rules.all(:order => [:rule_id.asc]) or []
+        @actions = RuleAction.all
+        @rulestype = "pending_rules"
+      }
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @rulestype = "pending_rules"
+      }
+    end
 
     respond_to do |format|
       format.html {render :active_rules}
       format.text {render :active_rules}
+    end
+  end
+
+  # Get last compiled rules for the sensor indicated
+  def active_rules
+    respond_to do |format|
+      format.html{
+        @sensor = Sensor.get(params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules.all(:order => [:rule_id.asc]) or []
+        @actions = RuleAction.all
+        @rulestype = "compiled_rules"
+      }
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules or []
+        @rulestype = "compiled_rules"
+      }
     end
   end
 
