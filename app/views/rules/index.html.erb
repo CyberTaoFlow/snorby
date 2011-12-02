@@ -6,7 +6,7 @@
       $('.content > li.category > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
-        var category_id = $(self).parents("li.category").attr("data-category-id");
+        var category_id = $(self).parents("li.category").attr("data");
         var content     = $(self).parent().next()
 
         if (category_id>=0 && sensor_id>=0) {
@@ -35,8 +35,8 @@
       $('.content > li.group > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
-        var group_id    = $(self).parents(".group").attr("data-group-id");
-        var category_id = $(self).parents(".category").attr("data-category-id");
+        var group_id    = $(self).parents(".group").attr("data");
+        var category_id = $(self).parents(".category").attr("data");
         var content     = $(self).parent().next()
 
         if (category_id>=0 && sensor_id>=0 && group_id>0) {
@@ -65,8 +65,8 @@
       $('.content > li.family > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
-        var category_id = $(self).parents(".category").attr("data-category-id");
-        var group_id    = $(self).parents(".group").attr("data-group-id");
+        var category_id = $(self).parents(".category").attr("data");
+        var group_id    = $(self).parents(".group").attr("data");
         var family_id   = $(self).parents(".family").attr("data");
         var content     = $(self).parent().next()
 
@@ -96,7 +96,7 @@
       $('.content > li.rule > div.row > .message').live('click', function(event) {
         var self = this
         var sensor_id   = $("#rules").attr("data-sensor-sid");
-        var rule_id     = $(self).parents(".rule").attr("data-rule-id");
+        var rule_id     = $(self).parents(".rule").attr("data");
         var content     = $(self).parent().next()
 
         if (sensor_id>=0 && rule_id>0) {
@@ -133,7 +133,6 @@
 
 <div id="rules" class="boxit" data-sensor-sid=<%= @sensor.sid  %> >
   <%= form_tag mass_update_rules_path do %>
-    <%= hidden_field_tag :selected_rules, [] %>
     <ul class="table categories">
       <li class="header">
         <div class="row">

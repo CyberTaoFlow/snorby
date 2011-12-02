@@ -17,7 +17,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 var selected_events = [];
-var flash_message = [];
+var flash_message   = [];
 var csrf = $('meta[name="csrf-token"]').attr('content');
 
 function HCloader(element) {
@@ -83,21 +83,45 @@ function clear_selected_events () {
   return false;
 }
 
+function clear_selected_categories () {
+  selected_categories = [];
+  $('input#selected_categories').val('');
+  return false;
+}
+
+function clear_selected_groups () {
+  selected_groups = [];
+  $('input#selected_groups').val('');
+  return false;
+}
+
+function clear_selected_families () {
+  selected_families = [];
+  $('input#selected_families').val('');
+  return false;
+}
+
+function clear_selected_rules () {
+  selected_rules = [];
+  $('input#selected_rules').val('');
+  return false;
+}
+
 function set_classification (class_id) {
   var selected_events = $('input#selected_events').attr('value');
   var current_page = $('div#events').attr('data-action');
   var current_page_number = $('div#events').attr('data-page');
-	
+
   if (selected_events.length > 0) {
     $('div.content').fadeTo(500, 0.4);
     Snorby.helpers.remove_click_events(true);
-		
+
     $.post('/events/classify', {
       events: selected_events,
       classification: class_id,
       authenticity_token: csrf
     }, function() {
-			
+
       if (current_page == "index") {
         clear_selected_events();
         $.getScript('/events?page=' + current_page_number);
@@ -119,27 +143,27 @@ function set_classification (class_id) {
         type: 'success',
         message: "Event(s) Classified Successfully"
       });
-			
+
     });
-		
+
   } else {
-		
+
     if ($('ul.table div.content li.event.currently-over.highlight').is(':visible')) {
-			
+
       $('ul.table div.content li.event.currently-over.highlight .row div.select input#event-selector').click().trigger('change');
       set_classification(class_id);
-			
+
     } else {
-			
+
       flash_message.push({
         type: 'error',
         message: "Please Select Events To Perform This Action"
       });
       flash();
       $.scrollTo('#header', 500);
-			
+
     };
-		
+
   };
 }
 
@@ -219,9 +243,9 @@ var Snorby = {
     });
 
     $(document).ready(function()  {
-			if ($("#sensorTable").length > 0) {
-	      $("#sensorTable").treeTable();
-			}
+      if ($("#sensorTable").length > 0) {
+        $("#sensorTable").treeTable();
+      }
     });
 
     // Configure draggable nodes
@@ -271,6 +295,141 @@ var Snorby = {
         var class_id = $(this).attr('data-classification-id');
         set_classification(class_id);
         return false;
+      });
+    },
+
+    rules: function() {
+      $('li.sensor-options a').live('click', function(event) {
+        var sid = $(this).parent('li').attr('data-sensor-id');
+        event.preventDefault();
+        var elements = $('dl.sensor-menu');
+        for (var i = 0; i < elements.length; i++){
+          var sid_aux = $(elements[i]).attr('data-sensor-id');
+          if (sid != sid_aux){
+            elements[i].style.display = 'none';
+          }
+        }
+        $('dl#sensor-menu-'+sid).toggle();
+      });
+
+      $('dl#sensor-menu a').live('click', function(event) {
+        $(this).parents('dl').fadeOut('fast');
+      });
+
+      //  $('dl.rule_actions dd').live('click', function(event) {
+      //    var self = this;
+      //    event.preventDefault();
+      //    var elements = $('ul.table div.content dl.rule_actions-menu dd');
+      //    for (var i = 0; i < elements.length; i++){
+      //      if (elements[i]!=self) {
+      //
+      //        elements[i].style.display = 'none';
+      //      } else {
+      //        alert("hola")
+      //      }
+      //    }
+      //    $(self).parent().next('.rule_actions-menu').toggle();
+      //  });
+
+      $('dl.rule_actions dd').live('click', function(event) {
+        event.preventDefault();
+        $(this).parent().next('.rule_actions-menu').toggle();
+      });
+
+      $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+        var self = $(this);
+        var action_id   = self.parent().attr("data-action-id");
+        var group_id    = self.parents("li.group").attr("data");
+        var category_id = self.parents(".category").attr("data");
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var action_str  = self.html();
+
+
+        if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0) {
+          var box_cmp = self.parent().parent()
+
+          if (!box_cmp.hasClass("loading")) {
+            box_cmp.addClass("loading");
+            box_cmp.fadeOut();
+            var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+            action_cmp.html('<img src="/images/icons/pager.gif">');
+
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_action",
+              data: {
+                action_id: action_id,
+                group_id: group_id,
+                category_id: category_id,
+                sensor_id: sensor_id
+              },
+              success: function(data){
+                box_cmp.removeClass("loading");
+                action_cmp.html(action_str);
+                //action_cmp.addClass(action_str.toLowerCase())
+                self.parentsUntil("tr").parent().addClass("rule_pending");
+                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
+                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+              }
+            });
+          }
+        }
+      });
+
+      $('li.rule > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+        var self = $(this);
+        var action_id   = self.parent().attr("data-action-id");
+        var rule_id     = self.parents("li.rule").attr("data");
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var action_str  = self.html();
+
+        if (action_id>=0 && rule_id>=0 && sensor_id>0) {
+          var box_cmp = self.parent().parent()
+
+          if (!box_cmp.hasClass("loading")) {
+            box_cmp.addClass("loading");
+            box_cmp.fadeOut();
+            var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+            var last_action=action_cmp.html();
+            action_cmp.html('<img src="/images/icons/pager.gif">');
+
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_action",
+              data: {
+                action_id: action_id,
+                rule_id: rule_id,
+                sensor_id: sensor_id
+              },
+              success: function(data){
+                box_cmp.removeClass("loading");
+
+                if ($("#rules").hasClass("compiled_rules")) {
+                  action_cmp.html(last_action);
+                  flash_message.push({
+                    type: 'info',
+                    message: 'Added to pending rules'
+                  });
+                  flash();
+                } else {
+                  action_cmp.html(action_str);
+                  self.parentsUntil("tr").parent().addClass("rule_pending");
+                }
+              //action_cmp.addClass(action_str.toLowerCase())
+              }
+            });
+          }
+        }
+      });
+
+      $('#wrapper').live('click', function() {
+        if ($('dl#admin-menu').is(':visible')) {
+          $('dl#admin-menu').fadeOut('fast');
+        };
+      });
+
+      $('td.search-by-signature').live('click', function(event) {
+        event.preventDefault();
+        var url = $(this).attr('data-url');
+        window.location = url;
       });
     },
 		
@@ -444,7 +603,7 @@ var Snorby = {
         e.preventDefault();
         if ($(this).attr('data-deepsee')) {
           $('form.request_packet_capture input#method').val('deepsee')
-          };
+        };
         $.post('/events/request_packet_capture', $('form.request_packet_capture').serialize(), null, "script");
         return false;
       });
@@ -458,10 +617,10 @@ var Snorby = {
         var menu = $(this).parent().find('dl.event-sub-menu');
         if (menu.is(':visible')) {
           menu.fadeOut('fast')
-          } else {
+        } else {
           $('dl.event-sub-menu').hide();
           menu.fadeIn('fast')
-          };
+        };
         return false;
       });
 		
@@ -840,7 +999,7 @@ var Snorby = {
   },
 
   admin: function(){
-		
+    
     $('#users input#enabled').live('click', function(e) {
       var user_id = $(this).parent('td').attr('data-user');
       if ($(this).attr('checked')) {
@@ -947,7 +1106,7 @@ var Snorby = {
       var klass = '';
       if (data.events[0].geoip) {
         klass = ' geoip'
-        };
+      };
 
       var template = " \
 			{{#events}} \
@@ -1134,7 +1293,7 @@ var Snorby = {
           var current_width = $(self).width();
           if (current_width < 16) {
             var current_width = 16
-            };
+          };
 					
           $(self).addClass('loading').css('width', current_width);
 					
@@ -1448,7 +1607,7 @@ jQuery(document).ready(function($) {
       var code = ip.country_code2;
       if (name === "--") {
         name = 'N/A'
-        };
+      };
 
       return '<span class="click ' +
       'country_flag add_tipsy_html" title="&lt;img class=&quot;flag&quot; ' +
@@ -1519,161 +1678,7 @@ jQuery(document).ready(function($) {
     $(this).parents('dl').fadeOut('fast');
   });
 
-//  $('dl.rule_actions dd').live('click', function(event) {
-//    var self = this;
-//    event.preventDefault();
-//    $(this).parent().next('.rule_actions-menu').toggle();
-//  });
-
-//  $('dd.rule_action-button').live('click', function(event) {
-//    var self = $(this);
-//    var action_id = self.attr("data-action-id");
-//    var rule_id   = self.parentsUntil("tr").parent().attr("data-rule-id");
-//    var sensor_id = $("#rules").attr("data-sensor-sid");
-//    var action_cmp = self.parent().prev("dl.rule_actions").children("dd");
-//    $(this).parent().toggle('slow');
-//    action_cmp.html('<img src="/images/icons/pager.gif">');
-//
-//    if (action_id>=0 && rule_id>=0 && sensor_id>0) {
-//      if (!self.parent().hasClass("loading")) {
-//        self.parent().addClass("loading")
-//
-//        $.ajax({
-//          url: "/sensors/" +sensor_id +"/update_rule_action",
-//          data: {action_id: action_id, rule_id: rule_id, sensor_id: sensor_id},
-//          success: function(data){
-//            self.parent().removeClass("loading")
-//            var action_str = self.html();
-//            action_cmp.html(action_str);
-//            action_cmp.addClass(action_str.toLowerCase())
-//            self.parentsUntil("tr").parent().addClass("rule_pending");
-//            $("#rules").accordion("resize");
-//          }
-//        });
-//      }
-//    }
-//  });
-
-  $('li.sensor-options a').live('click', function(event) {
-    var sid = $(this).parent('li').attr('data-sensor-id');
-    event.preventDefault();
-    var elements = $('dl.sensor-menu');
-    for (var i = 0; i < elements.length; i++){
-       var sid_aux = $(elements[i]).attr('data-sensor-id');
-       if (sid != sid_aux){
-        elements[i].style.display = 'none';
-       }
-    }
-    $('dl#sensor-menu-'+sid).toggle();
-  });
-
-  $('dl#sensor-menu a').live('click', function(event) {
-    $(this).parents('dl').fadeOut('fast');
-  });
   
-//  $('dl.rule_actions dd').live('click', function(event) {
-//    var self = this;
-//    event.preventDefault();
-//    var elements = $('ul.table div.content dl.rule_actions-menu dd');
-//    for (var i = 0; i < elements.length; i++){
-//      if (elements[i]!=self) {
-//
-//        elements[i].style.display = 'none';
-//      } else {
-//        alert("hola")
-//      }
-//    }
-//    $(self).parent().next('.rule_actions-menu').toggle();
-//  });
-
-  $('dl.rule_actions dd').live('click', function(event) {
-    event.preventDefault();
-    $(this).parent().next('.rule_actions-menu').toggle();
-  });
-
-  $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
-    var self = $(this);
-    var action_id   = self.parent().attr("data-action-id");
-    var group_id    = self.parents("li.group").attr("data-group-id");
-    var category_id = self.parents(".category").attr("data-category-id");
-    var sensor_id   = $("#rules").attr("data-sensor-sid");
-    var action_str  = self.html();
-
-
-    if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0) {
-      var box_cmp = self.parent().parent()
-
-      if (!box_cmp.hasClass("loading")) {
-        box_cmp.addClass("loading");
-        box_cmp.fadeOut();
-        var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
-        action_cmp.html('<img src="/images/icons/pager.gif">');
-
-        $.ajax({
-          url: "/sensors/" +sensor_id +"/update_rule_action",
-          data: {action_id: action_id, group_id: group_id, category_id: category_id, sensor_id: sensor_id},
-          success: function(data){
-            box_cmp.removeClass("loading");
-            action_cmp.html(action_str);
-            //action_cmp.addClass(action_str.toLowerCase())
-            self.parentsUntil("tr").parent().addClass("rule_pending");
-            self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
-            self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
-          }
-        });
-      }
-    }
-  });
-
-  $('li.rule > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
-    var self = $(this);
-    var action_id   = self.parent().attr("data-action-id");
-    var rule_id     = self.parents("li.rule").attr("data-rule-id");
-    var sensor_id   = $("#rules").attr("data-sensor-sid");
-    var action_str  = self.html();
-
-    if (action_id>=0 && rule_id>=0 && sensor_id>0) {
-      var box_cmp = self.parent().parent()
-
-      if (!box_cmp.hasClass("loading")) {
-        box_cmp.addClass("loading");
-        box_cmp.fadeOut();
-        var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
-        var last_action=action_cmp.html();
-        action_cmp.html('<img src="/images/icons/pager.gif">');
-
-        $.ajax({
-          url: "/sensors/" +sensor_id +"/update_rule_action",
-          data: {action_id: action_id, rule_id: rule_id, sensor_id: sensor_id},
-          success: function(data){
-            box_cmp.removeClass("loading");
-            
-            if ($("#rules").hasClass("compiled_rules")) {              
-              action_cmp.html(last_action);              
-              flash_message.push({type: 'info', message: 'Added to pending rules'});
-              flash();
-            } else {
-              action_cmp.html(action_str);
-              self.parentsUntil("tr").parent().addClass("rule_pending");
-            }
-            //action_cmp.addClass(action_str.toLowerCase())
-          }
-        });
-      }
-    }
-  });
-
-  $('#wrapper').live('click', function() {
-    if ($('dl#admin-menu').is(':visible')) {
-      $('dl#admin-menu').fadeOut('fast');
-    };
-  });
-
-  $('td.search-by-signature').live('click', function(event) {
-    event.preventDefault();
-    var url = $(this).attr('data-url');
-    window.location = url;
-  });
 
   Snorby.setup();
   Snorby.admin();
@@ -1692,6 +1697,7 @@ jQuery(document).ready(function($) {
   Snorby.pages.classifications();
   Snorby.pages.dashboard();
   Snorby.pages.events();
+  Snorby.pages.rules();
 
   $('.add_chosen').chosen();
 
@@ -1709,55 +1715,108 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('currently-over');
   });
 
-  $('input.rule-select-all').live('change', function() {
+  $('input#rule-select-all').live('change', function() {
     if ($(this).attr('checked')) {
-      $('ul.table div.content li.group input[type="checkbox"]').attr('checked', true);
+      $('ul.table div.content li.category input[type="checkbox"]').attr('checked', true);
     } else {
-      $('ul.table div.content li.group input[type="checkbox"]').attr('checked', false);
-    };
+      $('ul.table div.content li.category input[type="checkbox"]').attr('checked', false);
+    }
+    return true;
+  });
+
+  $('input#category-selector').live('change', function() {
+    $(this).parents("li.category").find('input[type="checkbox"]').attr('checked', $(this).attr('checked'));
+    if (!$(this).attr('checked')) {
+      $('input#rule-select-all').attr('checked', false);
+    }
     return true;
   });
 
   $('input#group-selector').live('change', function() {
-    if ($(this).attr('checked')) {
-        $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', true);
-    } else {
-        $(this).parents('ul.table').children('li.header').children('div.row').children('div.small').children('input').attr('checked', false);
-        $('ul.table.rules div.content li.rule input[type="checkbox"]').attr('checked', false);
+    $(this).parents("li.group").find('input[type="checkbox"]').attr('checked', $(this).attr('checked'));
+    if (!$(this).attr('checked')) {
+      $(this).parents('li.category').children('div.row').children('div.select').children('input').attr('checked', false);
+      $('input#rule-select-all').attr('checked', false);
     }
   });
 
-  $('input#rule-selector').live('change', function() {
-      if ($(this).attr('checked')) {
-      } else {
-        $(this).parents('li.group').children('div.row').children('div.select').children('input').attr('checked', false);
-      }
-
+  $('input#family-selector').live('change', function() {
+    $(this).parents("li.family").find('input[type="checkbox"]').attr('checked', $(this).attr('checked'));
+    if (!$(this).attr('checked')) {
+      $(this).parents('li.group').children('div.row').children('div.select').children('input').attr('checked', false);
+      $(this).parents('li.category').children('div.row').children('div.select').children('input').attr('checked', false);
+      $('input#rule-select-all').attr('checked', false);
+    }
+    return true;
   });
 
-//  $('input#event-select-all').live('change', function() {
-//
-//        if ($(this).attr('checked')) {
-//
-//          $('ul.table div.content li input[type="checkbox"]').each(function (index, value) {
-//            var event_id = $(this).parents('li').attr('data-event-id');
-//            $(this).attr('checked', 'checked');
-//            selected_events.push(event_id);
-//          });
-//
-//        } else {
-//
-//          $('ul.table div.content li input[type="checkbox"]').each(function (index, value) {
-//            var removeItem = $(this).parents('li').attr('data-event-id');
-//            $(this).attr('checked', '');
-//            selected_events = jQuery.grep(selected_events, function(value) {
-//              return value != removeItem;
-//            });
-//          });
-//        };
-//
-//        $('input#selected_events[type="hidden"]').val(selected_events);
-//
-//      });
+  $('input#rule-selector').live('change', function() {
+    if (!$(this).attr('checked')) {
+      $(this).parents('li.family').children('div.row').children('div.select').children('input').attr('checked', false);
+      $(this).parents('li.group').children('div.row').children('div.select').children('input').attr('checked', false);
+      $(this).parents('li.category').children('div.row').children('div.select').children('input').attr('checked', false);
+      $('input#rule-select-all').attr('checked', false);
+    }
+  });
 
+  $('dd a.action').live('click', function(event) {
+    var action_id = $(this).attr('data-action-id');
+    var sensor_id = $("#rules").attr("data-sensor-sid");
+    
+    if (action_id>=0 && sensor_id>0) {      
+      //$('div.content').fadeTo(500, 0.4);
+      var i;
+      var selected_categories = [];
+      var inputs = $("input#category-selector:checked");
+      for (i = 0; i < inputs.length; i++){
+        if (!$("#rule-select-all").attr('checked') && $(inputs[i]).is(':visible'))
+          selected_categories.push($(inputs[i]).parents(".category").attr("data"));
+      }
+      alert(selected_categories);
+
+      var selected_groups = [];
+      inputs = $("input#group-selector:checked");
+      for (i = 0; i < inputs.length; i++){
+        if (!$(inputs[i]).parents("li.category").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+          selected_groups.push($(inputs[i]).parents(".group").attr("data"));
+      }
+      alert(selected_groups);
+
+      var selected_families = [];
+      inputs = $("input#family-selector:checked");
+      for (i = 0; i < inputs.length; i++){
+        if (!$(inputs[i]).parents("li.group").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+          selected_families.push($(inputs[i]).parents(".family").attr("data"));
+      }
+      alert(selected_families);
+
+      var selected_rules = [];
+      inputs = $("input#rule-selector:checked");
+      for (i = 0; i < inputs.length; i++){
+        if (!$(inputs[i]).parents("li.family").children(".row").children(".select").children("input#category-selector").attr("checked") && $(inputs[i]).is(':visible'))
+          selected_rules.push($(inputs[i]).parents(".rule").attr("data"));
+      }
+      alert(selected_rules);
+
+
+//      $.ajax({
+//        url: "/sensors/" +sensor_id +"/update_rule_action",
+//        data: {
+//          action_id: action_id,
+//          group_id: group_id,
+//          category_id: category_id,
+//          sensor_id: sensor_id
+//        },
+//        success: function(data){
+//          box_cmp.removeClass("loading");
+//          action_cmp.html(action_str);
+//          //action_cmp.addClass(action_str.toLowerCase())
+//          self.parentsUntil("tr").parent().addClass("rule_pending");
+//          self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
+//          self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+//        }
+//      });
+    }
+    return false;
+  });
 });

@@ -1,4 +1,4 @@
-<li id='group-<%= category.id %>-<%= group.id %>' data-group-id='<%= group.id %>' class="group">
+<li id='group-<%= category.id %>-<%= group.id %>' data='<%= group.id %>' class="group">
   <div class="row">
     <div class="select small"><%= check_box_tag 'group-selector', nil, false, :class => "check_box_#{category.id}_#{group.id}" %></div>
     <div class="action">

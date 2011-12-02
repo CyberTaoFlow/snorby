@@ -9,6 +9,7 @@ class Rule
 
   property :id, Serial, :key => true, :index => true
   property :rule_id, Integer, :index => true, :required => true
+  property :gid, Integer, :default => 1
   property :msg, String, :length => 256, :required => true
   property :protocol, String, :length => 16
   property :source_addr, String, :length => 1024

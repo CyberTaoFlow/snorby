@@ -242,13 +242,11 @@ includeRuleDir.each do |rulesDir|
                   rc3 = RuleCategory3.first(:name => category3)
                   rc3 = RuleCategory3.create(:name=>category3) if rc3.nil?
 
-                  rev=0
-                  revRuleMatch = /; rev:(?<rev>\d+);/.match(ruleMatch[:rule])
-                  if revRuleMatch.nil?
-                    rev=0
-                  else
-                    rev = revRuleMatch[:rev].to_i
-                  end
+                  revRuleMatch = /; rev:(?<value>\d+);/.match(ruleMatch[:rule])
+                  rev = revRuleMatch.nil? ? 0 : revRuleMatch[:value].to_i
+
+                  gidRuleMatch = /; gid:(?<value>\d+);/.match(ruleMatch[:rule])
+                  gid = gidRuleMatch.nil? ? 0 : gidRuleMatch[:value].to_i
 
                   r = Rule.new()
                   r.rule_id      = sidRuleMatch[:sid].to_i
@@ -263,6 +261,7 @@ includeRuleDir.each do |rulesDir|
                   r.target_addr  = ruleMatch[:target_addr]
                   r.target_port  = ruleMatch[:target_port]
                   r.rev          = rev.to_i
+                  r.gid          = gid.to_i
                   r.dbversion_id = dbVersion.id
                   r.rule         = ruleMatch[:rule]
                   r.source_id    = rulesDir[:id]
