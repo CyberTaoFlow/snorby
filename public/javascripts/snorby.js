@@ -1814,7 +1814,6 @@ jQuery(document).ready(function($) {
       }
       alert(selected_rules);
 
-
 //      $.ajax({
 //        url: "/sensors/" +sensor_id +"/update_rule_action",
 //        data: {
@@ -1835,4 +1834,54 @@ jQuery(document).ready(function($) {
     }
     return false;
   });
+
+  $('button.add_new_rule_note').live('click', function(e) {
+    e.preventDefault();
+    var rule_id = $(this).parents('.rule').attr('data');
+
+    if ($('div#new_note_box').length > 0) {
+
+    } else {
+        $(this).removeClass('add_new_note').addClass('add_new_note-working');
+
+        var current_width = $(this).width();
+        $(this).addClass('loading').css('width', current_width);
+
+        $.get('/rule_notes/new', {
+            rule_id: rule_id,
+            authenticity_token: csrf
+        }, null, 'script');
+    };
+
+    return false;
+  });
+
+  $('button.submit_new_rule_note').live('click', function(e) {
+    e.preventDefault();
+    var rule_id = $(this).parents('.rule').attr('data');
+    var note_body = $(this).parent('div#form-actions').parent('div#new_note').find('textarea#body').val();
+
+    if (note_body.length > 0) {
+
+      var current_width = $(this).width();
+      $(this).addClass('loading').css('width', current_width);
+
+      $.post('/rule_notes/create', {
+        rule_id: rule_id,
+        body: note_body,
+        authenticity_token: csrf
+      }, null, 'script');
+
+    } else {
+      flash_message.push({
+        type: "error",
+        message: "The note body cannot be blank!"
+      });
+      flash();
+      $.scrollTo('#header', 500);
+    };
+
+    return false;
+  });
+  
 });
