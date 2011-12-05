@@ -220,13 +220,13 @@ class RulesController < ApplicationController
     respond_to do |format|
       format.html{
         @sensor = Sensor.get(params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules.all(:order => [:rule_id.asc]) or []
+        @sensor_rules = @sensor.last_compiled_rules
         @actions = RuleAction.all
         @rulestype = "compiled_rules"
       }
       format.text{
         @sensor = Sensor.first(:hostname => params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
+        @sensor_rules = @sensor.last_compiled_rules
         @rulestype = "compiled_rules"
       }
     end

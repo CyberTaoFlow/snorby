@@ -164,12 +164,12 @@ class Sensor
 
   # Return an array with the rules for the compilation passed as the argument 
   def compiled_rules(compilation_id)
-    self.sensorRules.all(:compilation_id => compilation_id)
+    self.sensorRules.all(:compilation_id => compilation_id, :order => [:rule_id.asc])
   end
 
   # Return an array with the rules for the last compilation (the oldest modifications)
   def last_compiled_rules
-    self.compiled_rules(self.last_compilation.id) unless self.last_compilation.nil? or []
+    self.last_compilation.nil? ? [] : self.compiled_rules(self.last_compilation.id)
   end
 
   def rollback_last_rules(index=1)
