@@ -9,11 +9,7 @@ class EventsController < ApplicationController
     params[:sort] = sort_column
     params[:direction] = sort_direction
 		
-		if params[:sensor_id]
-			@events = Sensor.get(params[:sensor_id]).events
-		else    
-			@events = Event.sorty(params)
-		end
+		@events = Event.sorty(params)
 
     @classifications ||= Classification.all
   end

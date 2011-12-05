@@ -25,8 +25,8 @@
     <dl id="sensor-menu-<%= sensor.sid %>" class="sensor-menu" data-sensor-id='<%= sensor.sid %>' style='display:none;'>
       <div class="arrow"></div>
       <dd>
-        <%= link_to "Events", sensor_events_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
-        <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) unless sensor.domain %>
+        <%#= link_to "Events", sensor_events_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
+        <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %>
       </dd>
       <dd>
         <%= link_to "Config", '#' if sensor.domain %>
