@@ -4432,19 +4432,19 @@ div.map{
 /* Redborder */
 
 #rules-menu{
-    border: 1px solid #999/*{borderColorHover}*/;
-    font-weight: normal/*{fwDefault}*/;
-    color: #212121/*{fcHover}*/;
-    margin-top: 1px;
+    border: 5px solid #F3F3F3;
+    font-weight: normal;
+    color: #212121;
     zoom: 1;
     height: 50px;
     text-align: center;
     position: relative;
+    webkit-border-radius: 5px;
+    background-color: #F3F3F3;
 }
 
 #rules-menu a{
-    padding: 3px 5px;
-    background: -moz-linear-gradient(-90deg,white,#E0E0E0);
+    padding: 4px 8px;
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff',endColorstr='#e0e0e0');
     background: -webkit-gradient(linear,0% 0,0% 100%,from(white),to(#E0E0E0));
     background: -moz-linear-gradient(-90deg,white,#E0E0E0);
@@ -4452,13 +4452,20 @@ div.map{
     -moz-border-radius: 3px;
     border-radius: 3px;
     color: #575757;
-    font-weight: normal;
+    font-weight: bold;
     font-style: normal;
     text-decoration: none;
     font-variant: normal;
     border: 1px solid #9A9A9B;
     position: relative;
     top: 50%;
+    font-size: 110%;
+}
+
+#rules-menu a:hover{
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(white),to(#AAA));
+    background: -moz-linear-gradient(-90deg,white, #AAA);
+
 }
 
 #sensorTable .folder{
@@ -4468,6 +4475,7 @@ div.map{
 #rules ul.table{
     width: auto;
     background-color: #F3F3F3;
+    -webkit-border-radius: 0px;
 }
 
 #rules div.row{
@@ -4486,6 +4494,8 @@ div.map{
 #rules div.nrules{
     width: 60px;
     float: right;
+    text-align: right;
+    margin-right: 10px;
 }
 
 #rules ul.table div.content li .row {
@@ -4520,7 +4530,7 @@ div.map{
     background: #CCC;
 }
 
-#rules ul.table div.content li.currently-over div.row{
+#rules ul.table div.content li.currently-over>div.row{
 	background: #fcfed7;
 }
 

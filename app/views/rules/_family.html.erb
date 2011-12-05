@@ -1,10 +1,10 @@
 <li id='family-<%= category.id %>-<%= group.id %>-<%= family.id%>' data='<%= family.id %>' class="family">
   <div class="row">
     <div class="select small"><%= check_box_tag 'family-selector', nil, false, :class => "check_box_#{category.id}_#{group.id}_#{family.id}" %></div>
-    <div class="action">
+    <div class="action click">
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
     </div>
-    <div class="message"><%= family.name.upcase %></div>
+    <div class="message click"><%= family.name.upcase %></div>
     <div class="nrules"><%= family.rules.all(:category4 => category, :category1=>group).size %> </div>
   </div>
   <ul class="table rules" style='display:none;'>

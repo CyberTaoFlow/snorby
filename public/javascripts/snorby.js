@@ -1727,8 +1727,8 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('currently-over');
   });
 
-  $('ul.table div.content li.rule').live('hover', function() {
-    $('ul.table div.content li.rule').removeClass('currently-over');
+  $('ul.table div.content li').live('hover', function() {
+    $('ul.table div.content li').removeClass('currently-over');
     $(this).toggleClass('currently-over');
   }, function() {
     $(this).toggleClass('currently-over');

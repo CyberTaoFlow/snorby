@@ -1,10 +1,10 @@
 <li data='<%= category.id %>' class="category">
   <div class="row">
     <div class="select small"><%= check_box_tag 'category-selector', nil, false, :class => "check_box_#{category.id}" %></div>
-    <div class="action">
+    <div class="action click">
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
     </div>
-    <div class="message"><%= category.name.upcase %><%= category.description.nil? ? "" : "  (#{category.description})" %> </div>
+    <div class="message click"><%= category.name.upcase %><%= category.description.nil? ? "" : "  (#{category.description})" %> </div>
     <div class="nrules"><%= category.rules.all().size %></div>
   </div>
   <ul class="table groups" style='display:none;'>
