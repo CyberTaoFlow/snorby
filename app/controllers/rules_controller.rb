@@ -72,31 +72,37 @@ class RulesController < ApplicationController
   def update_rule_action
     @sensor   = Sensor.get(params[:sensor_id].to_i) if params[:sensor_id].present?
     @action   = RuleAction.get(params[:action_id].to_i) if params[:action_id].present?
-    @rule     = Rule.get(params[:rule_id].to_i) if params[:rule_id].present?
-    @group    = RuleCategory1.get(params[:group_id].to_i) if params[:group_id].present?
     @category = RuleCategory4.get(params[:category_id].to_i) if params[:category_id].present?
-
-    unless @sensor.nil?
-      array = []
-      if @group.nil? && @category.nil? && !@rule.nil?
-        array << @rule
-      elsif !@group.nil? && @category.nil?
-        array = @group.rules
-      elsif @group.nil? && !@category.nil?
-        array = @category.rules
-      elsif !@group.nil? && !@category.nil?
-        array = Rule.all(:category1_id => @category.id, :category4_id => @group.id)
+    @group    = RuleCategory1.get(params[:group_id].to_i) if params[:group_id].present?
+    @family   = RuleCategory3.get(params[:family_id].to_i) if params[:family_id].present?
+    @rule     = Rule.get(params[:rule_id].to_i) if params[:rule_id].present?
+    
+    if !@sensor.nil? and !@action.nil?
+      
+      if !@rule.nil?
+        rules = @rule
+      elsif !@category.nil? && !@group.nil? && @family.nil?
+        rules = Rule.all(:category4_id => @category.id, :category1_id => @group.id)
+      elsif !@category.nil? && !@group.nil? && !@family.nil?
+        rules = Rule.all(:category4_id => @category.id, :category1_id => @group.id, :category3_id => @family.id)
+      elsif !@category.nil? && @group.nil? && @family.nil?
+        rules = @category.rules
+      elsif @category.nil? && @group.nil? && !@family.nil?
+        rules = @family.rules
+      elsif @category.nil? && !@group.nil? && @family.nil?
+        rules = @group.rules
+      elsif !@category.nil? && @group.nil? && !@family.nil?
+        rules = Rule.all(:category3_id => @family.id, :category4_id => @category.id)
+      elsif @category.nil? && !@group.nil? && !@family.nil?
+        rules = Rule.all(:category3_id => @family.id, :category1_id => @group.id)
       end
 
       Rule.transaction do |t|
         begin
-          array.each do |r|
-            sr = @sensor.pending_rule?r
-            if sr.nil?
-              sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => r)
-            else
-              sr.update(:action => @action)
-            end
+          (rules or []).each do |r|
+            sr = @sensor.pending_rule? (r)
+            sr ||= @sensor.sensorRules.create(:user => User.current_user, :rule => r)
+            sr.update(:action => @action)
           end
         rescue DataObjects::Error => e
           t.rollback
@@ -119,14 +125,14 @@ class RulesController < ApplicationController
     @selected_rules      = params[:selected_rules] if params[:selected_rules].present?
 
     unless @sensor.nil?
-      array = []
+      rules = []
 
       unless @selected_categories.nil?
         @selected_categories.each do |x|
           ob = RuleCategory4.get(x.to_i)
           unless ob.nil?
             ob.rules.each do |r|
-              array << r
+              rules << r
             end
           end
         end
@@ -137,7 +143,7 @@ class RulesController < ApplicationController
           ob = RuleCategory1.get(x.to_i)
           unless ob.nil?
             ob.rules.each do |r|
-              array << r
+              rules << r
             end
           end
         end
@@ -148,7 +154,7 @@ class RulesController < ApplicationController
           ob = RuleCategory3.get(x.to_i)
           unless ob.nil?
             ob.rules.each do |r|
-              array << r
+              rules << r
             end
           end
         end
@@ -159,7 +165,7 @@ class RulesController < ApplicationController
           ob = RuleCategory4.get(x.to_i)
           unless ob.nil?
             ob.rules.each do |r|
-              array << r
+              rules << r
             end
           end
         end
@@ -167,13 +173,10 @@ class RulesController < ApplicationController
 
       Rule.transaction do |t|
         begin
-          array.each do |r|
-            sr = @sensor.pending_rule?r
-            if sr.nil?
-              sr = @sensor.sensorRules.create(:user => User.current_user, :action => @action, :rule => r)
-            else
-              sr.update(:action => @action)
-            end
+          rules.each do |r|
+            sr = @sensor.pending_rule? (r)
+            sr ||= @sensor.sensorRules.create(:user => User.current_user, :rule => r)
+            sr.update(:action => @action)
           end
         rescue DataObjects::Error => e
           t.rollback
@@ -195,24 +198,11 @@ class RulesController < ApplicationController
   end
 
   def pending_rules
-    respond_to do |format|
-      format.html{
-        @sensor = Sensor.get(params[:sensor_id])
-        @sensor_rules = @sensor.pending_rules.all(:order => [:rule_id.asc]) or []
-        @actions = RuleAction.all
-        @rulestype = "pending_rules"
-      }
-      format.text{
-        @sensor = Sensor.first(:hostname => params[:sensor_id])
-        @sensor_rules = @sensor.last_compiled_rules or []
-        @rulestype = "pending_rules"
-      }
-    end
-
-    respond_to do |format|
-      format.html {render :active_rules}
-      format.text {render :active_rules}
-    end
+    @sensor = Sensor.get(params[:sensor_id])
+    @sensor_rules = @sensor.pending_rules.all(:order => [:rule_id.asc]) or []
+    @actions = RuleAction.all
+    @rulestype = "pending_rules"
+    render :active_rules
   end
 
   # Get last compiled rules for the sensor indicated
