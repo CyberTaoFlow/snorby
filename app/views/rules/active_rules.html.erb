@@ -19,7 +19,7 @@
       <div class="content">
         <% @sensor_rules.each do |sr| %>
           <% unless sr.rule.nil? %>
-            <%= render :partial => 'rules/rule', :locals => {:rule => sr.rule, :actions => @actions, :action => sr.action.name} %>
+            <%= render :partial => 'rules/rule', :locals => {:rule => sr.rule, :actions => @actions, :action => sr.action} %>
           <% end %>
         <% end unless @sensor_rules.nil?%>
       </div>
