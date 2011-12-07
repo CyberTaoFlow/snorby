@@ -7,24 +7,11 @@ class Sensor
     sensor.compile_rules(nil, sensor.parent.last_compiled_rules) unless sensor.parent.nil? or !sensor.domain
   end
 
-  before :create do |sensor|
-    if !domain and parent.nil?
-      # After creating one real sensor (domain false) it should be created with the proper virtal sensor parent
-      #    The hostname format should be: sensor_name:interface (barnyard2 format)
-
-      pname = /(.+):/.match(sensor.hostname)[1]
-      p_sensor = Sensor.first(:name => pname.capitalize, :hostname => pname, :domain => true)
-      p_sensor = Sensor.create(:name => pname, :domain => true, :parent => Sensor.root) if p_sensor.nil?
-      sensor.name = sensor.hostname
-      sensor.parent = p_sensor
-    end
-  end
-
   storage_names[:default] = "sensor"
 
   property :sid, Serial, :key => true, :index => true
 
-  property :name, String, :default => 'Click To Change Me'
+  property :name, String, :default => ''
 
   property :hostname, Text, :index => true
 
@@ -64,7 +51,7 @@ class Sensor
   end
   
   def sensor_name
-    return name unless name == 'Click To Change Me'
+    return name unless (name.nil? or name == '')
     hostname
   end
   
