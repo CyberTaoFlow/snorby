@@ -32,7 +32,7 @@ class PageController < ApplicationController
     end
 
     @classifications = Classification.all(:order => [:events_count.desc])
-    @sensors = Sensor.all(:limit => 5, :order => [:events_count.desc])
+    @sensors = Sensor.all(:domain => false, :limit => 5, :order => [:events_count.desc])
     @favers = User.all(:limit => 5, :order => [:favorites_count.desc])
 
     @last_cache = @cache.cache_time

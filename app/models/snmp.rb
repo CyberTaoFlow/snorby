@@ -158,7 +158,7 @@ class Snmp
 
       end
 
-      metrics << { :name => sensor.name, :data => count, :range => time_range }
+      metrics << { :name => sensor.sensor_name, :data => count, :range => time_range }
 
     end
 
