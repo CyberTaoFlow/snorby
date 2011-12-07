@@ -324,6 +324,47 @@ var Snorby = {
         return false;
       });
 
+      $('li.category > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+        var self = $(this);
+        var action_id   = self.parent().attr("data");
+        var category_id = self.parents(".category").attr("data");
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var action_str  = self.html();
+
+        if (action_id>=0 && sensor_id>0 && category_id>0) {
+          var box_cmp = self.parent().parent()
+
+          if (!box_cmp.hasClass("loading")) {
+            box_cmp.addClass("loading");
+            box_cmp.fadeOut();
+            var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+            action_cmp.html('<img src="/images/icons/pager.gif">');
+
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_action",
+              data: {
+                action_id: action_id,
+                category_id: category_id,
+                sensor_id: sensor_id
+              },
+              success: function(data){
+                box_cmp.removeClass("loading");
+                self.parents("li.category").find(".rule_actions dd").html(action_str)
+                //self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+              }
+            });
+          }
+        } else {
+          flash_message.push({
+            type: 'error',
+            message: "Cannot obtain rule data"
+          });
+          flash();
+          $.scrollTo('#header', 500);
+        }
+        return false;
+      });
+
       $('li.group > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
         var self = $(this);
         var action_id   = self.parent().attr("data");
@@ -351,11 +392,53 @@ var Snorby = {
               },
               success: function(data){
                 box_cmp.removeClass("loading");
-                action_cmp.html(action_str);
-                //action_cmp.addClass(action_str.toLowerCase())
-                self.parentsUntil("tr").parent().addClass("rule_pending");
-                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").html(action_str);
-                self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+                self.parents("li.group").find(".rule_actions dd").html(action_str)
+                //self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
+              }
+            });
+          }
+        } else {
+          flash_message.push({
+            type: 'error',
+            message: "Cannot obtain rule data"
+          });
+          flash();
+          $.scrollTo('#header', 500);
+        }
+        return false;
+      });
+
+      $('li.family > .row > .action > .rule_actions-menu .rule_action-button a').live('click', function(event) {
+        var self = $(this);
+        var action_id   = self.parent().attr("data");
+        var family_id   = self.parents("li.family").attr("data");
+        var group_id    = self.parents("li.group").attr("data");
+        var category_id = self.parents(".category").attr("data");
+        var sensor_id   = $("#rules").attr("data-sensor-sid");
+        var action_str  = self.html();
+
+        if (action_id>=0 && group_id>=0 && sensor_id>0 && category_id>0 && family_id>0) {
+          var box_cmp = self.parent().parent()
+
+          if (!box_cmp.hasClass("loading")) {
+            box_cmp.addClass("loading");
+            box_cmp.fadeOut();
+            var action_cmp = box_cmp.prev("dl.rule_actions").children("dd");
+            action_cmp.html('<img src="/images/icons/pager.gif">');
+
+            $.ajax({
+              url: "/sensors/" +sensor_id +"/update_rule_action",
+              data: {
+                action_id: action_id,
+                family_id: family_id,
+                group_id: group_id,
+                category_id: category_id,
+                sensor_id: sensor_id
+              },
+              success: function(data){
+                box_cmp.removeClass("loading");
+                self.parents("li.family").find(".rule_actions dd").html(action_str)
+                //self.parents("li.group").children(".rules").children(".content").children("li.rule").children(".row").children(".action").addClass("rule_pending");
               }
             });
           }
@@ -1882,6 +1965,35 @@ jQuery(document).ready(function($) {
     };
 
     return false;
+  });
+
+  $('.content > li.rule > div.row > .message').live('click', function(event) {
+    var self = this
+    var sensor_id   = $("#rules").attr("data-sensor-sid");
+    var rule_id     = $(self).parents(".rule").attr("data");
+    var content     = $(self).parent().next()
+
+    if (sensor_id>=0 && rule_id>0) {
+      if (!$(self).hasClass("loaded")) {
+        $(self).addClass("loaded");
+        $(self).parents("li.rule").toggleClass("highlight");
+        var select_comp = $(self).parents(".row").children(".select");
+        var select_html = select_comp.html();
+        select_comp.html('<img src="/images/icons/loading.gif">');
+
+        $.ajax({
+          url: "/sensors/" +sensor_id +"/update_rule_details",
+          data: {sensor_id: sensor_id, rule_id: rule_id},
+          success: function(data){
+            content.toggle('fast');
+            select_comp.html(select_html);
+          }
+        });
+      } else {
+        $(self).parents("li.rule").toggleClass("highlight");
+        content.toggle('fast')
+      }
+    }
   });
   
 });

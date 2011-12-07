@@ -93,35 +93,6 @@
         }
       });
 
-      $('.content > li.rule > div.row > .message').live('click', function(event) {
-        var self = this
-        var sensor_id   = $("#rules").attr("data-sensor-sid");
-        var rule_id     = $(self).parents(".rule").attr("data");
-        var content     = $(self).parent().next()
-
-        if (sensor_id>=0 && rule_id>0) {
-          if (!$(self).hasClass("loaded")) {
-            $(self).addClass("loaded");
-            $(self).parents("li.rule").toggleClass("highlight");
-            var select_comp = $(self).parents(".row").children(".select");
-            var select_html = select_comp.html();
-            select_comp.html('<img src="/images/icons/loading.gif">');
-
-            $.ajax({
-              url: "/sensors/" +sensor_id +"/update_rule_details",
-              data: {sensor_id: sensor_id, rule_id: rule_id},
-              success: function(data){
-                content.toggle('fast');
-                select_comp.html(select_html);
-              }
-            });
-          } else {
-            $(self).parents("li.rule").toggleClass("highlight");
-            content.toggle('fast')
-          }
-        }
-      });
-      
     });
   </script>
 
