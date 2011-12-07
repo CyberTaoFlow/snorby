@@ -288,7 +288,7 @@ class Sensor
 
     if sr.nil?
       lcr = self.last_compiled_rules
-      unless lcr.nil?
+      unless lcr.empty?
         sr = lcr.first(:rule_id => rule.id)
         action = sr.action unless sr.nil?
       end
