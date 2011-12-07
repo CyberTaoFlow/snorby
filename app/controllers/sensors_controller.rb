@@ -36,11 +36,17 @@ class SensorsController < ApplicationController
     end
   end
 
-  # For create a new "Domain Sensor". It will hang the "Root Sensor". 
-	def new
-		Sensor.create(:parent => Sensor.root, :domain => true)
-		redirect_to sensors_path
+  def new
+		@sensor = Sensor.new
+    render :layout => false
 	end
+
+  def create
+    @sensor = Sensor.create(params[:sensor])
+    @sensor.update(:parent => Sensor.root, :domain => true)
+
+    redirect_to sensors_path
+  end
 
   # Method used when a sensor is has been dragged and dropped to another sensor.
 	def update_parent
@@ -59,7 +65,7 @@ class SensorsController < ApplicationController
 
       sensors.each do |sensor|
         if sensor.hostname.include? ':'
-          pname = /(.+):/.match(sensor.hostname)[1]
+          pname = /([^:]+):/.match(sensor.hostname)[1]
         else
           pname = sensor.hostname
         end
