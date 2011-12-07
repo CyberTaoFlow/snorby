@@ -25,6 +25,9 @@
       </div>
     </ul>
   <% end %>
+
+  <%= pager(@sensor_rules, request.fullpath) %>
+
 </div>
 
 <%= render :partial => 'rules/rules_menu' %>

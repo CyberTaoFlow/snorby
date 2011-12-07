@@ -77,10 +77,9 @@ class RulesController < ApplicationController
     @family   = RuleCategory3.get(params[:family_id].to_i) if params[:family_id].present?
     @rule     = Rule.get(params[:rule_id].to_i) if params[:rule_id].present?
     
-    if !@sensor.nil? and !@action.nil?
-      
+    if !@sensor.nil? 
       if !@rule.nil?
-        rules = @rule
+        rules = [@rule]
       elsif !@category.nil? && !@group.nil? && @family.nil?
         rules = Rule.all(:category4_id => @category.id, :category1_id => @group.id)
       elsif !@category.nil? && !@group.nil? && !@family.nil?
@@ -202,6 +201,7 @@ class RulesController < ApplicationController
     @sensor_rules = @sensor.pending_rules.all(:order => [:rule_id.asc]) or []
     @actions = RuleAction.all
     @rulestype = "pending_rules"
+    @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count)
     render :active_rules
   end
 
@@ -213,6 +213,7 @@ class RulesController < ApplicationController
         @sensor_rules = @sensor.last_compiled_rules
         @actions = RuleAction.all
         @rulestype = "compiled_rules"
+        @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count)
       }
       format.text{
         @sensor = Sensor.first(:hostname => params[:sensor_id])
