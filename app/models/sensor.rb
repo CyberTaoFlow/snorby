@@ -92,7 +92,7 @@ class Sensor
       new_rules_id = new_rules.map{|x| x.rule.id}
       last_compiled_values = self.last_compiled_rules
 
-      new_rules.select{|s| !s.action.nil?}.each{|sr| sr.update(:compilation => compilation)}
+      new_rules.select{|s| !s.action.nil? and !s.action.inherited?}.each{|sr| sr.update(:compilation => compilation)}
 
       unless last_compiled_values.nil?
         last_compiled_values.select{|x| !x.inherited or parent_rules.blank?}.each do |sr|
@@ -104,8 +104,8 @@ class Sensor
       end
 
       if parent_rules.blank?
-        new_rules.select{|x| x.action.nil?}.each do |sr|
-          new_sr = self.parent.nil? ? nil : self.parent.last_compiled_rules.first(:rule => sr.rule)
+        new_rules.select{|x| x.action.nil? or x.action.inherited?}.each do |sr|
+          new_sr = (self.parent.nil? or self.parent.last_compiled_rules.blank?) ? nil : self.parent.last_compiled_rules.first(:rule => sr.rule)
           if new_sr.nil?
             new_rules_id.delete(sr.rule.id)
             new_rules.delete(sr)
@@ -115,7 +115,7 @@ class Sensor
           end
         end
       else
-        new_rules.select{|x| x.action.nil?}.each do |sr|
+        new_rules.select{|x| x.action.nil? or x.action.inherited?}.each do |sr|
           new_rules_id.delete(sr.rule.id)
           new_rules.delete(sr)
           sr.destroy

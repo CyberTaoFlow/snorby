@@ -98,12 +98,13 @@ end
 
 # Load Default Action Rules
 if RuleAction.all.blank?
-  RuleAction.create(:id => 1, :name => 'pass'  , :description => 'Ignore the packet')
-  RuleAction.create(:id => 2, :name => 'alert' , :description => 'Generate an alert using the selected alert method, and then log the packet')
-  RuleAction.create(:id => 3, :name => 'drop'  , :description => 'Block and log the packet')
-  RuleAction.create(:id => 4, :name => 'log'   , :description => 'Log the packet')
-  RuleAction.create(:id => 5, :name => 'sdrop' , :description => 'Block the packet but do not log it')
-  RuleAction.create(:id => 6, :name => 'reject', :description => 'Block the packet, log it, and then send a TCP reset if the protocol is TCP or an ICMP port unreachable')
+  RuleAction.create(:id => 1, :name => 'pass'     , :description => 'Ignore the packet')
+  RuleAction.create(:id => 2, :name => 'alert'    , :description => 'Generate an alert using the selected alert method, and then log the packet')
+  RuleAction.create(:id => 3, :name => 'drop'     , :description => 'Block and log the packet')
+  RuleAction.create(:id => 4, :name => 'log'      , :description => 'Log the packet')
+  RuleAction.create(:id => 5, :name => 'sdrop'    , :description => 'Block the packet but do not log it')
+  RuleAction.create(:id => 6, :name => 'reject'   , :description => 'Block the packet, log it, and then send a TCP reset if the protocol is TCP or an ICMP port unreachable')
+  RuleAction.create(:id => 7, :name => 'inherited', :description => 'This rule will be inherited from its parents.')
 end
 
 # Sensor root

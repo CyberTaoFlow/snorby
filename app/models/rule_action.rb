@@ -9,4 +9,8 @@ class RuleAction
 
   has n, :rules, :model => 'SensorRule', :child_key => [ :action_id ], :constraint => :destroy
 
+  def inherited?
+    self.id == 7
+  end
+
 end
