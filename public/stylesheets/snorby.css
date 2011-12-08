@@ -4645,7 +4645,9 @@ input.success:active{
     border: 1px solid #159117;
 }
 
-
+#rules ul.pager{
+	margin-top: 0;
+}
 
 /* @end */
 

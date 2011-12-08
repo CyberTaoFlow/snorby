@@ -2,32 +2,6 @@
   <%= render :partial => 'rules/menu' %>
 <%- end -%>
 
-<div id="rules" class="<%= @rulestype %>" data-sensor-sid=<%= @sensor.sid  %> >
-  <%= form_tag mass_update_rules_path do %>
-    <%= hidden_field_tag :selected_rules, [] %>
-    <ul class="table">
-      <li class="header">
-        <div class="row">
-          <div class="small">
-            <%= check_box_tag 'rule-select-all', nil, false, :class => 'rule-select-all' %>
-          </div>
-          <div class="action">Actions</div>
-          <div class="message">Message</div>
-          <div class="nrules"></div>
-        </div>
-      </li>
-      <div class="content">
-        <% @sensor_rules.each do |sr| %>
-          <% unless sr.rule.nil? %>
-            <%= render :partial => 'rules/rule', :locals => {:rule => sr.rule, :actions => @actions, :action => sr.action} %>
-          <% end %>
-        <% end unless @sensor_rules.nil?%>
-      </div>
-    </ul>
-  <% end %>
-
-  <%= pager(@sensor_rules, request.fullpath) %>
-
-</div>
+<%= render :partial => 'rules' %>
 
 <%= render :partial => 'rules/rules_menu' %>
