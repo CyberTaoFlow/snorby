@@ -61,7 +61,14 @@ Snorby::Application.routes.draw do
 	match '/sensors/update_parent', :controller => 'Sensors', :action => 'update_parent'
 
   resources :sensors do
-    resources :rules
+    resources :rules do
+      collection do
+        get :active_rules
+        get :pending_rules
+        get :compile_rules
+        get :discard_pending_rules
+      end
+    end
     resources :events
     resources :snmps
   end
