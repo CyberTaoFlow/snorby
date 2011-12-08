@@ -7,7 +7,7 @@ snorby: &snorby
     time: '5'
     level_medium: '50'
     level_high: '90'
-    community: 'redborder'
+    community: 'redBorder'
 
 
 development:
