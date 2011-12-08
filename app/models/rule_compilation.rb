@@ -12,4 +12,8 @@ class RuleCompilation
   
   belongs_to :user, :parent_key => [ :id ], :child_key => [ :user_id ]
 
+  def pretty_timestamp
+    timestamp.strftime('%A, %B %d, %Y %I:%M %p')
+  end
+
 end

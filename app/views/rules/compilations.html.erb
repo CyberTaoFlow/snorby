@@ -1,0 +1,28 @@
+<%= snorby_box("Compilations", false) do %>
+
+  <%= form_tag '/rules/rollback', :method => :post  do %>
+
+    <p><%= label_tag :sensor %><br />
+    <strong><%= @sensor.sensor_name %></strong></p>
+
+		<br />
+		<br />
+
+    <%= hidden_field_tag 'sensor[sid]', @sensor.sid %>
+
+    <p><%= label_tag :compilation %><br />
+      <%= select_tag 'compilation', options_from_collection_for_select(@compilations, :id, :pretty_timestamp) %></p>
+      
+  	<br />
+  	<br />
+
+    <%= snorby_box_footer do %>
+      <%= form_actions do %>
+        <%= button "Accept", :class => 'success' %>
+        <%= button "Cancel", :class => 'warning cancel-snorbybox' %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+
+<% end %>

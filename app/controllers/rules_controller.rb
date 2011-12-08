@@ -238,4 +238,17 @@ class RulesController < ApplicationController
     redirect_to sensor_rules_path(@sensor.sid)
   end
   
+  def compilations
+    @sensor = Sensor.get(params[:sensor_id])
+    @compilations = @sensor.sensorRules.compilation.all(:id.lt => @sensor.last_compilation.id, :order => [:timestamp.desc])
+    
+    render :layout => false
+  end
+  
+  def rollback
+    @sensor = Sensor.get(params[:sensor][:sid])
+    @sensor.rollback_rules(RuleCompilation.get(params[:compilation]))
+    redirect_to active_rules_sensor_rules_path(@sensor.sid)
+  end
+  
 end
