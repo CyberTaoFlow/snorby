@@ -48,6 +48,20 @@ class SensorsController < ApplicationController
     redirect_to sensors_path
   end
 
+  def edit
+    @sensor = Sensor.get(params[:id])
+    render :layout => false
+  end
+
+  def update
+    @sensor = Sensor.get(params[:sensor_id])
+    if @sensor.update(params[:sensor])
+      redirect_to(sensors_path, :notice => 'Sensor was successfully updated.')
+    else
+      redirect_to(sensors_path, :notice => 'Was an error updating the sensor.')
+    end
+  end
+
   # Method used when a sensor is has been dragged and dropped to another sensor.
 	def update_parent
 		sensor = Sensor.get(params[:sid])
