@@ -10,8 +10,12 @@
 
     <%= hidden_field_tag 'sensor[sid]', @sensor.sid %>
 
-    <p><%= label_tag :compilation %><br />
-      <%= select_tag 'compilation', options_from_collection_for_select(@compilations, :id, :pretty_timestamp) %></p>
+    <% if @compilations.present? %>
+      <p><%= label_tag :compilation %><br />
+        <%= select_tag 'compilation', options_from_collection_for_select(@compilations, :id, :pretty_timestamp) %></p>
+    <% else %>
+      <p>There's no previous compilations for this sensor or domain.</p>
+    <% end %>
       
   	<br />
   	<br />

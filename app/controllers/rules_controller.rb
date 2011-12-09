@@ -240,7 +240,11 @@ class RulesController < ApplicationController
   
   def compilations
     @sensor = Sensor.get(params[:sensor_id])
-    @compilations = @sensor.sensorRules.compilation.all(:id.lt => @sensor.last_compilation.id, :order => [:timestamp.desc])
+    if @sensor.last_compilation.present?
+      @compilations = @sensor.sensorRules.compilation.all(:id.lt => @sensor.last_compilation.id, :order => [:timestamp.desc])
+    else
+      @compilations = []
+    end
     
     render :layout => false
   end
