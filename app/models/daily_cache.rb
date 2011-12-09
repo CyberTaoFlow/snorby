@@ -143,7 +143,7 @@ class DailyCache
   def self.sensor_metrics(type=:week)
     @metrics = []
 
-    Sensor.all(:limit => 5, :order => [:events_count.desc]).each do |sensor|
+    Sensor.all(:domain => false, :limit => 5, :order => [:events_count.desc]).each do |sensor|
       count = []
       time_range = []
 
