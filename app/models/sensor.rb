@@ -171,15 +171,21 @@ class Sensor
   # This sensor will generate a new compilation with a copy of the rules compiled for the compilation passed. 
   def rollback_rules(compilation)
     if self.domain && !compilation.nil?
-      new_compilation = RuleCompilation.create(:timestamp => Time.now, :user => User.current_user)
-      self.pending_rules.each{|x| x.destroy}
-      compilation.rules.all(:sensor => self).each do |sr|
-        SensorRule.create(sr.attributes.merge(:id => nil, :compilation => new_compilation, :user => User.current_user))
+      SensorRule.transaction do |t|
+        begin
+          new_compilation = RuleCompilation.create(:timestamp => Time.now, :user => User.current_user)
+          self.pending_rules.each{|x| x.destroy}
+          compilation.rules.all(:sensor => self).each do |sr|
+            SensorRule.create(sr.attributes.merge(:id => nil, :compilation => new_compilation, :user => User.current_user))
+          end
+
+          self.childs.each do |s|
+            s.rollback_rules(compilation)
+          end
+        rescue DataObjects::Error => e
+          t.rollback
+        end
       end
-      
-      self.childs.each do |s|
-        s.rollback_rules(compilation)
-      end		
     end
   end
 
@@ -266,7 +272,13 @@ class Sensor
   end
 
   def discard_pending_rules
-    pending_rules.destroy
+    SensorRule.transaction do |t|
+      begin
+        pending_rules.destroy
+      rescue DataObjects::Error => e
+        t.rollback
+      end
+    end
   end
 
   def action_for_rule(rule)
