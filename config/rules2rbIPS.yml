@@ -47,12 +47,6 @@ category1_groups:
 
 url_rules:
   - 
-    name: "etpro" 
-    tgzfile: "/opt/rb/var/www/snortrules/cache/etpro.tgz"
-    regexp_category3_ignore: "^et |^gpl |^etpro "
-    search:
-      - "rules"
-  - 
     name: "vrt" 
     tgzfile: "/opt/rb/var/www/snortrules/cache/vrt.tar.gz"
     regexp_category3_ignore: "^et |^gpl |^etpro "

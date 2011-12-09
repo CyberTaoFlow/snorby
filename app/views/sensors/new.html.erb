@@ -1,12 +1,12 @@
 <%= snorby_box("Create Domain", false) do %>
 
-  <%#= form_for(@sensor, :url => sensor_path(@sensor), :html => { :method => :put, :class => 'basic-form validate' }) do |f| %>
   <%= form_for(@sensor) do |f|%>
 
     <%= error_messages_for(@sensor) %>
 
     <p><%= f.label :name %><br />
-    <%= f.text_field :name, :placeholder => 'Domain Name', :class => 'required' %></p>
+      <%= f.text_field :name, :placeholder => 'Domain Name', :class => 'required' %>
+    </p>
 
     <%= snorby_box_footer do %>
       <%= form_actions do %>
