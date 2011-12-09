@@ -22,6 +22,6 @@
     </ul>
   <% end %>
 
-  <%= pager(@sensor_rules, request.fullpath) %>
+  <%= pager(@sensor_rules, request.fullpath) unless @sensor_rules.blank? %>
 
 </div>

@@ -141,7 +141,7 @@ class Sensor
 
   # Returns an array with all pending rules (not compiled). 
   def pending_rules
-    sensorRules.all(:compilation => nil) or []
+    sensorRules.all(:compilation => nil)
   end
 
   # Return the last compilation object for this sensor

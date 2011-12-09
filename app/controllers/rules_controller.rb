@@ -213,14 +213,14 @@ class RulesController < ApplicationController
         @sensor_rules = @sensor.last_compiled_rules
         @actions = RuleAction.all
         @rulestype = "compiled_rules"
-        @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count)
+        @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count) unless @sensor_rules.blank?
       }
       format.js{
         @sensor = Sensor.get(params[:sensor_id])
         @sensor_rules = @sensor.last_compiled_rules
         @actions = RuleAction.all
         @rulestype = "compiled_rules"
-        @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count)
+        @sensor_rules = @sensor_rules.page(params[:page].to_i, :per_page => User.current_user.per_page_count) unless @sensor_rules.blank?
       }
       format.text{
         @sensor = Sensor.first(:hostname => params[:sensor_id])
