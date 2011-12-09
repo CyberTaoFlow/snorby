@@ -54,7 +54,7 @@ class SensorsController < ApplicationController
   end
 
   def update
-    @sensor = Sensor.get(params[:sensor_id])
+    @sensor = Sensor.get(params[:id])
     if @sensor.update(params[:sensor])
       redirect_to(sensors_path, :notice => 'Sensor was successfully updated.')
     else
