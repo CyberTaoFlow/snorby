@@ -25,17 +25,19 @@
     <dl id="sensor-menu-<%= sensor.sid %>" class="sensor-menu" data-sensor-id='<%= sensor.sid %>' style='display:none;'>
       <div class="arrow"></div>
       <dd>
-        <%#= link_to "Events", sensor_events_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
         <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %>
       </dd>
       <dd>
         <%= link_to "Config", edit_sensor_path(sensor), {:class => 'snorbybox', :target => '_blank'}  if sensor.domain %>
       </dd>
-			<dd>
+      <dd>
         <%= link_to "Rules", sensor_rules_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
       </dd>
       <dd>
         <%= drop_down_item "Snmp"  , sensor_snmps_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
+      </dd>
+      <dd>
+        <%= drop_down_item "Info"  , sensor_path(sensor) unless sensor.domain %>
       </dd>
     </dl>
   </td>
