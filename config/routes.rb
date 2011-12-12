@@ -54,9 +54,12 @@ Snorby::Application.routes.draw do
 
   root :to => "page#dashboard"
 
-	match '/sensors/update_parent', :controller => 'Sensors', :action => 'update_parent'
-
   resources :sensors do
+
+    collection do
+      get :update_parent
+    end
+
     resources :rules do
       collection do
         get :active_rules
