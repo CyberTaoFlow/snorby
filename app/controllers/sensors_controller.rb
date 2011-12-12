@@ -12,7 +12,11 @@ class SensorsController < ApplicationController
       @sensors ||= hierarchy.flatten.compact unless hierarchy.nil?
     end
   end
-  
+
+  def show
+    @sensor = Sensor.get(params[:id])
+  end
+
   def update_name
     @sensor = Sensor.get(params[:id])
     @sensor.update!(:name => params[:name]) if @sensor
