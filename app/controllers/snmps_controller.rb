@@ -5,9 +5,9 @@ class SnmpsController < ApplicationController
   
   def index
 
-    # TODO if sensor indicated in params is not a domain, it musts return an error.
+    raise ActionController::RoutingError.new('Not Found') unless Sensor.get(params[:sensor_id]).domain
 
-    @sensor = Sensor.get(params[:sensor_id]) unless params[:sensor_id].nil?
+    @sensor = Sensor.get(params[:sensor_id])
 
     @now = Time.now
 
@@ -15,7 +15,7 @@ class SnmpsController < ApplicationController
 
     set_defaults
 
-    @snmp = @snmp.all(:sensor => @sensor.virtual_sensors) unless @sensor.nil?
+    @snmp = @snmp.all(:sensor => @sensor.virtual_sensors)
 
     @last_snmp = @snmp.sort{|a, b| a.timestamp <=> b.timestamp}.last
     
@@ -39,7 +39,7 @@ class SnmpsController < ApplicationController
       @axis = @cpu_metrics.last[:range].join(',')    
     end
     
-    @sensors = Sensor.all(:domain => false, :limit => 5)
+    @sensors = Sensor.all(:sid => @sensor.virtual_sensors.map{|x| x.sid}, :limit => 5)
     
     @traps = Trap.all.sort{|x, y| y.timestamp <=> x.timestamp}.first(10)
     
