@@ -18,12 +18,8 @@ class SnmpsController < ApplicationController
     @snmp = @snmp.all(:sensor => @sensor.virtual_sensors)
 
     @last_snmp = @snmp.sort{|a, b| a.timestamp <=> b.timestamp}.last
-    
-    # TODO the snorby_config.yml will change for more dynamic info.
-    @cpu_metrics = @snmp.cpu_metrics(@range.to_sym)
-    @user_cpu_metrics = @snmp.user_cpu_metrics(@range.to_sym)
-    @disk_metrics = @snmp.disk_metrics(@range.to_sym)
-    @memory_metrics = @snmp.memory_metrics(@range.to_sym)
+
+    @metrics = @snmp.metrics(@range.to_sym)
     
     @high = @snmp.severity_count(:high, @range.to_sym)
     @medium = @snmp.severity_count(:medium, @range.to_sym)
@@ -31,12 +27,12 @@ class SnmpsController < ApplicationController
     
     @event_count = @high.sum + @medium.sum + @low.sum
     
-    if @cpu_metrics.last and @range == 'last_3_hours'
+    if @metrics.first.last and @range == 'last_3_hours'
       # take only half of the items for axis
       index = 0
-      @axis = @cpu_metrics.last[:range].map{|x| index += 1; index % 2 == 1 ? x : "' '"}.join(',')
-    elsif @cpu_metrics.last
-      @axis = @cpu_metrics.last[:range].join(',')    
+      @axis = @metrics.first.last[:range].map{|x| index += 1; index % 2 == 1 ? x : "' '"}.join(',')
+    elsif @metrics.first.last
+      @axis = @metrics.first.last[:range].join(',')
     end
     
     @sensors = Sensor.all(:sid => @sensor.virtual_sensors.map{|x| x.sid}, :limit => 5)

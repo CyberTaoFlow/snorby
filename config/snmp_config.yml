@@ -1,13 +1,20 @@
 snorby: &snorby
-    oids:
-        "1.3.6.1.4.1.2021.11.9.0": "Percentage of user CPU time"
-        "1.3.6.1.4.1.2021.11.10.0": "Percentages of system CPU time"
-        "1.3.6.1.4.1.2021.4.5.5": "Percentage RAM used in machine" # It will be calculated : "1.3.6.1.4.1.2021.4.6.0" / "1.3.6.1.4.1.2021.4.5.0" * 100
-        "1.3.6.1.4.1.2021.9.1.9.1": "Percentage of space used on disk"
-    time: '5'
-    level_medium: '50'
-    level_high: '90'
-    community: 'redBorder'
+  oids:
+    "1.3.6.1.4.1.2021.11.9.0":
+      info: "Percentage of user CPU time"
+    "1.3.6.1.4.1.2021.11.10.0":
+      info: "Percentages of system CPU time"
+    "1.3.6.1.4.1.2021.4.6.0":
+      info: "Percentage RAM used in machine"
+      reference: "1.3.6.1.4.1.2021.4.5.0"
+      mult: 100
+    "1.3.6.1.4.1.2021.9.1.9.1":
+      info: "Percentage of space used on disk"
+
+  time: '5'
+  level_medium: '50'
+  level_high: '90'
+  community: 'redBorder'
 
 
 development:

@@ -598,40 +598,14 @@ var Snorby = {
         $('div#destination-ips-graph').show();
         return false;
       });
-			
-      $('a.show_cpu_graph').live('click', function(e) {
+
+      $('a.show_metric').live('click', function(e){
         e.preventDefault();
+        var data_index = $(this).attr('data_index');
         $('#box-menu li').removeClass('active');
         $(this).parent('li').addClass('active');
         $('div.dashboard-graph').hide();
-        $('div#cpu-graph').show();
-        return false;
-      });
-			
-      $('a.show_user_cpu_graph').live('click', function(e) {
-        e.preventDefault();
-        $('#box-menu li').removeClass('active');
-        $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
-        $('div#user-cpu-graph').show();
-        return false;
-      });
-			
-      $('a.show_memory_graph').live('click', function(e) {
-        e.preventDefault();
-        $('#box-menu li').removeClass('active');
-        $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
-        $('div#memory-graph').show();
-        return false;
-      });
-			
-      $('a.show_disk_graph').live('click', function(e) {
-        e.preventDefault();
-        $('#box-menu li').removeClass('active');
-        $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
-        $('div#disk-graph').show();
+        $('div#metric-graph_'+ data_index).show();
         return false;
       });
 			

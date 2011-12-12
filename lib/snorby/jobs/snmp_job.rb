@@ -10,7 +10,11 @@ module Snorby
         Sensor.all.select{|x| x.is_virtual_sensor? and x.ipdir.present?}.each do |sensor|
 
           Snorby::CONFIG_SNMP[:oids].each_key do |oid|
-            value = Snmp.get_value(sensor.ipdir, oid)
+            if Snorby::CONFIG_SNMP[:oids][oid].has_key? "reference"
+              value = Snmp.get_value(sensor.ipdir, oid, Snorby::CONFIG_SNMP[:oids][oid]["reference"], Snorby::CONFIG_SNMP[:oids][oid]["mult"])
+            else
+              value = Snmp.get_value(sensor.ipdir, oid)
+            end
             Snmp.create(:sid => sensor.sid, :timestamp => Time.now, :oid => oid, :value => value)
           end  
 

@@ -28,19 +28,16 @@ class Snmp
     "#{timestamp.strftime('%m/%d/%Y')}"
   end
 
-  def self.get_value(host, oid)
+  def self.get_value(host, oid, oid_ref=nil, mult=nil)
     community = Snorby::CONFIG_SNMP[:community].nil? ? 'public' : Snorby::CONFIG_SNMP[:community]
     manager = SNMP::Manager.new(:Host => host, :community => community)
-    # It's not an official SNMP oid
-    if oid == "1.3.6.1.4.1.2021.4.5.5"
-      response = manager.get("1.3.6.1.4.1.2021.4.6.0")
-      value_used = response.varbind_list.first.value
-      response = manager.get("1.3.6.1.4.1.2021.4.5.0")
-      value_total = response.varbind_list.first.value
-      value = (value_used.to_f / value_total.to_f * 100).round(2)
-    else
-      response = manager.get(oid)
+    response = manager.get(oid)
+    response_ref = manager.get(oid_ref) unless oid_ref.nil?
+
+    if response_ref.nil?
       value = response.varbind_list.first.value
+    else
+      value = response.varbind_list.first.value.to_f / response_ref.varbind_list.first.value.to_f * mult.to_f
     end
     
     value
@@ -109,6 +106,12 @@ class Snmp
   
   def self.this_year
     all(:timestamp.gte => Time.now.beginning_of_year, :timestamp.lte => Time.now.end_of_year)  
+  end
+
+  def self.metrics(type=:week)
+    metrics_array = []
+    Snorby::CONFIG_SNMP[:oids].each_key{|o| metrics_array << self.snmp_metrics(o, type)}
+    metrics_array
   end
 
   def self.cpu_metrics(type=:week)
