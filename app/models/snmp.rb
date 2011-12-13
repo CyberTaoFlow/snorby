@@ -113,22 +113,6 @@ class Snmp
     Snorby::CONFIG_SNMP[:oids].each_key{|o| metrics_array << self.snmp_metrics(o, type)}
     metrics_array
   end
-
-  def self.cpu_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.10.0", type)
-  end
-
-  def self.user_cpu_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.11.9.0", type)
-  end
-
-  def self.disk_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.9.1.9.1", type)
-  end
-  
-  def self.memory_metrics(type=:week)
-    @metrics = self.snmp_metrics("1.3.6.1.4.1.2021.4.5.5", type)
-  end
   
   def self.snmp_metrics(oid, type)
     metrics = []

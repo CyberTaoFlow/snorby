@@ -3,7 +3,7 @@
 		<div class='select small'><%= check_box_tag 'snmp-selector', nil, false, :class => "check_box_#{snmp.id}" %></div>
 		<div class='click address' title='<%=h snmp.sensor.sensor_name %>'><%= truncate(snmp.sensor.sensor_name, :length => 17, :omission => '...') %></div>
 		<div class='click oid' title='<%=h snmp.oid %>'><%= snmp.oid %> </div>
-		<div class='click value' title='<%=h Snorby::CONFIG_SNMP[:oids][snmp.oid] %>'><%= Snorby::CONFIG_SNMP[:oids][snmp.oid] %> </div>
+		<div class='click value' title='<%=h Snorby::CONFIG_SNMP[:oids][snmp.oid]["info"] %>'><%= Snorby::CONFIG_SNMP[:oids][snmp.oid]["info"] %> </div>
 		<div class='click value' title='<%=h snmp.value %>'><%= snmp.value %> </div>
         <div class='click timestamp'>
 			<b title='Snmp ID: <%= snmp.id %> %> &nbsp; <%= snmp.timestamp.strftime('%A, %b %d, %Y at %I:%M:%S %p') %>' class='add_tipsy'><%= snmp.pretty_time %></b>

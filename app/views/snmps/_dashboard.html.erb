@@ -80,7 +80,7 @@
       <ul id="box-menu">
 
         <% @metrics.each_with_index do |metric, index| %>
-        <li <%= index == 0 ? "class = 'active'" : nil %> ><%= link_to "Each Metric", "#", :class => 'show_metric', :data_index => index %></li>
+          <li <%= index == 0 ? "class = 'active'" : nil %> ><%= link_to Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"], "#", :class => 'show_metric', :data_index => index %></li>
         <% end %>
 
         <li><%= link_to "Severities", '#', :class => 'show_severity_graph' %></li>
@@ -94,69 +94,19 @@
 
   <div class='secondary grid_3 alpha'>
 
-<%#*<div class='dashboard-header'>%>
-<%#*<span>Top 5 Sys Cpu Sensors</span>%>
-<%#*</div>%>
-
-<%#*<ul class='box-list'>%>
-<%# @cpu_metrics.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
-<%#*<li>%>
-<%#= sensor[0] %>
-
-<%#*<span>%>
-<%#= sensor[1].round(2) %>
-<%#*</span>%>
-<%#*</li>%>
-<%# end %>
-<%#*</ul>%>
-
-<%#*<div class='dashboard-header'>%>
-<%#*<span>Top 5 User Cpu Sensors</span>%>
-<%#*</div>%>
-
-<%#*<ul class='box-list'>%>
-<%# @user_cpu_metrics.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
-<%#*<li>%>
-<%#= sensor[0] %>
-
-<%#*<span>%>
-<%#= sensor[1].round(2) %>
-<%#*</span>%>
-<%#*</li>%>
-<%# end %>
-<%#*</ul>%>
-
-<%#*<div class='dashboard-header'>%>
-<%#*<span>Top 5 Memory Sensors</span>%>
-<%#*</div>%>
-
-<%#*<ul class='box-list'>%>
-<%# @memory_metrics.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
-<%#*<li>%>
-<%#= sensor[0] %>
-
-<%#*<span>%>
-<%#= sensor[1].round(2) %>
-<%#*</span>%>
-<%#*</li>%>
-<%# end %>
-<%#*</ul>%>
-
-<%#*<div class='dashboard-header'>%>
-<%#*<span>Top 5 HDD Sensors</span>%>
-<%#*</div>%>
-
-<%#*<ul class='box-list'>%>
-<%# @disk_metrics.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
-<%#*<li>%>
-<%#= sensor[0] %>
-
-<%#*<span>%>
-<%#= sensor[1].round(2) %>
-<%#*</span>%>
-<%#*</li>%>
-<%# end %>
-<%#*</ul>%>
+    <% @metrics.each_with_index do |metric, index| %>
+      <div class='dashboard-header'>
+        <span> Top 5 <%= Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"] %> Sensors </span>
+      </div>
+      <ul class="box-list">
+        <% metric.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
+          <li>
+            <%= sensor[0] %>
+            <span> <%= sensor[1].round(2) %> </span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
 
     <div class='dashboard-header'>
       <span>Last 10 Traps</span>
