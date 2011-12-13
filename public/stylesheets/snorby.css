@@ -4649,6 +4649,39 @@ input.success:active{
 	margin-top: 0;
 }
 
+#dashboard.sensor .box-holder{
+    height: 70px;
+}
+
+#dashboard.sensor .box-holder img.background-image{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5000;
+}
+
+#dashboard.sensor .box-holder table{
+    border: none;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 6000;
+}
+
+#dashboard.sensor .grid_9 {
+    width: 700px;
+}
+
+#dashboard.sensor .box-holder table td{
+    height: 26px;
+    line-height: 0px;
+    border-bottom: none;
+    color: white;
+    background: none;
+    width: 5%;
+}
 /* @end */
 
 /* @end */
