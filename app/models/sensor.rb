@@ -5,6 +5,20 @@ class Sensor
     # After the sensor (domain or not) has been created it will involve a rule compilation for this sensor.
     #   This will create an initial restore point and it will inherit all its parents rules
     sensor.compile_rules(nil, sensor.parent.last_compiled_rules) unless sensor.parent.nil? or !sensor.domain
+    
+    #we must create a new role for chef
+    sensor.create_chef_sensor
+  end
+
+  after :update do |sensor|
+    sensor.update_chef_sensor
+  end
+
+  after :destroy do |sensor|
+    if sensor.domain
+      role = sensor.chef_role
+      role.destroy unless role.nil?
+    end
   end
 
   storage_names[:default] = "sensor"
@@ -296,4 +310,96 @@ class Sensor
     end    
     action
   end
+
+  def chef_name
+    if domain
+      "rBsensor-#{self.sid}"
+    else
+      self.parent.chef_name
+    end
+  end
+
+  def chef_role
+    Chef::Role.load(self.chef_name)
+  end
+
+  def chef_node
+    if self.is_virtual_sensor?
+      Chef::Node.load(self.hostname)
+    end
+  end
+
+  def create_chef_sensor
+    if self.domain
+      role = Chef::Role.new
+      set_default_chef_role_params(role)
+      role.create
+    end
+  end
+
+  def update_chef_sensor
+    if self.domain
+      role = self.chef_role
+      set_default_chef_role_params(role)
+      role.save
+
+      if self.is_virtual_sensor?
+        #we have to update the node
+        node = self.chef_node
+        unless node.nil?
+          node.run_list("role[#{self.chef_name}]")
+          node.save
+        end
+      end
+    end
+  end
+
+  def destroy_chef_role
+    if self.domain
+      if self.is_virtual_sensor?
+        node = self.chef_node
+        node.destroy unless node.nil?
+      end
+
+      role = self.chef_role
+      role.destroy unless role.nil?
+    end
+  end
+
+  def self.repair_chef_db
+    Sensor.all(:domain=>true).each do |sensor|
+      begin
+        sensor.update_chef_sensor
+      rescue Net::HTTPServerException
+        sensor.create_chef_sensor
+      end
+    end
+
+    Chef::Role.list.each do |array|
+      match = /^rBsensor-([0-9]+)$/.match(array[0])
+      unless match.nil?
+        sensor = Sensor.get(match[1])
+        if sensor.nil?
+          Chef::Role.load(array[0]).destroy
+        end
+      end
+    end
+  end
+
+  private
+
+  def set_default_chef_role_params(role)
+    unless role.nil?
+      role.name(self.chef_name)
+      role.description(self.sensor_name)
+      role.override_attributes["redBorder"] = {} if role.override_attributes["redBorder"].nil?
+      role.override_attributes["redBorder"][:role] = role.name
+      if self.parent.nil? or self.is_root?
+        role.run_list("role[sensor]")
+      else
+        role.run_list("role[#{self.parent.chef_name}]")
+      end
+    end
+  end
+  
 end

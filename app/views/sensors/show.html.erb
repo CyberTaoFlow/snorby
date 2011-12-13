@@ -1,0 +1,51 @@
+<%= title "Info #{@sensor.sensor_name}".html_safe, 'Listing Rules' do -%>
+
+<%- end -%>
+
+<%- unless @node.nil?%>
+  <div id="sensor" class="boxit" data-sensor-sid=<%= @sensor.sid  %> >
+    <div id="cpu">
+      Num CPUs:<%=@node[:cpu][:total] %>
+      <% for i in 0..(@node[:cpu][:total]-1) %>
+        <div id="cpu-<%=i%>">
+          CPU<%=i%>
+          <%=@node[:cpu][i.to_s][:model_name] %>,
+          <%=@node[:cpu][i.to_s][:cache_size] %>,          
+        </div>
+      <%  end %>
+    </div>
+    <div id="filesystem">
+      <%[@node[:filesystem]["/dev/mapper/VolGroup-lv_root"], @node[:filesystem]["/dev/mapper/VolGroup-lv_home"]].each do |x| %>
+        <div id="filesystem-<%=x[:mount]%>">
+          mount: <%= x[:mount] %> ,
+          kb_size: <%= x[:kb_size] %> KB,
+          kb_used: <%= x[:kb_used] %> KB,
+          percent_used: <%= x[:percent_used] %>
+        </div>
+      <%end%>
+    </div>
+    <div id="memory">
+      <%=@node[:memory][:active]%>
+    </div>
+    <div id="uptime">
+      <%=@node[:uptime]%>
+    </div>
+    <div id="network">
+      ip: <%=@node[:ipaddress]%>
+      mac: <%=@node[:macaddress]%>
+      gateway: <%=@node[:default_gateway]%>
+      <%-@node[:redBorder][:segments].each_key do |segment|%>
+        <%=segment.to_s%>
+      <%end%>
+    </div>
+    <div id="kernel">
+      <%=@node[:kernel][:release]%> <%=@node[:kernel][:version]%>
+    </div>
+    <div id="redBorder">
+      installed: <%=@node[:redBorder][:install_date]%>
+      version: <%=@node[:redBorder][:rpms][:sensor]%>
+    </div>
+
+
+  </div>
+<% end %>

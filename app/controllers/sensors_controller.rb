@@ -15,17 +15,18 @@ class SensorsController < ApplicationController
 
   def show
     @sensor = Sensor.get(params[:id])
+    @node = @sensor.chef_role unless @sensor.nil?
   end
 
   def update_name
     @sensor = Sensor.get(params[:id])
-    @sensor.update!(:name => params[:name]) if @sensor
+    @sensor.update(:name => params[:name]) if @sensor
     render :text => @sensor.name
   end
 
   def update_ip
     @sensor = Sensor.get(params[:id])
-    @sensor.update!(:ipdir => params[:ip]) if @sensor
+    @sensor.update(:ipdir => params[:ip]) if @sensor
     render :text => @sensor.ipdir
   end
   
@@ -41,11 +42,12 @@ class SensorsController < ApplicationController
   end
 
   def new
-		@sensor = Sensor.new
+    @sensor = Sensor.new
     render :layout => false
 	end
 
   def create
+    params[:sensor][:domain]=true if params[:sensor][:domain].nil?
     @sensor = Sensor.create(params[:sensor])
     @sensor.update(:parent => Sensor.root, :domain => true)
 
@@ -67,14 +69,14 @@ class SensorsController < ApplicationController
   end
 
   # Method used when a sensor is has been dragged and dropped to another sensor.
-	def update_parent
-		sensor = Sensor.get(params[:sid])
-		sensor.update!(:parent_sid => params[:p_sid]) if sensor
-		respond_to do |format|
+  def update_parent
+    sensor = Sensor.get(params[:sid])
+    sensor.update(:parent_sid => params[:p_sid]) if sensor
+    respond_to do |format|
       format.html
       format.js
     end
-	end
+  end
 
   private
 
