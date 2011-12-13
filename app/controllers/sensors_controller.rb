@@ -15,7 +15,8 @@ class SensorsController < ApplicationController
 
   def show
     @sensor = Sensor.get(params[:id])
-    @node = @sensor.chef_role unless @sensor.nil?
+    @role   = @sensor.chef_role unless @sensor.nil?
+    @node   = @sensor.chef_node unless @sensor.nil?
   end
 
   def update_name
