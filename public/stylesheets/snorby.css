@@ -4691,6 +4691,29 @@ input.success:active{
 #dashboard.sensor .box-holder table td img{
     margin: 0;
 }
+
+#dashboard.sensor ul.box-list span.chart{
+    background: none;
+    position: static;
+}
+
+#dashboard.sensor ul.box-list li:hover span.chart {
+    background: none;
+}
+
+#dashboard.sensor ul.box-list span.chart div.progress-container > div > span {
+    height: 17px;
+    line-height: 17px;
+    top: 0px;
+    right: 5px;
+    padding: 0px;
+    background: none;
+}
+
+#dashboard.sensor ul.box-list li:hover span.chart div.progress-container > div > span {
+    color: #469DFC;
+    text-shadow: none;
+}
 /* @end */
 
 /* @end */

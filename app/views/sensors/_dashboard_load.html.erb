@@ -3,8 +3,8 @@
 </div>
 <ul class='box-list'>
   <li id='load'>Load<span><%= node["redBorder"]["uptime"]["1minute"]%>  <%= node["redBorder"]["uptime"]["5minute"]%>  <%= node["redBorder"]["uptime"]["15minute"]%></span></li>
-  <li id='memory'>Memory<span><%= css_chart((100*(1-(node["memory"]["free"].to_f / node["memory"]["total"].to_f))).round(2)) %></span></li>
-  <li id='hd'>HD<span><%= css_chart(node["filesystem"]["/dev/mapper/VolGroup-lv_root"]["percent_used"].to_f.round(2)) %></span></li>
+  <li id='memory'>Memory<span class="chart"><%= css_chart((100*(1-(node["memory"]["free"].to_f / node["memory"]["total"].to_f))).round(2)) %></span></li>
+  <li id='hd'>HD<span class="chart"><%= css_chart(node["filesystem"]["/dev/mapper/VolGroup-lv_root"]["percent_used"].to_f.round(2)) %></span></li>
 </ul>
 
 
