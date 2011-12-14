@@ -1,4 +1,4 @@
-<tr id='sensor_<%= sensor.sid %>' class='sensor <%= "child-of-sensor_#{sensor.parent.sid}" unless sensor.parent.nil? or sensor.parent.is_root? %> <%= sensor.domain ? " domain" : "" %> <%= sensor.domain && !sensor.is_virtual_sensor? ? "folder parent" : "" %>' data-sensor-id='<%= sensor.sid %>'>
+<tr id='sensor_<%= sensor.sid %>' class='sensor <%= "child-of-sensor_#{sensor.parent.sid}" unless sensor.parent.nil? %> <%= sensor.domain ? " domain" : "" %> <%= sensor.domain && !sensor.is_virtual_sensor? ? "folder parent" : "" %>' data-sensor-id='<%= sensor.sid %>' <%= sensor.is_root? ? "style='display:none;'" : "" %> >
   <td class='name' data-sensor-id='<%= sensor.sid %>'><%= sensor.name %></td>
 
   <td class='hostname'><%= sensor.hostname %></td>

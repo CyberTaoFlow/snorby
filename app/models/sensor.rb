@@ -205,7 +205,7 @@ class Sensor
 
   def hierarchy(deep)
     # 'sensors = childs' causes problems instead of 'sensors = childs.map{|x| x}' because of the class DataMapper::Associations::OneToMany::Collection
-    sensors = childs.map{|x| x} unless childs.blank? 
+    sensors = childs.all(:order => [:name.asc]).map{|x| x} unless childs.blank?
 		
     if !sensors.nil? and deep > 1 
       sensors.each_with_index do |x, index|
@@ -379,6 +379,8 @@ class Sensor
       match = /^rBsensor-([0-9]+)$/.match(array[0])
       unless match.nil?
         sensor = Sensor.get(match[1])
+        sensor = nil if !sensor.nil? && !sensor.domain
+        
         if sensor.nil?
           Chef::Role.load(array[0]).destroy
         end
@@ -393,7 +395,8 @@ class Sensor
       role.name(self.chef_name)
       role.description(self.sensor_name)
       role.override_attributes["redBorder"] = {} if role.override_attributes["redBorder"].nil?
-      role.override_attributes["redBorder"][:role] = role.name
+      role.override_attributes["redBorder"][:role]  = role.name
+      role.override_attributes["redBorder"][:snort] = {} if role.override_attributes["redBorder"][:snort].nil?
       if self.parent.nil? or self.is_root?
         role.run_list("role[sensor]")
       else

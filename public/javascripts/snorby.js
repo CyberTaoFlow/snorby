@@ -258,34 +258,87 @@ var Snorby = {
       scroll: true
     });
 
-    $("#sensorTable .sensor.domain.folder").droppable({
+    $("#sensorTable .sensor").droppable({
       accept: ".sensor.domain",
+      tolerance: "pointer",
       drop: function(e, ui) {
-        $(ui.draggable).appendBranchTo(this);
-        var sid = ui.draggable.attr("data-sensor-id");
-        var p_sid = $(this).attr("data-sensor-id");
-        $(this).addClass("expanded")
-        $(this).addClass("parent")
-        $.ajax({
-          url: 'sensors/update_parent',
-          data: {
-            sid: sid,
-            p_sid: p_sid
-          },
-          success: function(data){
-          }
-        });
-      },
-  		
+        if ($(this).hasClass("domain") && $(this).hasClass("folder")) {
+          $(ui.draggable).appendBranchTo(this);
+          var sid = ui.draggable.attr("data-sensor-id");
+          var p_sid = $(this).attr("data-sensor-id");
+          $(this).addClass("expanded")
+          $(this).addClass("parent")
+          $.ajax({
+            url: 'sensors/update_parent',
+            data: {
+              sid: sid,
+              p_sid: p_sid
+            },
+            success: function(data){
+              flash_message.push({
+                type: 'info',
+                message: "The sensor has been moved successfylly"
+              });
+              flash();
+              $.scrollTo('#header', 500);
+            }
+          });
+        } else {
+          flash_message.push({
+            type: 'error',
+            message: "The sensor cannot moved to this location"
+          });
+          flash();
+          $.scrollTo('#header', 500);
+        }
+      },  		
       hoverClass: "accept",
       over: function(e, ui) {
-        if(this.id != $(ui.draggable).id && !$(this).is(".expanded")) {
+        if(this.id != $(ui.draggable).id && !$(this).is(".expanded") && $(this).hasClass("domain") && $(this).hasClass("folder")) {
           $(this).expand();
         }
       }
     });
 
+    $("#sensorTable").droppable({
+      accept: ".sensor.domain",
+      tolerance: "pointer",
+      drop: function(evt, ui) {
+      }
+    });
 
+
+    $("#wrapper").droppable({
+      accept: ".sensor.domain",
+      tolerance: "pointer",
+      drop: function(evt, ui) {
+        if (confirm("Are you sure you want to move the sensor to the root node?")) {
+          var root = $("#sensorTable .sensor.domain")[0]
+          $(ui.draggable).appendBranchTo(root);
+          var sid = ui.draggable.attr("data-sensor-id");
+          var p_sid = $(root).attr("data-sensor-id");
+          $(root).addClass("expanded")
+          $(root).addClass("parent")
+
+          $.ajax({
+            url: 'sensors/update_parent',
+            data: {
+              sid: sid,
+              p_sid: p_sid
+            },
+            success: function(data){
+              flash_message.push({
+                type: 'info',
+                message: "The sensor has been moved successfully"
+              });
+              flash();
+              $.scrollTo('#header', 500);
+            }
+          });
+        }
+      },
+      hoverClass: "accept"
+    });
   },
 	
   pages: {
