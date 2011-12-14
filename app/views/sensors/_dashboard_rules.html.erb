@@ -1,0 +1,20 @@
+<div class='dashboard-header'>
+  <span>Rules</span>
+</div>
+<ul class='box-list'>
+  <%- rules = sensor.last_compiled_rules %>
+  <%- if rules.size>0 %>
+    <% RuleAction.all.each do |a| %>
+      <%-count = rules.all(:action=>a).size%>
+      <%- if count>0 %>
+        <li><%=a.name.capitalize%><span><%=count%>/<%=rules.size %></span></li>
+      <%-end%>
+    <%-end%>
+  <%-else%>
+    <li id='compiled_rules'>Compiled Rules<span><%=rules.size %></span></li>
+  <%-end %>
+  <%- unless sensor.last_compilation.nil? %>
+    <li id='compiled_rules'>Last Compilation<span><%=sensor.last_compilation.timestamp.to_formatted_s(:short) %></span></li>
+  <%-end %>
+  <li id='pending_rules'>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
+</ul>

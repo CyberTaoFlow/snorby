@@ -7,6 +7,7 @@
   </div>
   <div class='secondary grid_3 alpha'>
     <%= render :partial => 'dashboard_info'    , :locals =>{:sensor=> @sensor, :node => @node} %>
+    <%= render :partial => 'dashboard_rules'   , :locals =>{:sensor=> @sensor, :node => @node} %>
     <%= render :partial => 'dashboard_load'    , :locals =>{:sensor=> @sensor, :node => @node} %>
     <%= render :partial => 'dashboard_hardware', :locals =>{:sensor=> @sensor, :node => @node} %>
   </div>
