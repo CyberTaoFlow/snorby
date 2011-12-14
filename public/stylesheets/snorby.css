@@ -4697,9 +4697,15 @@ input.success:active{
     position: static;
 }
 
+#dashboard.sensor ul.box-list span.chart > div {
+    right: -5px;
+    width: 100px;
+}
+
 #dashboard.sensor ul.box-list li:hover span.chart {
     background: none;
 }
+
 
 #dashboard.sensor ul.box-list span.chart div.progress-container > div > span {
     height: 17px;

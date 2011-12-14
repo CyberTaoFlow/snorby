@@ -15,8 +15,19 @@ class SensorsController < ApplicationController
 
   def show
     @sensor = Sensor.get(params[:id])
-    @role   = @sensor.chef_role unless @sensor.nil?
-    @node   = @sensor.chef_node unless @sensor.nil?
+    @role   = @sensor.chef_role
+    @node   = @sensor.chef_node
+
+    @range  = params[:range].blank? ? 'last_24' : params[:range]
+
+    cache           = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
+    sensor_metrics  = cache.sensor_metrics(@range.to_sym)
+
+    @axis   = sensor_metrics.last[:range].join(',')
+    @high   = cache.severity_count(:high, @range.to_sym)
+    @medium = cache.severity_count(:medium, @range.to_sym)
+    @low    = cache.severity_count(:low, @range.to_sym)
+
   end
 
   def update_name
