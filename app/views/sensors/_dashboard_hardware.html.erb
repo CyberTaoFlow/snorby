@@ -1,3 +1,11 @@
 <div class='dashboard-header'>
   <span>HARDWARE</span>
 </div>
+<ul class='box-list'>
+  <li id='segments'>Segments<span><%=node["redBorder"]["segments"].size%></span></li>
+  <li id='cpu'>Num CPUs<span><%=node["cpu"]["total"]%></span></li>
+  <li id='cpu'>CPU speed<span><%= node["cpu"]["0"]["mhz"].to_i%> Mhz</span></li>
+  <li id='memory'>Memory<span><%=node["memory"]["total"].to_i/1024 %> MB</span></li>
+  <li id='swap'>Swap<span><%=node["memory"]["swap"]["total"].to_i/1024 %> MB</span></li>
+  <li id='hd'>HD<span><%=node["block_device"]["sda"]["size"].to_i/1024 %> MB</span></li>
+</ul>

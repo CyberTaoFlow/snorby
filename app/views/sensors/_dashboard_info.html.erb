@@ -1,3 +1,14 @@
 <div class='dashboard-header'>
   <span>INFO</span>
 </div>
+<ul class='box-list'>
+  <li id='hostname'>Hostname<span><%=node["hostname"]%></span></li>
+  <li id='ip'>IP<span><%= node["ipaddress"]%></span></li>
+  <li id='gateway'>Gateway<span><%= node["network"]["default_gateway"] %></span></li>
+  <li id='macaddress'>Mac Address<span><%= node["macaddress"]%></span></li>
+  <li id='rbVersion'>redBorder version<span><%=node["redBorder"]["rpms"]["sensor"] %></span></li>
+  <li id='uptime'>Uptime<span><%=node["uptime"] %></span></li>
+  <li id='compiled_rules'>Compiled Rules<span><%=sensor.last_compiled_rules.size %></span></li>
+  <li id='pending_rules'>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
+</ul>
+

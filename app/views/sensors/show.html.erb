@@ -1,17 +1,14 @@
 <%= title "Info #{@sensor.sensor_name}".html_safe, "Info #{@sensor.sensor_name}" %>
 
-
 <div id='dashboard' class="sensor">
-
   <div class='main grid_9'>
     <%= render :partial => 'dashboard_switch' %>
     <%= render :partial => 'dashboard_graph' %>
   </div>
-
   <div class='secondary grid_3 alpha'>
-    <%= render :partial => 'dashboard_info' %>
-    <%= render :partial => 'dashboard_load' %>
-    <%= render :partial => 'dashboard_hardware' %>
+    <%= render :partial => 'dashboard_info'    , :locals =>{:sensor=> @sensor, :node => @node} %>
+    <%= render :partial => 'dashboard_load'    , :locals =>{:sensor=> @sensor, :node => @node} %>
+    <%= render :partial => 'dashboard_hardware', :locals =>{:sensor=> @sensor, :node => @node} %>
   </div>
 
 </div>
