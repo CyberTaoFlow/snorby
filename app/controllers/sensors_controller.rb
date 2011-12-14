@@ -1,5 +1,7 @@
 class SensorsController < ApplicationController
 
+  respond_to :html, :xml, :json, :js, :csv
+
   before_filter :require_administrative_privileges, :except => [:index, :update_name]
   before_filter :create_virtual_sensors, :only => [:index]
   
@@ -30,7 +32,43 @@ class SensorsController < ApplicationController
     @sensor.update(:ipdir => params[:ip]) if @sensor
     render :text => @sensor.ipdir
   end
+
+  def update_dashboard_info
+    @sensor = Sensor.get(params[:sensor_id])
+    @role   = @sensor.chef_role unless @sensor.nil?
+    @node   = @sensor.chef_node unless @sensor.nil?
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_dashboard_rules
+    @sensor = Sensor.get(params[:sensor_id])
+    @role   = @sensor.chef_role unless @sensor.nil?
+    @node   = @sensor.chef_node unless @sensor.nil?
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_dashboard_load
+    @sensor = Sensor.get(params[:sensor_id])
+    @role   = @sensor.chef_role unless @sensor.nil?
+    @node   = @sensor.chef_node unless @sensor.nil?
+    respond_to do |format|
+      format.js
+    end
+  end
   
+  def update_dashboard_hardware
+    @sensor = Sensor.get(params[:sensor_id])
+    @role   = @sensor.chef_role unless @sensor.nil?
+    @node   = @sensor.chef_node unless @sensor.nil?
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # It destroys a sensor and its childs.
   def destroy
     @sensor = Sensor.get(params[:id])

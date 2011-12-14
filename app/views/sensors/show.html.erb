@@ -1,9 +1,9 @@
 <%= title "Info #{@sensor.sensor_name}".html_safe, "Info #{@sensor.sensor_name}" %>
 
-<div id='dashboard' class="sensor">
+<div id='dashboard' class="sensor" data=<%= @sensor.sid  %>>
   <div class='main grid_9'>
     <%= render :partial => 'dashboard_switch' %>
-    <div class='box-large round'>
+    <div id="sensor-content" class='box-large round'>
       <%= render :partial => 'dashboard_graph' %>
     </div>
   </div>
@@ -13,5 +13,6 @@
     <%= render :partial => 'dashboard_load'    , :locals =>{:sensor=> @sensor, :node => @node} %>
     <%= render :partial => 'dashboard_hardware', :locals =>{:sensor=> @sensor, :node => @node} %>
   </div>
-
 </div>
+
+

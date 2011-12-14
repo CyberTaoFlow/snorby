@@ -18,7 +18,29 @@
 
 var selected_events = [];
 var flash_message   = [];
+var loading_class   = "loading"
 var csrf = $('meta[name="csrf-token"]').attr('content');
+
+function reload_dashboard_sensor(type){
+  var sensor_id = $("#dashboard").attr("data");
+  var column = $("#dashboard .secondary")
+
+  if (!column.hasClass(loading_class)){
+    column.addClass(loading_class);
+    $.ajax({
+      url: "/sensors/" +sensor_id +"/update_dashboard_" +type,
+      data: {
+        sensor_id: sensor_id
+      },
+      error: function(data){
+        column.removeClass(loading_class);
+      },
+      success: function(data){
+        column.removeClass(loading_class);
+      }
+    });
+  }
+}
 
 function HCloader(element) {
   var $holder = $('div#' + element);
@@ -80,30 +102,6 @@ function flash (data) {
 function clear_selected_events () {
   selected_events = [];
   $('input#selected_events').val('');
-  return false;
-}
-
-function clear_selected_categories () {
-  selected_categories = [];
-  $('input#selected_categories').val('');
-  return false;
-}
-
-function clear_selected_groups () {
-  selected_groups = [];
-  $('input#selected_groups').val('');
-  return false;
-}
-
-function clear_selected_families () {
-  selected_families = [];
-  $('input#selected_families').val('');
-  return false;
-}
-
-function clear_selected_rules () {
-  selected_rules = [];
-  $('input#selected_rules').val('');
   return false;
 }
 
@@ -349,6 +347,29 @@ var Snorby = {
         set_classification(class_id);
         return false;
       });
+    },
+
+    dashboard_sensor: function() {
+      $('#dashboard-sensor-info').live('click', function() {
+        reload_dashboard_sensor("info");
+        return false;
+      });
+
+      $('#dashboard-sensor-rules').live('click', function() {
+        reload_dashboard_sensor("rules");
+        return false;
+      });
+
+      $('#dashboard-sensor-load').live('click', function() {
+        reload_dashboard_sensor("load");
+        return false;
+      });
+
+      $('#dashboard-sensor-hardware').live('click', function() {
+        reload_dashboard_sensor("hardware");
+        return false;
+      });
+
     },
 
     rules: function() {
@@ -1827,6 +1848,7 @@ jQuery(document).ready(function($) {
   Snorby.pages.dashboard();
   Snorby.pages.events();
   Snorby.pages.rules();
+  Snorby.pages.dashboard_sensor();
 
   $('.add_chosen').chosen();
 

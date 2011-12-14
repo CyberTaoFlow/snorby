@@ -55,6 +55,10 @@ Snorby::Application.routes.draw do
   root :to => "page#dashboard"
 
   resources :sensors do
+    get :update_dashboard_info
+    get :update_dashboard_rules
+    get :update_dashboard_load
+    get :update_dashboard_hardware
 
     collection do
       get :update_parent
