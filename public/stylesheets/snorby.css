@@ -4651,36 +4651,45 @@ input.success:active{
 
 #dashboard.sensor .box-holder{
     height: 70px;
+    margin-bottom: 10px;
 }
 
 #dashboard.sensor .box-holder img.background-image{
-    width: 100%;
+    width: 724px;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 5000;
+    border: 1px solid #DBDBDB;
+    -webkit-box-shadow: 0px 1px 5px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.2);
 }
 
 #dashboard.sensor .box-holder table{
     border: none;
-    width: 100%;
+    width: 724px;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 6000;
 }
 
-#dashboard.sensor .grid_9 {
+/*#dashboard.sensor .grid_9 {
     width: 700px;
-}
+}*/
 
 #dashboard.sensor .box-holder table td{
-    height: 26px;
-    line-height: 0px;
+    height: 29px;
+    line-height: 20px;
     border-bottom: none;
     color: white;
     background: none;
     width: 5%;
+}
+
+#dashboard.sensor .box-holder table td img{
+    margin: 0;
 }
 /* @end */
 

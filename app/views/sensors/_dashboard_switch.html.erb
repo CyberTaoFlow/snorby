@@ -8,20 +8,32 @@
         <% 5.times do %>
           <td></td>
         <% end %>
-        <% 4.times do %>
-          <td>
-            <img src="/images/rj-green-up-18x15.gif" alt="" />
-          </td>
+
+        <% @node[:redBorder][:segments].each do |k, v| %>
+          <% if v["bypass"] %>
+            <% 2.times do %>
+              <td>
+                <img src="/images/rj-orange-up-18x15.gif" alt="" />
+              </td>
+            <% end %>
+          <% else %>
+            <% v[:interfaces].each do |k, v| %>
+              <% if v[:status] == 'up' %>
+                <td>
+                  <img src="/images/rj-green-up-18x15.gif" alt="" />
+                </td>
+              <% else %>
+                <td>
+                  <img src="/images/rj-red-up-18x15.gif" alt="" />
+                </td>
+              <% end %>
+            <% end %>
+          <% end %>
         <% end %>
-        <% 4.times do %>
-          <td>
-            <img src="/images/rj-red-up-18x15.gif" alt="" />
-          </td>
-        <% end %>
-        <% 4.times do %>
-          <td>
-            <img src="/images/rj-green-up-18x15.gif" alt="" />
-          </td>
+
+        <% (6 - @node[:redBorder][:segments].size).times do %>
+          <td></td>
+          <td></td>
         <% end %>
         <td></td>
       </tr>
