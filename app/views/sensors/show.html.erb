@@ -3,7 +3,9 @@
 <div id='dashboard' class="sensor">
   <div class='main grid_9'>
     <%= render :partial => 'dashboard_switch' %>
-    <%= render :partial => 'dashboard_graph' %>
+    <div class='box-large round'>
+      <%= render :partial => 'dashboard_graph' %>
+    </div>
   </div>
   <div class='secondary grid_3 alpha'>
     <%= render :partial => 'dashboard_info'    , :locals =>{:sensor=> @sensor, :node => @node} %>
