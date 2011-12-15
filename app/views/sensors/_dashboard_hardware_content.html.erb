@@ -1,1 +1,31 @@
-contenido de hardware
+<div class="boxit">
+  <table id="cpuTable" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th>Name</th>
+      <th>Model name</th>
+      <th>Cache</th>
+      <th>Core ID</th>
+      <th>Cores</th>
+      <th>Physycal CPU</th>
+    </tr>
+    <tbody class='cpus'>
+      <% for cpu_index in 0..(node[:cpu][:total]-1) do %>
+        <%= render :partial => 'dashboard_hardware_content_cpu', :locals =>{:cpu_info=> node[:cpu]["#{cpu_index}"], :cpu_index=>cpu_index} %>
+      <% end %>
+    </tbody>
+  </table>
+  <table id="hdTable" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th>Name</th>
+      <th>Dev</th>
+      <th>Type</th>
+      <th>Size</th>
+      <th>Used</th>
+    </tr>
+    <tbody class='cpus'>
+      <%- [ node[:filesystem]["/dev/mapper/VolGroup-lv_root"], node[:filesystem]["/dev/mapper/VolGroup-lv_home"], node[:filesystem]["/dev/sda1"] ]. each do |x| %>
+        <%= render :partial => 'dashboard_hardware_content_hd', :locals =>{:hd_info=> x} %>
+      <%- end %>
+    </tbody>
+  </table>
+</div>

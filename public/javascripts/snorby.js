@@ -35,6 +35,12 @@ function reload_dashboard_sensor(type){
         sensor_id: sensor_id
       },
       error: function(data){
+        flash_message.push({
+          type: 'error'
+        });
+        flash();
+        $.scrollTo('#header', 500);
+
         $("#dashboard-sensor-other-content").fadeIn('slow');
         column.removeClass(loading_class);
       },
