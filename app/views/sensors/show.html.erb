@@ -3,12 +3,14 @@
 <div id='dashboard' class="sensor" data=<%= @sensor.sid  %>>
   <div class='main grid_9'>
     <%= render :partial => 'dashboard_switch' %>
-    <div id="sensor-content" class='box-large round'>
+
+    <div id="sensor-content">
       <div id='dashboard-sensor-info-content' class="content">
         <%= render :partial => 'dashboard_info_content' %>
       </div>
       <div id='dashboard-sensor-other-content' class="content" style="display:none"></div>
     </div>
+
   </div>
   <div class='secondary grid_3 alpha'>
     <%= render :partial => 'dashboard_info'    , :locals =>{:sensor=> @sensor, :node => @node} %>

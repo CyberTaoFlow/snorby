@@ -20,10 +20,19 @@ class SensorsController < ApplicationController
     @role   = @sensor.chef_role
     @node   = @sensor.chef_node
 
-    @range  = params[:range].blank? ? 'last_24' : params[:range]
+    @range  = 'last_24'
 
     cache           = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
     sensor_metrics  = cache.sensor_metrics(@range.to_sym)
+
+    @src_metrics = cache.src_metrics
+    @dst_metrics = cache.dst_metrics
+
+    @tcp  = cache.protocol_count(:tcp, @range.to_sym)
+    @udp  = cache.protocol_count(:udp, @range.to_sym)
+    @icmp = cache.protocol_count(:icmp, @range.to_sym)
+
+    @signature_metrics = cache.signature_metrics
 
     @axis   = sensor_metrics.last[:range].join(',')
     @high   = cache.severity_count(:high, @range.to_sym)
@@ -42,25 +51,6 @@ class SensorsController < ApplicationController
     @sensor = Sensor.get(params[:id])
     @sensor.update(:ipdir => params[:ip]) if @sensor
     render :text => @sensor.ipdir
-  end
-
-  def update_dashboard_info
-    update_dashboard_type "info"
-    
-    @range  = params[:range].blank? ? 'last_24' : params[:range]
-
-    cache           = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
-    sensor_metrics  = cache.sensor_metrics(@range.to_sym)
-
-    @axis   = sensor_metrics.last[:range].join(',')
-    @high   = cache.severity_count(:high, @range.to_sym)
-    @medium = cache.severity_count(:medium, @range.to_sym)
-    @low    = cache.severity_count(:low, @range.to_sym)
-    
-    respond_to do |format|
-        format.js
-    end
-
   end
 
   def update_dashboard_rules

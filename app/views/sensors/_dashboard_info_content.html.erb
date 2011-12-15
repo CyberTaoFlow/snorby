@@ -1,9 +1,28 @@
 <% javascript :footer, 'sparkline', 'highcharts' %>
-<%= render :partial => 'page/graph_severity.html.erb' %>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-      $('div#severity-graph').show();
-      return false;
-    });
-</script>
+<div id="box-tabs">
+
+  <ul id="box-menu">
+    <li class='active'><%= link_to "Sensors", '#', :class => 'show_events_graph' %></li>
+    <li><%= link_to "Severities", '#', :class => 'show_severities_graph' %></li>
+    <li><%= link_to "Protocols", '#', :class => 'show_protocol_graph' %></li>
+    <li><%= link_to "Signatures", '#', :class => 'show_signature_graph' %></li>
+    <li><%= link_to "Sources", '#', :class => 'show_source_ips_graph' %></li>
+    <li><%= link_to "Destinations", '#', :class => 'show_destination_ips_graph' %></li>
+  </ul>
+
+</div>
+
+<div class='box-large round'>
+
+  <div class='box-large-inside'>
+    <%= render :partial => 'page/graph_event.html.erb' %>
+    <%= render :partial => 'page/graph_severity.html.erb' %>
+    <%= render :partial => 'page/graph_protocol.html.erb' %>
+    <%= render :partial => 'page/graph_signature.html.erb' %>
+    <%= render :partial => 'page/graph_source_ips.html.erb' %>
+    <%= render :partial => 'page/graph_destination_ips.html.erb' %>
+
+  </div>
+
+</div>
