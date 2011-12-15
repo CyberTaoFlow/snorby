@@ -1,0 +1,9 @@
+<%- unless hd_info.nil? %>
+  <tr>
+    <td><%=hd_info[:mount]%></td>
+    <td></td>
+    <td><%=hd_info[:fs_type]%></td>
+    <td><%=(hd_info[:kb_size].to_f/1024/1024).to_f.round(2)%> GB</td>
+    <td><%=hd_info[:percent_used]%></td>
+  </tr>
+<%- end %>
