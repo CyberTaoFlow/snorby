@@ -1,15 +1,15 @@
 <% content_for :footer do %>
 
 	<script type="text/javascript">
-    $('#sev1-graph').sparkline([<%= @high.join(',') %>], { 
+    $('#sev1-graph').sparkline([<%= @high_snmp.join(',') %>], {
         barWidth: 6, height: 40, type: 'bar', barColor: sev1_bg_color 
      });
     
-    $('#sev2-graph').sparkline([<%= @medium.join(',') %>], { 
+    $('#sev2-graph').sparkline([<%= @medium_snmp.join(',') %>], {
       barWidth: 6, height: 40, type: 'bar', barColor: sev2_bg_color 
     });
 
-    $('#sev3-graph').sparkline([<%= @low.join(',') %>], { 
+    $('#sev3-graph').sparkline([<%= @low_snmp.join(',') %>], {
       barWidth: 6, height: 40, type: 'bar', barColor: sev3_bg_color 
     });
 	</script>
@@ -22,7 +22,7 @@
 		<div class='data'>
 			
 			<div id='box-count'>
-				<%= @high.sum %>
+				<%= @high_snmp.sum %>
 			</div>
 			
 			<div id="box-title">
@@ -35,7 +35,7 @@
 	</div>
 	
 	<div class='footer'>
-	<span><%= @high.sum %> / <%= @event_count %></span> 
+	<span><%= @high_snmp.sum %> / <%= @snmp_count %></span>
 	</div>
 	
 </div>
@@ -46,7 +46,7 @@
 		<div class='data'>
 			
 			<div id='box-count'>
-				<%= @medium.sum %>
+				<%= @medium_snmp.sum %>
 			</div>
 			
 			<div id="box-title">
@@ -59,7 +59,7 @@
 	</div>
 	
 	<div class='footer'>
-	<span><%= @medium.sum %> / <%= @event_count %></span> 
+	<span><%= @medium_snmp.sum %> / <%= @snmp_count %></span>
 	</div>
 	
 </div>
@@ -70,7 +70,7 @@
 		<div class='data'>
 			
 			<div id='box-count'>
-				<%= @low.sum %>
+				<%= @low_snmp.sum %>
 			</div>
 			
 			<div id="box-title">
@@ -83,7 +83,7 @@
 	</div>
 	
 	<div class='footer'>
-	<span><%= @low.sum %> / <%= @event_count %></span> 
+	<span><%= @low_snmp.sum %> / <%= @snmp_count %></span>
 	</div>
 	
 </div>

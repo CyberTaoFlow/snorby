@@ -143,27 +143,27 @@
             series: [{
                 name: 'High Severity',
                 color: sev1_bg_color,
-                data: [<%= @high.join(', ') %>]
+                data: [<%= @high_snmp.join(', ') %>]
               },{
                 name: 'Medium Severity',
                 color: sev2_bg_color,
-                data: [<%= @medium.join(', ') %>]
+                data: [<%= @medium_snmp.join(', ') %>]
               },{
                 name: 'Low Severity',
                 color: sev3_bg_color,
-                data: [<%= @low.join(', ') %>]
+                data: [<%= @low_snmp.join(', ') %>]
               }]
           });
 		
-          $('#sev1-graph').sparkline([<%= @high.join(',') %>], {
+          $('#sev1-graph').sparkline([<%= @high_snmp.join(',') %>], {
               barWidth: 6, height: 40, type: 'bar', barColor: sev1_bg_color
            });
 
-          $('#sev2-graph').sparkline([<%= @medium.join(',') %>], {
+          $('#sev2-graph').sparkline([<%= @medium_snmp.join(',') %>], {
             barWidth: 6, height: 40, type: 'bar', barColor: sev2_bg_color
           });
 
-          $('#sev3-graph').sparkline([<%= @low.join(',') %>], {
+          $('#sev3-graph').sparkline([<%= @low_snmp.join(',') %>], {
             barWidth: 6, height: 40, type: 'bar', barColor: sev3_bg_color
           });
 		
@@ -195,16 +195,16 @@
   <h2>Severities</h2>
   <table border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <th>High Severity (<%= @high.sum %>)</th>
-      <th>Medium Severity (<%= @medium.sum %>)</th>
-      <th>Low Severity (<%= @low.sum %>)</th>
+      <th>High Severity (<%= @high_snmp.sum %>)</th>
+      <th>Medium Severity (<%= @medium_snmp.sum %>)</th>
+      <th>Low Severity (<%= @low_snmp.sum %>)</th>
       <th>Total</th>
     </tr>
     <tr>
       <td style='width:200px'><div id="sev1-graph" style='float:left;'></div></td>
       <td style='width:200px'><div id="sev2-graph" style='float:left;'></div></td>
       <td style='width:200px'><div id="sev3-graph" style='float:left;'></div></td>
-      <td style='width:100px'><%= @event_count %></td>
+      <td style='width:100px'><%= @snmp_count %></td>
     </tr>
   </table>
 

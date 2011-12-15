@@ -25,19 +25,10 @@ class SensorsController < ApplicationController
     cache           = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
     sensor_metrics  = cache.sensor_metrics(@range.to_sym)
 
-    @src_metrics = cache.src_metrics
-    @dst_metrics = cache.dst_metrics
-
-    @tcp  = cache.protocol_count(:tcp, @range.to_sym)
-    @udp  = cache.protocol_count(:udp, @range.to_sym)
-    @icmp = cache.protocol_count(:icmp, @range.to_sym)
-
-    @signature_metrics = cache.signature_metrics
-
     @axis   = sensor_metrics.last[:range].join(',')
-    @high   = cache.severity_count(:high, @range.to_sym)
-    @medium = cache.severity_count(:medium, @range.to_sym)
-    @low    = cache.severity_count(:low, @range.to_sym)
+
+    event_values(cache)
+    snmp_values
 
   end
 
@@ -139,5 +130,30 @@ class SensorsController < ApplicationController
       @node   = @sensor.chef_node unless @sensor.nil?
     end
 
+    def event_values (cache)
+      @src_metrics = cache.src_metrics
+      @dst_metrics = cache.dst_metrics
+
+      @tcp  = cache.protocol_count(:tcp, @range.to_sym)
+      @udp  = cache.protocol_count(:udp, @range.to_sym)
+      @icmp = cache.protocol_count(:icmp, @range.to_sym)
+
+      @signature_metrics = cache.signature_metrics
+
+      @high   = cache.severity_count(:high, @range.to_sym)
+      @medium = cache.severity_count(:medium, @range.to_sym)
+      @low    = cache.severity_count(:low, @range.to_sym)
+    end
+
+    def snmp_values
+      @snmp = Snmp.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.virtual_sensors)
+      @metrics = @snmp.metrics(@range.to_sym)
+
+      @high_snmp    = @snmp.severity_count(:high, @range.to_sym)
+      @medium_snmp  = @snmp.severity_count(:medium, @range.to_sym)
+      @low_snmp     = @snmp.severity_count(:low, @range.to_sym)
+      
+      @snmp_count = @high_snmp.sum + @medium_snmp.sum + @low_snmp.sum
+    end
 
 end

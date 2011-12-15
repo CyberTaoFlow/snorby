@@ -4,7 +4,7 @@
 		
 		chart5 = new Highcharts.Chart({
 			chart: {
-		    	renderTo: 'severity-graph',
+		    	renderTo: 'severity-snmp-graph',
 		        defaultSeriesType: 'spline',
 		        marginRight: 80,
 				marginLeft: 80,
@@ -62,15 +62,15 @@
         	series: [{
           		name: 'High Severity',
           		color: sev1_bg_color,
-          		data: [<%= @high.join(', ') %>]
+          		data: [<%= @high_snmp.join(', ') %>]
         	},{
           		name: 'Medium Severity',
           		color: sev2_bg_color,
-          		data: [<%= @medium.join(', ') %>]
+          		data: [<%= @medium_snmp.join(', ') %>]
         	},{
           		name: 'Low Severity',
           		color: sev3_bg_color,
-          		data: [<%= @low.join(', ') %>]
+          		data: [<%= @low_snmp.join(', ') %>]
         	}]
 		});
 		
@@ -78,4 +78,4 @@
 
 <% end %>
 
-<div id='severity-graph' style='display:none;' class='dashboard-graph'></div>
+<div id='severity-snmp-graph' style='display:none;' class='dashboard-graph snmp'></div>

@@ -80,7 +80,7 @@
       <ul id="box-menu">
 
         <% @metrics.each_with_index do |metric, index| %>
-          <li <%= index == 0 ? "class = 'active'" : nil %> ><%= link_to Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"], "#", :class => 'show_metric', :data_index => index %></li>
+          <li <%= index == 0 ? "class = 'active'" : nil%> ><%= link_to Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"], "#", :class => 'show_metric', :data_index => index %></li>
         <% end %>
 
         <li><%= link_to "Severities", '#', :class => 'show_severity_graph' %></li>

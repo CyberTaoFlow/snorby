@@ -1,1 +1,28 @@
-contenido de load
+<div id="box-tabs">
+
+      <ul id="box-menu">
+
+        <% @metrics.each_with_index do |metric, index| %>
+          <li <%= index == 0 ? "class = 'active snmp'" : "class = 'snmp'" %> ><%= link_to Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"], "#", :class => 'show_metric', :data_index => index %></li>
+        <% end %>
+
+        <li class='snmp'><%= link_to "Severities", '#', :class => 'show_severity_graph' %></li>
+      </ul>
+
+</div>
+
+<div class='box-large round'>
+
+  <div class='box-large-inside'>
+
+    <% @metrics.each_with_index do |metric, index| %>
+
+      <%= render :partial => 'snmps/graph_metric', :locals => {:metric => metric, :index => index}  %>
+
+    <% end %>
+
+    <%= render :partial => 'snmps/graph_severity'%>
+
+  </div>
+
+</div>

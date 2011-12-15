@@ -75,7 +75,15 @@ class Snmp
 
     all(:timestamp.gte => start_time, :timestamp.lte => end_time)
   end
-  
+
+  def self.last_24(first=nil,last=nil)
+    current = Time.now
+    end_time = last ? last : current
+    start_time = first ? first : current.yesterday
+
+    all(:timestamp.gte => start_time, :timestamp.lte => end_time)
+  end
+
   def self.today
     all(:timestamp.gte => Time.now.beginning_of_day, :timestamp.lte => Time.now.end_of_day)
   end
@@ -158,6 +166,9 @@ class Snmp
     when :last_3_hours
       return collection.group_by { |x| "#{x.timestamp.hour}:#{x.timestamp.min / 10}0" } unless sensor
       return collection.all(:sid => sensor.sid).group_by { |x| "#{x.timestamp.hour}:#{x.timestamp.min / 10}0" }
+    when :last_24
+      return collection.group_by { |x| x.timestamp.hour } unless sensor
+      return collection.all(:sid => sensor.sid).group_by { |x| x.timestamp.hour }
     when :week, :last_week
       return collection.group_by { |x| x.timestamp.day } unless sensor
       return collection.all(:sid => sensor.sid).group_by { |x| x.timestamp.day }
@@ -182,7 +193,17 @@ class Snmp
       Range.new((Time.now - 3.hours).to_i, Time.now.to_i).step(10.minutes).each do |i|
         block.call("#{Time.at(i).hour}:#{Time.at(i).min / 10}0") if block
       end
-      
+
+    when :last_24
+
+      Range.new((Time.now.yesterday).to_i, Time.now.to_i).step(1.hour).each do |i|
+        block.call("#{Time.at(i).hour}") if block
+      end
+
+#      ((Time.now.yesterday.hour)..(Time.now.hour)).to_a.each do |i|
+#        block.call(i) if block
+#      end
+
     when :week
 
       ((Time.now.beginning_of_week.to_date)..(Time.now.end_of_week.to_date)).to_a.each do |i|

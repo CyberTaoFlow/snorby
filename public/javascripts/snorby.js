@@ -28,17 +28,18 @@ function reload_dashboard_sensor(type){
   if (!column.hasClass(loading_class)){
     column.addClass(loading_class);
     $("#dashboard-sensor-info-content").fadeOut('slow')
+    $("#dashboard-sensor-load-content").fadeOut('slow')
     $.ajax({
       url: "/sensors/" +sensor_id +"/update_dashboard_" +type,
       data: {
         sensor_id: sensor_id
       },
       error: function(data){
-        $("#dashboard-sensor-other-content").fadeOut('slow');
+        $("#dashboard-sensor-other-content").fadeIn('slow');
         column.removeClass(loading_class);
       },
       success: function(data){
-        $("#dashboard-sensor-other-content").fadeOut('slow');
+        $("#dashboard-sensor-other-content").fadeIn('slow');
         column.removeClass(loading_class);
       }
     });
@@ -357,10 +358,9 @@ var Snorby = {
         var column = $("#dashboard .secondary")
         if (!column.hasClass(loading_class)){
           column.addClass(loading_class);
-          $("#dashboard-sensor-other-content").fadeOut('slow', function() {
-            $("#dashboard-sensor-info-content").fadeIn('slow', function() {
-              column.removeClass(loading_class);
-            });
+          $("#dashboard-sensor-other-content, #dashboard-sensor-load-content").hide();
+          $("#dashboard-sensor-info-content").fadeIn('slow', function() {
+            column.removeClass(loading_class);
           });
         }
         
@@ -373,7 +373,14 @@ var Snorby = {
       });
 
       $('#dashboard-sensor-load').live('click', function() {
-        reload_dashboard_sensor("load");
+        var column = $("#dashboard .secondary")
+        if (!column.hasClass(loading_class)){
+          column.addClass(loading_class);
+          $("#dashboard-sensor-other-content, #dashboard-sensor-info-content").hide();
+          $("#dashboard-sensor-load-content").fadeIn('slow', function() {
+            column.removeClass(loading_class);
+          });
+        }
         return false;
       });
 
@@ -615,72 +622,72 @@ var Snorby = {
 			
       $('a.show_events_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#events-graph').show();
         return false;
       });
 
       $('a.show_map_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#geoip-graph').show();
         return false;
       });
 			
       $('a.show_severities_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#severity-graph').show();
         return false;
       });
 			
       $('a.show_protocol_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#protocol-graph').show();
         return false;
       });
 			
       $('a.show_signature_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#signature-graph').show();
         return false;
       });
 			
       $('a.show_classification_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#classification-graph').show();
         return false;
       });
 			
       $('a.show_source_ips_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#source-ips-graph').show();
         return false;
       });
 			
       $('a.show_destination_ips_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li').not('.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph').not('.snmp').hide();
         $('div#destination-ips-graph').show();
         return false;
       });
@@ -688,19 +695,19 @@ var Snorby = {
       $('a.show_metric').live('click', function(e){
         e.preventDefault();
         var data_index = $(this).attr('data_index');
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
+        $('div.dashboard-graph.snmp').hide();
         $('div#metric-graph_'+ data_index).show();
         return false;
       });
 			
       $('a.show_severity_graph').live('click', function(e) {
         e.preventDefault();
-        $('#box-menu li').removeClass('active');
+        $('#box-menu li.snmp').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('div.dashboard-graph').hide();
-        $('div#severity-graph').show();
+        $('div.dashboard-graph.snmp').hide();
+        $('div#severity-snmp-graph').show();
         return false;
       });
 			

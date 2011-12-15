@@ -21,11 +21,11 @@ class SnmpsController < ApplicationController
 
     @metrics = @snmp.metrics(@range.to_sym)
     
-    @high = @snmp.severity_count(:high, @range.to_sym)
-    @medium = @snmp.severity_count(:medium, @range.to_sym)
-    @low = @snmp.severity_count(:low, @range.to_sym)
+    @high_snmp    = @snmp.severity_count(:high, @range.to_sym)
+    @medium_snmp  = @snmp.severity_count(:medium, @range.to_sym)
+    @low_snmp     = @snmp.severity_count(:low, @range.to_sym)
     
-    @event_count = @high.sum + @medium.sum + @low.sum
+    @snmp_count = @high_snmp.sum + @medium_snmp.sum + @low_snmp.sum
     
     if @metrics.first.last and @range == 'last_3_hours'
       # take only half of the items for axis
