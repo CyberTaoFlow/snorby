@@ -6,7 +6,7 @@
     <li id='ip'>IP<span><%= node["ipaddress"]%></span></li>
     <li id='macaddress'>Mac Address<span><%= node["macaddress"]%></span></li>
     <li id='rbVersion'>redBorder version<span><%=node["redBorder"]["rpms"]["sensor"] %></span></li>
-    <li id='uptime'>Uptime<span><%=node["uptime"] %></span></li>
+    <li id='uptime'>Uptime<span><%=node["uptime"].gsub(/.?[0-9]{2} seconds?/,"") %></span></li>
   </ul>
 </div>
 

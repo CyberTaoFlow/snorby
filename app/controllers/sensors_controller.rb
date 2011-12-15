@@ -45,39 +45,19 @@ class SensorsController < ApplicationController
   end
 
   def update_dashboard_info
-    @sensor = Sensor.get(params[:sensor_id])
-    @role   = @sensor.chef_role unless @sensor.nil?
-    @node   = @sensor.chef_node unless @sensor.nil?
-    respond_to do |format|
-      format.js
-    end
+    update_dashboard_type "info"
   end
 
   def update_dashboard_rules
-    @sensor = Sensor.get(params[:sensor_id])
-    @role   = @sensor.chef_role unless @sensor.nil?
-    @node   = @sensor.chef_node unless @sensor.nil?
-    respond_to do |format|
-      format.js
-    end
+    update_dashboard_type "rules"
   end
 
   def update_dashboard_load
-    @sensor = Sensor.get(params[:sensor_id])
-    @role   = @sensor.chef_role unless @sensor.nil?
-    @node   = @sensor.chef_node unless @sensor.nil?
-    respond_to do |format|
-      format.js
-    end
+    update_dashboard_type "load"
   end
   
   def update_dashboard_hardware
-    @sensor = Sensor.get(params[:sensor_id])
-    @role   = @sensor.chef_role unless @sensor.nil?
-    @node   = @sensor.chef_node unless @sensor.nil?
-    respond_to do |format|
-      format.js
-    end
+    update_dashboard_type "hardware"
   end
 
   # It destroys a sensor and its childs.
@@ -147,5 +127,15 @@ class SensorsController < ApplicationController
       # Needed to reload the object. Without that, index need to be reload twice to view the sensors created.
       redirect_to sensors_path if sensors.present?
     end
+
+    def update_dashboard_type(type=nil)
+      @sensor = Sensor.get(params[:sensor_id])
+      @role   = @sensor.chef_role unless @sensor.nil?
+      @node   = @sensor.chef_node unless @sensor.nil?
+      respond_to do |format|
+        format.js
+      end
+    end
+
 
 end

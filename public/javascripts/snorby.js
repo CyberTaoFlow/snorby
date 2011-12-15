@@ -27,16 +27,20 @@ function reload_dashboard_sensor(type){
 
   if (!column.hasClass(loading_class)){
     column.addClass(loading_class);
+    $("#sensor-content").fadeOut('slow')
     $.ajax({
       url: "/sensors/" +sensor_id +"/update_dashboard_" +type,
       data: {
         sensor_id: sensor_id
       },
       error: function(data){
+        $("#sensor-content").fadeIn('fast')
         column.removeClass(loading_class);
       },
       success: function(data){
+        $("#sensor-content").fadeIn('fast')
         column.removeClass(loading_class);
+
       }
     });
   }
@@ -123,7 +127,7 @@ function set_classification (class_id) {
       if (current_page == "index") {
         clear_selected_events();
         $.getScript('/events?page=' + current_page_number);
-      } else if (current_page == "queue") {
+      }else if (current_page == "queue") {
         clear_selected_events();
         $.getScript('/events/queue?page=' + current_page_number);
       } else if (current_page == "history") {
