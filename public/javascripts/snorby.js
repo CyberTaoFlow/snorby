@@ -24,23 +24,22 @@ var csrf = $('meta[name="csrf-token"]').attr('content');
 function reload_dashboard_sensor(type){
   var sensor_id = $("#dashboard").attr("data");
   var column = $("#dashboard .secondary")
-
+  
   if (!column.hasClass(loading_class)){
     column.addClass(loading_class);
-    $("#sensor-content").fadeOut('slow')
+    $("#dashboard-sensor-info-content").fadeOut('slow')
     $.ajax({
       url: "/sensors/" +sensor_id +"/update_dashboard_" +type,
       data: {
         sensor_id: sensor_id
       },
       error: function(data){
-        $("#sensor-content").fadeIn('fast')
+        $("#dashboard-sensor-other-content").fadeOut('slow');
         column.removeClass(loading_class);
       },
       success: function(data){
-        $("#sensor-content").fadeIn('fast')
+        $("#dashboard-sensor-other-content").fadeOut('slow');
         column.removeClass(loading_class);
-
       }
     });
   }
@@ -355,7 +354,16 @@ var Snorby = {
 
     dashboard_sensor: function() {
       $('#dashboard-sensor-info').live('click', function() {
-        reload_dashboard_sensor("info");
+        var column = $("#dashboard .secondary")
+        if (!column.hasClass(loading_class)){
+          column.addClass(loading_class);
+          $("#dashboard-sensor-other-content").fadeOut('slow', function() {
+            $("#dashboard-sensor-info-content").fadeIn('slow', function() {
+              column.removeClass(loading_class);
+            });
+          });
+        }
+        
         return false;
       });
 

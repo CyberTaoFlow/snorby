@@ -12,11 +12,12 @@
         <%-end%>
       <%-end%>
     <%-else%>
-      <li id='compiled_rules'>Compiled Rules<span><%=rules.size %></span></li>
+      <li>Compiled Rules<span><%=rules.size %></span></li>
     <%-end %>
     <%- unless sensor.last_compilation.nil? %>
-      <li id='compiled_rules'>Last Compilation<span><%=sensor.last_compilation.timestamp.to_formatted_s(:short) %></span></li>
+      <li>Last Compilation<span><%=sensor.last_compilation.timestamp.to_formatted_s(:short) %></span></li>
     <%-end %>
-    <li id='pending_rules'>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
+    <li>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
+    <li>Events<span><%=sensor.events.size %></span></li>
   </ul>
 </div>
