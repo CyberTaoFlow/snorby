@@ -168,7 +168,7 @@ class Snmp
       return collection.all(:sid => sensor.sid).group_by { |x| "#{x.timestamp.hour}:#{x.timestamp.min / 10}0" }
     when :last_24
       return collection.group_by { |x| x.timestamp.hour } unless sensor
-      return collection.all(:sid => sensor.sid).group_by { |x| x.timestamp.hour }
+      return collection.all(:sid => sensor.sid).group_by { |x| "#{x.timestamp.hour}" }
     when :week, :last_week
       return collection.group_by { |x| x.timestamp.day } unless sensor
       return collection.all(:sid => sensor.sid).group_by { |x| x.timestamp.day }
@@ -196,7 +196,7 @@ class Snmp
 
     when :last_24
 
-      Range.new((Time.now.yesterday).to_i, Time.now.to_i).step(1.hour).each do |i|
+      Range.new((Time.now.yesterday + 1.hour).to_i, Time.now.to_i).step(1.hour).each do |i|
         block.call("#{Time.at(i).hour}") if block
       end
 
