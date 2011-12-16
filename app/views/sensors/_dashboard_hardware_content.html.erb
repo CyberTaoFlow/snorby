@@ -1,31 +1,113 @@
 <div class="boxit">
-  <table id="cpuTable" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <th>Name</th>
-      <th>Model name</th>
-      <th>Cache</th>
-      <th>Core ID</th>
-      <th>Cores</th>
-      <th>Physycal CPU</th>
-    </tr>
-    <tbody class='cpus'>
-      <% for cpu_index in 0..(node[:cpu][:total]-1) do %>
-        <%= render :partial => 'dashboard_hardware_content_cpu', :locals =>{:cpu_info=> node[:cpu]["#{cpu_index}"], :cpu_index=>cpu_index} %>
-      <% end %>
-    </tbody>
-  </table>
-  <table id="hdTable" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <th>Name</th>
-      <th>Dev</th>
-      <th>Type</th>
-      <th>Size</th>
-      <th>Used</th>
-    </tr>
-    <tbody class='cpus'>
-      <%- [ node[:filesystem]["/dev/mapper/VolGroup-lv_root"], node[:filesystem]["/dev/mapper/VolGroup-lv_home"], node[:filesystem]["/dev/sda1"] ]. each do |x| %>
-        <%= render :partial => 'dashboard_hardware_content_hd', :locals =>{:hd_info=> x} %>
-      <%- end %>
-    </tbody>
-  </table>
+  <ul class="table categories">
+    <div class="content">
+      <li class="category highlight">
+        <div class="row">
+          <div class="category-name click">Segments</div>
+        </div>
+        <ul class="table">
+          <div class="content">
+            <li class="group">
+              <div class="row">
+                <table id="cpuTable" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th>Processor</th>
+                    <th>Type</th>
+                    <th>Bypass</th>
+                    <th>MTU</th>
+                  </tr>
+                  <tbody class='cpus'>
+                    <% node[:redBorder][:segments].each do |key, segment|  %>
+                      <%= render :partial => 'dashboard_hardware_content_segment', :locals =>{:node=> node, :segment=>segment, :name=>key} %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </li>
+      <li class="category">
+        <div class="row">
+          <div class="category-name click">CPU</div>
+        </div>
+        <ul class="table">
+          <div class="content">
+            <li class="group">
+              <div class="row">
+                <table id="cpuTable" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th>Name</th>
+                    <th>Model name</th>
+                    <th>Cache</th>
+                    <th>Core ID</th>
+                    <th>Physycal CPU</th>
+                  </tr>
+                  <tbody class='cpus'>
+                    <% for cpu_index in 0..(node[:cpu][:total]-1) do %>
+                      <%= render :partial => 'dashboard_hardware_content_cpu', :locals =>{:cpu_info=> node[:cpu]["#{cpu_index}"], :cpu_index=>cpu_index} %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </li>
+      <li class="category">
+        <div class="row">
+          <div class="data">Memory</div>
+        </div>
+        <ul class="table">
+          <div class="content">
+            <li class="group">
+              <div class="row">
+                <table id="memoryTable" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th>Type</th>
+                    <th>Total</th>
+                    <th>Used</th>
+                    <th>Free</th>
+                    <th>Buffers</th>
+                    <th>Cached</th>
+                  </tr>
+                  <tbody class='memory'>
+                    <%= render :partial => 'dashboard_hardware_content_memory', :locals =>{:mem_info=> node[:memory], :mem_type=>"RAM"} %>
+                    <%= render :partial => 'dashboard_hardware_content_memory', :locals =>{:mem_info=> node[:memory][:swap], :mem_type=>"Swap"} %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </li>
+      <li class="category">
+        <div class="row">
+          <div class="data">Filesystem</div>
+        </div>
+        <ul class="table">
+          <div class="content">
+            <li class="group">
+              <div class="row">
+                <table id="hdTable" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th>Name</th>
+                    <th>Dev</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Used</th>
+                  </tr>
+                  <tbody class='filesystem'>
+                    <%- [ node[:filesystem]["/dev/mapper/VolGroup-lv_root"], node[:filesystem]["/dev/mapper/VolGroup-lv_home"], node[:filesystem]["/dev/sda1"] ]. each do |x| %>
+                      <%= render :partial => 'dashboard_hardware_content_hd', :locals =>{:hd_info=> x} %>
+                    <%- end %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </li>
+    </div>
+  </ul>
 </div>
