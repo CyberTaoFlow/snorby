@@ -4720,6 +4720,15 @@ input.success:active{
     color: #469DFC;
     text-shadow: none;
 }
+
+#dashboard-sensor-other-content {
+  width: 724px;
+}
+
+#dashboard-sensor-other-content ul.table {
+  width: auto;
+}
+
 /* @end */
 
 /* @end */

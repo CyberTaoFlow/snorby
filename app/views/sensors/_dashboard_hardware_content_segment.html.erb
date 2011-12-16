@@ -1,0 +1,8 @@
+<%- unless segment.nil? %>
+  <tr>
+    <td><%=name%></td>
+    <td><%=node[:network][:interfaces][name][:encapsulation]%></td>
+    <td><%=segment[:bypass]%></td>
+    <td><%=node[:network][:interfaces][name][:mtu]%></td>
+  </tr>
+<%- end %>
