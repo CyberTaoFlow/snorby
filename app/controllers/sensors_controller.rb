@@ -31,8 +31,6 @@ class SensorsController < ApplicationController
       @axis = @sensor_metrics.last[:range].join(',')
     elsif @metrics.last
       @axis = @metrics.first.last[:range].join(',')
-    else
-
     end
 
   end
