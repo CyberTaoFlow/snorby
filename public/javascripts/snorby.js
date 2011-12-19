@@ -27,26 +27,32 @@ function reload_dashboard_sensor(type){
   
   if (!column.hasClass(loading_class)){
     column.addClass(loading_class);
-    $("#dashboard-sensor-info-content").fadeOut('slow')
-    $("#dashboard-sensor-load-content").fadeOut('slow')
+    var header_comp = $("#dashboard-sensor-" +type +" .dashboard-header .loading");
+    header_comp.html('<img src="/images/icons/pager.gif">');
     $.ajax({
       url: "/sensors/" +sensor_id +"/update_dashboard_" +type,
       data: {
         sensor_id: sensor_id
       },
       error: function(data){
+        header_comp.html("");
         flash_message.push({
           type: 'error'
         });
         flash();
         $.scrollTo('#header', 500);
 
-        $("#dashboard-sensor-other-content").fadeIn('slow');
+        //$("#dashboard-sensor-info-content").fadeOut('slow')
+        //$("#dashboard-sensor-load-content").fadeOut('slow')
+        //$("#dashboard-sensor-other-content").fadeIn('slow');
         column.removeClass(loading_class);
       },
       success: function(data){
+        $("#dashboard-sensor-info-content").fadeOut('slow')
+        $("#dashboard-sensor-load-content").fadeOut('slow')
         $("#dashboard-sensor-other-content").fadeIn('slow');
         column.removeClass(loading_class);
+        header_comp.html("");
       }
     });
   }
