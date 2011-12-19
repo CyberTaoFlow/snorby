@@ -4729,6 +4729,18 @@ input.success:active{
   width: auto;
 }
 
+#dashboard-sensor-other-content ul.table div.content li.highlight > div.row {
+  background-color: #414346;
+  border: 1px solid white;
+  background-image: none;
+  color: white;
+  font-weight: bold;
+}
+
+#dashboard-sensor-other-content ul.table div.content li.highlight > div.row > div{
+  margin-left: 5px;
+}
+
 /* @end */
 
 /* @end */
