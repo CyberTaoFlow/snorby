@@ -99,7 +99,7 @@
         <span> Top 5 <%= Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"] %> Sensors </span>
       </div>
       <ul class="box-list">
-        <% metric.map {|x| [x[:name], x[:data].sum / x[:data].count]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
+        <% metric.map {|x| [x[:name], x[:data].sum{|s| s.nil? ? 0 : s} / x[:data].count{|c| c.present?}]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
           <li>
             <%= sensor[0] %>
             <span> <%= sensor[1].round(2) %> </span>

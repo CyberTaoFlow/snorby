@@ -150,7 +150,7 @@ class Snmp
           if snmp.has_key?(i)
             count << (snmp[i].map{|d| d.value.to_f}.sum / snmp[i].count).round(2)
           else
-            count << 0
+            count << nil
           end
 
         end
