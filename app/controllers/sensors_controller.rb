@@ -22,7 +22,7 @@ class SensorsController < ApplicationController
 
     @range  = 'last_24'
 
-    cache           = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
+    cache = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
 
     event_values(cache)
     snmp_values
@@ -146,6 +146,8 @@ class SensorsController < ApplicationController
       @high   = cache.severity_count(:high, @range.to_sym)
       @medium = cache.severity_count(:medium, @range.to_sym)
       @low    = cache.severity_count(:low, @range.to_sym)
+
+      @event_count = @high.sum + @medium.sum + @low.sum
 
       @sensor_metrics = cache.sensor_metrics(@range.to_sym)
     end

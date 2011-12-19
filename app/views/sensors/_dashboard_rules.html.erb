@@ -18,6 +18,6 @@
       <li>Last Compilation<span><%=sensor.last_compilation.timestamp.to_formatted_s(:short) %></span></li>
     <%-end %>
     <li>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
-    <li>Events<span><%=sensor.events_count %></span></li>
+    <li>Events<span><%= @event_count %></span></li>
   </ul>
 </div>
