@@ -27,9 +27,13 @@ class SensorsController < ApplicationController
     event_values(cache)
     snmp_values
 
-    @sensor_metrics  = cache.sensor_metrics(@range.to_sym)
+    if @sensor_metrics.last
+      @axis = @sensor_metrics.last[:range].join(',')
+    elsif @metrics.last
+      @axis = @metrics.first.last[:range].join(',')
+    else
 
-    @axis   = @sensor_metrics.last[:range].join(',')
+    end
 
   end
 
