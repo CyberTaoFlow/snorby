@@ -29,7 +29,7 @@ class SensorsController < ApplicationController
 
     @sensor_metrics  = cache.sensor_metrics(@range.to_sym)
 
-    @axis   = @sensor_metrics.last[:range].join(',')
+    #@axis   = @sensor_metrics.last[:range].join(',')
 
   end
 
