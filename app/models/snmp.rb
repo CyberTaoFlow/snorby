@@ -28,14 +28,18 @@ class Snmp
     "#{timestamp.strftime('%m/%d/%Y')}"
   end
 
-  def self.get_value(host, oid, oid_ref=nil, mult=nil)
+  def self.get_value(host, oid, oid_ref=nil, mult=nil, inverse=nil)
     community = Snorby::CONFIG_SNMP[:community].nil? ? 'public' : Snorby::CONFIG_SNMP[:community]
     manager = SNMP::Manager.new(:Host => host, :community => community)
     response = manager.get(oid)
     response_ref = manager.get(oid_ref) unless oid_ref.nil?
 
+    mult = mult or 1
+
     if response_ref.nil?
       value = response.varbind_list.first.value
+    elsif inverse
+      value = (response_ref.varbind_list.first.value.to_f - response.varbind_list.first.value.to_f) / response_ref.varbind_list.first.value.to_f * mult.to_f
     else
       value = response.varbind_list.first.value.to_f / response_ref.varbind_list.first.value.to_f * mult.to_f
     end

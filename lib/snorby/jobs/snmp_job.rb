@@ -11,7 +11,9 @@ module Snorby
 
           Snorby::CONFIG_SNMP[:oids].each_key do |oid|
             if Snorby::CONFIG_SNMP[:oids][oid].has_key? "reference"
-              value = Snmp.get_value(sensor.ipdir, oid, Snorby::CONFIG_SNMP[:oids][oid]["reference"], Snorby::CONFIG_SNMP[:oids][oid]["mult"])
+              value = Snmp.get_value(sensor.ipdir, oid, Snorby::CONFIG_SNMP[:oids][oid]["reference"], 
+                                                        Snorby::CONFIG_SNMP[:oids][oid]["mult"],
+                                                        Snorby::CONFIG_SNMP[:oids][oid]["inverse"])
             else
               value = Snmp.get_value(sensor.ipdir, oid)
             end
