@@ -2,7 +2,9 @@
   <tr>
     <td><%=name%></td>
     <td><%=node[:network][:interfaces][name][:encapsulation]%></td>
-    <td><%=segment[:bypass]%></td>
+    <td><input type='checkbox' name='bypass' value='bypass' disabled <%=segment[:bypass]?'checked':''%>></input></td>
+    <td><%=node[:counters][:network][:interfaces][name][:rx][:bytes]%></td>
+    <td><%=node[:counters][:network][:interfaces][name][:tx][:bytes]%></td>
     <td><%=node[:network][:interfaces][name][:mtu]%></td>
   </tr>
 <%- end %>

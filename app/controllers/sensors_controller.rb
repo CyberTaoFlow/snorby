@@ -49,6 +49,7 @@ class SensorsController < ApplicationController
 
   def update_dashboard_rules
     update_dashboard_type "rules"
+    @events = @sensor.events.all(:timestamp.gte => Time.now.yesterday, :order => [:timestamp.desc], :limit => 10) unless @sensor.nil?
   end
 
   def update_dashboard_load

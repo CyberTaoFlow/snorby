@@ -401,6 +401,10 @@ var Snorby = {
         return false;
       });
 
+      $('#dashboard-sensor-other-content .category > .row').live('click', function() {
+        $(this).parent().children(".table").toggle('fast');
+        //$(this).parent().toggleClass('highlight');
+      });
     },
 
     rules: function() {
