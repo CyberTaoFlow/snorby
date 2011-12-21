@@ -1881,13 +1881,6 @@ jQuery(document).ready(function($) {
 
   $('.add_chosen').chosen();
 
-  $('ul.table div.content li.event').live('hover', function() {
-    $('ul.table div.content li.event').removeClass('currently-over');
-    $(this).toggleClass('currently-over');
-  }, function() {
-    $(this).toggleClass('currently-over');
-  });
-
   $('ul.table div.content li').live('hover', function() {
     $('ul.table div.content li').removeClass('currently-over');
     $(this).toggleClass('currently-over');
