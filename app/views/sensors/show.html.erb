@@ -5,13 +5,13 @@
     <%= render :partial => 'dashboard_switch' %>
 
     <div id="sensor-content">
-      <div id='dashboard-sensor-info-content' class="content">
+      <div id='dashboard-sensor-info-content' class="content protected">
         <%= render :partial => 'dashboard_info_content' %>
       </div>
-      <div id='dashboard-sensor-load-content' class="content" style="display: none;">
+      <div id='dashboard-sensor-load-content' class="content protected" style="display: none;">
         <%= render :partial => 'dashboard_load_content' %>
       </div>
-      <div id='dashboard-sensor-other-content' class="content" style="display:none"></div>
+      <div id='dashboard-sensor-other-content' class="content protected" style="display:none"></div>
     </div>
 
   </div>

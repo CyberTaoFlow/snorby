@@ -1045,7 +1045,7 @@ var Snorby = {
         count.down();
 				
         if (action == 'queue') {
-          $('div.content').fadeTo(500, 0.4);
+          $('div.content').not(".protected").fadeTo(500, 0.4);
           Snorby.helpers.remove_click_events(true);
           $('div.destroy-favorite').removeClass('enabled').css('cursor', 'default');
           $.get('/events/queue', null, null, "script");
@@ -1488,7 +1488,7 @@ var Snorby = {
 						
             $.getScript($(self).find('a').attr('href'), function() {
               history.pushState(null, document.title, $(self).find('a').attr('href'));
-              $('div.content').fadeTo(500, 1);
+              $('div.content').not(".protected").fadeTo(500, 1);
               Snorby.helpers.remove_click_events(false);
               Snorby.helpers.recheck_selected_events();
               $.scrollTo('#header', 500);
@@ -1496,7 +1496,7 @@ var Snorby = {
 
           } else {
             $.getScript($(self).find('a').attr('href'), function() {
-              $('div.content').fadeTo(500, 1);
+              $('div.content').not(".protected").fadeTo(500, 1);
               Snorby.helpers.remove_click_events(false);
               Snorby.helpers.recheck_selected_events();
               $.scrollTo('#header', 500);
@@ -1523,7 +1523,7 @@ var Snorby = {
 
     $('body').ajaxError(function (event, xhr, ajaxOptions, thrownError) {
 			
-      $('div.content').fadeTo(500, 1);
+      $('div.content').not(".protected").fadeTo(500, 1);
       $('ul.table div.content li input[type="checkbox"]').attr('checked', '');
       Snorby.helpers.remove_click_events(false);
 			
@@ -1987,7 +1987,7 @@ jQuery(document).ready(function($) {
             sensor_id: sensor_id
           },success: function(data){
             box_cmp.removeClass("loading");
-            //$('div.content').fadeTo(500, 1);
+            //$('div.content').not(".protected").fadeTo(500, 1);
             window.location.reload();
           }
         });
