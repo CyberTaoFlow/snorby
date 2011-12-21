@@ -65,7 +65,7 @@ gem 'snmp',			   '~> 1.0.3'
 gem 'getopt',			   '~> 1.4.1'
 gem 'net-ssh',                     '2.1.4'
 gem 'json',                        '1.6.1'
-gem 'chef',                        '0.10.6.rc.5'
+gem 'chef',                        '0.10.8'
 
 group(:test) do
   gem 'capybara'
