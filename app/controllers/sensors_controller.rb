@@ -46,11 +46,11 @@ class SensorsController < ApplicationController
   end
 
   def update_dashboard_rules
-    @events = @sensor.events(:timestamp.gte => Time.now.yesterday, :order => [:timestamp.desc], :limit => 10)
+    @events = @sensor.events(:order => [:timestamp.desc], :limit => 10)
     if @sensor.ipdir.nil?
       @traps = nil
     else
-      @traps  = Trap.all(:timestamp.gte => Time.now.yesterday, :ip=>@sensor.ipdir)
+      @traps  = Trap.all(:ip=>@sensor.ipdir, :limit => 5)
     end
   end
 

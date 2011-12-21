@@ -1072,6 +1072,8 @@ var Snorby = {
         var cid = $(this).parents('li').attr('data-event-cid');
         var parent_row = $('li#event_'+sid+''+cid);
         var check_box = $('li#event_'+sid+''+cid+' input#event-selector');
+        if (!check_box.is(':visible'))
+          check_box = $('li#event_'+sid+''+cid+' .create-favorite');
 				
         var current_row = $('li#event_'+sid+''+cid+' div.event-data');
 				
@@ -1115,13 +1117,13 @@ var Snorby = {
           };
 
         } else {
-					
+
           check_box.hide();
+          
           $('li.event div.event-data').slideUp('fast');
           parent_row.find('div.select').append("<img alt='laoding' src='/images/icons/loading.gif' class='select-loading'>");
 
           $.get('/events/show/'+sid+'/'+cid, function () {
-
             $(document).bind('keydown', 'esc', function() {
               $('li.event').removeClass('highlight');
               parent_row.removeClass('highlight');
@@ -1139,7 +1141,6 @@ var Snorby = {
             $('.select-loading').remove();
             check_box.show();
             current_row.attr('data', true);
-
             Snorby.eventCloseHotkeys(false);
           }, 'script');
 					
