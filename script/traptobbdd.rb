@@ -31,6 +31,7 @@ DataMapper.setup(
 class Trap
   include DataMapper::Resource
   property :id, Serial
+  property :sid, Integer
   property :ip, String
   property :port, Integer
   property :protocol, String
@@ -38,6 +39,13 @@ class Trap
   property :community, String
   property :message, String, :length => 512
   property :timestamp, DateTime
+end
+
+class Sensor
+  include DataMapper::Resource
+  storage_names[:default] = "sensor"
+  property :sid, Serial, :key => true, :index => true
+  property :ipdir, String
 end
 
 hostname  = nil
@@ -91,21 +99,27 @@ if !m.nil? && m.length>3
   protocol  = m[1]
   ipaddress = m[2]
   port      = m[3].to_i
+  sensor    = Sensor.last(:ipdir=>ipaddress)
 
-  if !hostname.nil? && !ipaddress.nil? && !msg.nil? && !protocol.nil? && !port.nil?
-    #Trap.create(:ip => ipaddress, :hostname => hostname, :protocol => protocol, :port => port, :community => "redBorder", :message => msg, :timestamp => Time.now)
-    t = Trap.new();
-    t.ip = ipaddress;
-    t.hostname  = hostname
-    t.protocol  = protocol
-    t.port      = port
-    t.community = "redBorder"
-    t.message   = msg
-    t.timestamp = Time.now
-    t.save
+  if sensor.nil?
+    system("logger -t traptobbdd \"Trap no valid. Sensor with ip #{ipaddress} not found!!\" ")
   else
-    system("logger -t traptobbdd \"Trap no valid. It should have more parameters!!\" ")
-  end  
+    if !hostname.nil? && !ipaddress.nil? && !msg.nil? && !protocol.nil? && !port.nil?
+      #Trap.create(:ip => ipaddress, :hostname => hostname, :protocol => protocol, :port => port, :community => "redBorder", :message => msg, :timestamp => Time.now)
+      t = Trap.new();
+      t.ip  = ipaddress;
+      t.sid = sensor.sid;
+      t.hostname  = hostname
+      t.protocol  = protocol
+      t.port      = port
+      t.community = "redBorder"
+      t.message   = msg
+      t.timestamp = Time.now
+      t.save
+    else
+      system("logger -t traptobbdd \"Trap no valid. It should have more parameters!!\" ")
+    end
+  end
 else
   system("logger -t traptobbdd \"Trap no valid!!\" ")
 end

@@ -47,11 +47,7 @@ class SensorsController < ApplicationController
 
   def update_dashboard_rules
     @events = @sensor.events(:order => [:timestamp.desc], :limit => 10)
-    if @sensor.ipdir.nil?
-      @traps = nil
-    else
-      @traps  = Trap.all(:ip=>@sensor.ipdir, :limit => 5)
-    end
+    @traps  = @sensor.traps(:limit => 5)
   end
 
   def update_dashboard_load

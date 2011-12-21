@@ -66,6 +66,8 @@ class Sensor
   has n, :notes, :child_key => :sid, :constraint => :destroy
   
   has n, :snmps, :child_key => :sid, :constraint => :destroy
+  
+  has n, :traps, :child_key => :sid, :constraint => :destroy
 
   property :domain, Boolean, :default => false
   

@@ -4,6 +4,7 @@ class Trap
 
   property :id, Serial
 
+  property :sid, Integer, :required => true
   property :ip, String
   property :port, Integer
   property :protocol, String
@@ -11,6 +12,9 @@ class Trap
   property :community, String
   property :message, String, :length => 512
   property :timestamp, DateTime
+
+  belongs_to :sensor, :parent_key => :sid,
+    :child_key => :sid, :required => true
   
   SORT = {
     :ip => 'snmp',

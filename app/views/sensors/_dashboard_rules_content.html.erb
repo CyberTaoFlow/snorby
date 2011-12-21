@@ -22,7 +22,7 @@
           </div>
         </ul>
       </li>
-      <%- unless @traps.nil? %>
+      <%- if !@traps.nil? && !@traps.blank?  %>
         <li class="category highlight">
           <div class="row">
             <div class="category-name click">Last 5 traps</div>
