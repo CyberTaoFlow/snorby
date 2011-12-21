@@ -4,9 +4,7 @@
 
   <div class='row <%= classification_css %> <%= 'geoip' if geoip? %>'>
 
-    <%- if allow_mass_update %>
-      <div class='select small'><%= check_box_tag 'event-selector', nil, false, :class => "check_box_#{event.id}" %></div>
-    <%- end %>
+    <div class='select small'><%= check_box_tag 'event-selector', nil, false, :class => "check_box_#{event.id}" %></div>
     <div class='important small'>
       <% if event.favorite? %>
         <div class='destroy-favorite enabled'></div>
