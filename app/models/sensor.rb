@@ -14,10 +14,26 @@ class Sensor
     sensor.update_chef_sensor
   end
 
-  after :destroy do |sensor|
+  before :destroy do |sensor|
     if sensor.domain
-      role = sensor.chef_role
-      role.destroy unless role.nil?
+      begin
+        client = sensor.chef_client
+        client.destroy unless client.nil?
+      rescue
+        #client not found. Ignore it
+      end
+      begin
+        node = sensor.chef_node
+        node.destroy unless node.nil?
+      rescue
+        #node not found. Ignore it
+      end
+      begin
+        role = sensor.chef_role
+        role.destroy unless role.nil?
+      rescue
+        #role not found. Ignore it
+      end
     end
   end
 
@@ -268,7 +284,8 @@ class Sensor
   # A "real sensor" is a sensor with domain property set to false
   #    - it cannot contains other sensor (cannot be parent of other sensor)
   def is_virtual_sensor?
-    domain and childs.present? and childs.select{|x| x.domain}.empty?
+    #domain and childs.present? and childs.select{|x| x.domain}.empty?
+    self.domain && !self.hostname.nil? && !self.name.nil?
   end
 
   # Return the root sensor (first parent)
@@ -327,6 +344,12 @@ class Sensor
   def chef_node
     if self.is_virtual_sensor?
       Chef::Node.load(self.hostname)
+    end
+  end
+
+  def chef_client
+    if self.is_virtual_sensor?
+      Chef::ApiClient.load(self.hostname)
     end
   end
 
