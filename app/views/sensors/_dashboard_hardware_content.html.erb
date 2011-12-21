@@ -100,8 +100,8 @@
                     <th>Used</th>
                   </tr>
                   <tbody class='filesystem'>
-                    <%- [ node[:filesystem]["/dev/mapper/VolGroup-lv_root"], node[:filesystem]["/dev/mapper/VolGroup-lv_home"], node[:filesystem]["/dev/sda1"] ]. each do |x| %>
-                      <%= render :partial => 'dashboard_hardware_content_hd', :locals =>{:hd_info=> x} %>
+                    <%- { "/dev/mapper/VolGroup-lv_root" => node[:filesystem]["/dev/mapper/VolGroup-lv_root"], "/dev/mapper/VolGroup-lv_home" => node[:filesystem]["/dev/mapper/VolGroup-lv_home"], "/dev/sda1" => node[:filesystem]["/dev/sda1"] }. each do |key, x| %>
+                      <%= render :partial => 'dashboard_hardware_content_hd', :locals =>{:hd_info=> x,  :device=>key} %>
                     <%- end %>
                   </tbody>
                 </table>
