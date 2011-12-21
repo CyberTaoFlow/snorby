@@ -83,8 +83,8 @@ class Sensor
   end
   
   def sensor_name
-    return name unless (name.nil? or name == '')
-    hostname
+    return self.name unless (self.name.nil? or self.name.blank?)
+    self.hostname
   end
   
   def daily_cache
@@ -235,11 +235,11 @@ class Sensor
   end
 
   def events_count
-    if domain		
-      count = 0			
+    if domain
+      count = 0
       childs.each{|x| count += x.events_count}
-      count		
-    else 
+      count
+    else
       super
     end
   end

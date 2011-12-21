@@ -1,7 +1,8 @@
 <div id='dashboard-sensor-rules'>
   <div class='dashboard-header'>
-    <span>Rules / Events</span>
+    <span class="title">Rules / Events</span>
     <span class='loading'></span>
+    <span><%= link_to "+", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %></span>
   </div>
   <ul class='box-list'>
     <%- rules = sensor.last_compiled_rules %>
@@ -20,5 +21,6 @@
     <%-end %>
     <li>Pending Rules<span><%=sensor.pending_rules.size %></span></li>
     <li>Events<span><%= @event_count %></span></li>
+    <li>Traps<span><%= @trap_count %></span></li>
   </ul>
 </div>

@@ -359,7 +359,7 @@ var Snorby = {
     },
 
     dashboard_sensor: function() {
-      $('#dashboard-sensor-info').live('click', function() {
+      $('#dashboard-sensor-info .dashboard-header > span.title').live('click', function() {
         var column = $("#dashboard .secondary")
         if (!column.hasClass(loading_class)){
           column.addClass(loading_class);
@@ -372,12 +372,12 @@ var Snorby = {
         return false;
       });
 
-      $('#dashboard-sensor-rules').live('click', function() {
+      $('#dashboard-sensor-rules .dashboard-header > span.title').live('click', function() {
         reload_dashboard_sensor("rules");
         return false;
       });
 
-      $('#dashboard-sensor-load').live('click', function() {
+      $('#dashboard-sensor-load .dashboard-header > span.title').live('click', function() {
         var column = $("#dashboard .secondary")
         if (!column.hasClass(loading_class)){
           column.addClass(loading_class);
@@ -389,13 +389,13 @@ var Snorby = {
         return false;
       });
 
-      $('#dashboard-sensor-hardware').live('click', function() {
+      $('#dashboard-sensor-hardware .dashboard-header > span.title').live('click', function() {
         reload_dashboard_sensor("hardware");
         return false;
       });
 
       $('#dashboard-sensor-other-content .category > .row').live('click', function() {
-        $(this).parents('.boxit').children(".table").toggle('fast');
+        $($(this).parents('.boxit')[0]).children(".table").toggle('fast');
         //$(this).parent().toggleClass('highlight');
       });
     },

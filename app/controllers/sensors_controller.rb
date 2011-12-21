@@ -24,6 +24,7 @@ class SensorsController < ApplicationController
 
     event_values(cache)
     snmp_values
+    traps_values
 
     if @sensor_metrics.last
       @axis = @sensor_metrics.last[:range].join(',')
@@ -144,6 +145,10 @@ class SensorsController < ApplicationController
       @event_count = @high.sum + @medium.sum + @low.sum
 
       @sensor_metrics = cache.sensor_metrics(@range.to_sym)
+    end
+
+    def traps_values
+      @trap_count = @sensor.traps(:timestamp.gte => Time.now.yesterday).size
     end
 
     def snmp_values

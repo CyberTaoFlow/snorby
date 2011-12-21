@@ -1,6 +1,7 @@
 <div id='dashboard-sensor-load'>
   <div class='dashboard-header'>
-    <span> LOAD </span>
+    <span class="title"> LOAD </span>
+    <span><%= link_to "+", sensor_snmps_path(sensor) %></span>
   </div>
   <ul class='box-list'>
     <li id='load'>Load<span><%= node["redBorder"]["uptime"]["1minute"]%>  <%= node["redBorder"]["uptime"]["5minute"]%>  <%= node["redBorder"]["uptime"]["15minute"]%></span></li>

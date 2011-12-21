@@ -1866,9 +1866,21 @@ ul.table li .row div.value{
 	padding-left: 12px;
 }
 
+ul.table li .row div.trap_message{
+	width: 600px;
+	padding-left: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+}
+
 ul.table li .row div.port{
 	width: 75px;
 	padding-left: 12px;
+}
+
+ul.table li .row div.protocol {
+    width: 75px;
+    padding-left: 12px;
 }
 
 /* End RedBorder Added */
@@ -4757,6 +4769,10 @@ input.success:active{
   margin-left: 5px;
 }
 
+#dashboard-sensor-other-content div.content li.highlight.event > div.row > div{
+  margin-left: 0px;
+}
+
 #dashboard-sensor-other-content > .content{
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -4769,6 +4785,18 @@ input.success:active{
   width: auto;
   margin-left: 0px;
   margin-right: 0px;
+}
+
+#dashboard-sensor-info-content, #dashboard-sensor-load-content{
+    margin-top: 30px;
+}
+
+#dashboard .dashboard-header span.title{
+    cursor: pointer;
+}
+
+#dashboard .dashboard-header a{
+    float: right;
 }
 /* @end */
 
