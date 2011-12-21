@@ -4,6 +4,8 @@ class SensorsController < ApplicationController
 
   before_filter :require_administrative_privileges, :except => [:index, :update_name]
   before_filter :create_virtual_sensors, :only => [:index]
+
+  before_filter :default_values, :except => [:index, :update_name, :update_ip, :new, :create]
   
   # It returns a sensor's hierarchy tree
   def index
@@ -16,10 +18,6 @@ class SensorsController < ApplicationController
   end
 
   def show
-    @sensor = Sensor.get(params[:id])
-    @role   = @sensor.chef_role
-    @node   = @sensor.chef_node
-
     @range  = 'last_24'
 
     cache = Cache.last_24(Time.now.yesterday, Time.now).all(:sensor => @sensor.real_sensors)
@@ -48,22 +46,17 @@ class SensorsController < ApplicationController
   end
 
   def update_dashboard_rules
-    update_dashboard_type "rules"
-    @events = @sensor.events.all(:timestamp.gte => Time.now.yesterday, :order => [:timestamp.desc], :limit => 10) unless @sensor.nil?
+    @events = @sensor.events(:timestamp.gte => Time.now.yesterday, :order => [:timestamp.desc], :limit => 10)
   end
 
   def update_dashboard_load
-    update_dashboard_type "load"
   end
   
   def update_dashboard_hardware
-    update_dashboard_type "hardware"
   end
 
   # It destroys a sensor and its childs.
   def destroy
-    @sensor = Sensor.get(params[:id])
-    
     @sensor.destroy
     respond_to do |format|
       format.html { redirect_to(sensors_path) }
@@ -100,8 +93,7 @@ class SensorsController < ApplicationController
 
   # Method used when a sensor is has been dragged and dropped to another sensor.
   def update_parent
-    sensor = Sensor.get(params[:sid])
-    sensor.update(:parent_sid => params[:p_sid]) if sensor
+    @sensor.update(:parent_sid => params[:p_sid]) if @sensor
     respond_to do |format|
       format.html
       format.js
@@ -128,8 +120,8 @@ class SensorsController < ApplicationController
       redirect_to sensors_path if sensors.present?
     end
 
-    def update_dashboard_type(type=nil)
-      @sensor = Sensor.get(params[:sensor_id])
+    def default_values
+      @sensor = (Sensor.get(params[:sensor_id]) or Sensor.get(params[:id]))
       @role   = @sensor.chef_role unless @sensor.nil?
       @node   = @sensor.chef_node unless @sensor.nil?
     end

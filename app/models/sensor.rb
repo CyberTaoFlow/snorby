@@ -228,7 +228,7 @@ class Sensor
 
   # Return an array with all real sensors for this sensor.
   def real_sensors
-    childs.map{|x| x.domain ? x.real_sensors : x}.flatten.compact unless self.childs.blank?
+    (childs.map{|x| x.domain ? x.real_sensors : x}.flatten.compact unless self.childs.blank?) or []
   end
 
   # Return an array with all childs virtual sensors for this sensor, including self sensor.
@@ -255,11 +255,12 @@ class Sensor
     parent.nil? ? 0 : 1 + parent.deep
   end
 
-  def events
+  # Args is used for accept arguments like sensor.events(:timestamp.gte => Time.now.yesterday)
+  def events(args={})
     if domain
-      childs.events
+      Event.all(args.merge!(:sid => real_sensors.map{|x| x.sid}))
     else
-      super
+      super(args)
     end
   end
 
