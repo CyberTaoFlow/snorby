@@ -1,7 +1,21 @@
 #!/usr/bin/ruby
 
 require 'rubygems'
-require 'datamapper'
+#require 'datamapper'
+require 'dm-core'
+require 'dm-rails'
+require 'dm-do-adapter'
+require 'dm-active_model'
+require 'dm-mysql-adapter'
+require 'dm-migrations'
+require 'dm-types'
+require 'dm-validations'
+require 'dm-constraints'
+require 'dm-transactions'
+require 'dm-aggregates'
+require 'dm-timestamps'
+require 'dm-observer'
+require 'dm-serializer'
 
 PRG_VERSION="1.0"
 
@@ -60,6 +74,7 @@ end
 #+-----------+------------------+------+-----+---------+----------------+
 
 #UDP: [192.168.122.51]:52024->[192.168.122.53] | redBorder | DISMAN-EVENT-MIB::sysUpTimeInstance 0:0:04:30 ... | 2011-10-27 18:12:59
+#echo -e "<UNKNOWN>\nUDP: [192.168.100.32]:51053->[192.168.11.110]\nDISMAN-EVENT-MIB::sysUpTimeInstance 0:19:00:50.10\nSNMPv2-MIB::snmpTrapOID.0 DISMAN-EVENT-MIB::mteTriggerFired\nDISMAN-EVENT-MIB::mteHotTrigger.0 barnyard2-stopped\nDISMAN-EVENT-MIB::mteHotTargetName.0\nDISMAN-EVENT-MIB::mteHotContextName.0\nDISMAN-EVENT-MIB::mteHotOID.0 UCD-SNMP-MIB::prCount.4\nDISMAN-EVENT-MIB::mteHotValue.0 0" | /opt/rb/var/www/snorby/script/traptobbdd.rb
 
 if hostname.length>=47
   hostname = hostname.slice(0,45) + " ..."
@@ -75,10 +90,19 @@ m = r.match ipaddress
 if !m.nil? && m.length>3
   protocol  = m[1]
   ipaddress = m[2]
-  port      = m[3]
+  port      = m[3].to_i
 
   if !hostname.nil? && !ipaddress.nil? && !msg.nil? && !protocol.nil? && !port.nil?
-    Trap.create(:ip => ipaddress, :hostname => hostname, :protocol => protocol, :port => port, :community => "redBorder", :message => msg, :timestamp => Time.now)
+    #Trap.create(:ip => ipaddress, :hostname => hostname, :protocol => protocol, :port => port, :community => "redBorder", :message => msg, :timestamp => Time.now)
+    t = Trap.new();
+    t.ip = ipaddress;
+    t.hostname  = hostname
+    t.protocol  = protocol
+    t.port      = port
+    t.community = "redBorder"
+    t.message   = msg
+    t.timestamp = Time.now
+    t.save
   else
     system("logger -t traptobbdd \"Trap no valid. It should have more parameters!!\" ")
   end  

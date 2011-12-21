@@ -22,13 +22,29 @@
           </div>
         </ul>
       </li>
-      <li class="category highlight">
-        <div class="row">
-          <div class="category-name click">Last 24 hours traps</div>
-        </div>
-        <ul class="table">
-        </ul>
-      </li>
+      <%- unless @traps.nil? %>
+        <li class="category highlight">
+          <div class="row">
+            <div class="category-name click">Last 24 hours traps</div>
+          </div>
+          <ul class="table">
+            <li class='header'>
+              <div class='row'>
+                <div class='address'>Ip</div>
+                <div class='port'>Port</div>
+                <div class='protocol'>Protocol</div>
+                <div class='address'>Hostname</div>
+                <div class='address'>Community</div>
+                <div class='value'>Message</div>
+                <div class='timestamp'>Timestamp</div>
+              </div>
+            </li>
+            <div class='content'>
+              <%= render @traps %>
+            </div>
+          </ul>
+        </li>
+      <%- end %>
     </div>
   </ul>
 </div>
