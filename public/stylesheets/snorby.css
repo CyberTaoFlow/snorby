@@ -1882,7 +1882,7 @@ ul.table li .row div.sensor{
 }
 
 ul.table li .row.geoip div.address{
-	width: 150px;	
+	width: 120px;
 }
 
 ul.table li .row div.address{
@@ -4468,6 +4468,13 @@ div.map{
 
 }
 
+#traps{
+    display: block;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 #sensorTable .folder{
     font-weight: bold;
 }
@@ -4729,18 +4736,40 @@ input.success:active{
   width: auto;
 }
 
-#dashboard-sensor-other-content ul.table div.content li.highlight > div.row {
+#dashboard-sensor-other-content div.content li.highlight{
+  list-style: none;
+}
+
+#dashboard-sensor-other-content div.content li.highlight > div.row {
   background-color: #414346;
   border: 1px solid white;
   background-image: none;
   color: white;
   font-weight: bold;
+  min-height: 30px;
+  line-height: 30px;
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
 
-#dashboard-sensor-other-content ul.table div.content li.highlight > div.row > div{
+#dashboard-sensor-other-content div.content li.highlight > div.row > div{
   margin-left: 5px;
 }
 
+#dashboard-sensor-other-content > .content{
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: 5px solid #F3F3F3;
+}
+
+#dashboard-sensor-other-content .content .grid_12 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: auto;
+  margin-left: 0px;
+  margin-right: 0px;
+}
 /* @end */
 
 /* @end */

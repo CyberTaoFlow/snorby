@@ -131,11 +131,9 @@ class Event
     #RedBorder
     if params.has_key?(:search) and params[:search].has_key?(:sid) and !params[:search][:sid].kind_of?(Array)
       sensor = Sensor.get(params[:search][:sid])
-      unless sensor.nil?
-        if sensor.domain
-          params[:search][:sid] = []
-          sensor.real_sensors.each{|x| params[:search][:sid] << x.sid}
-        end
+      if sensor.present? and sensor.domain
+        params[:search][:sid] = []
+        sensor.real_sensors.each{|x| params[:search][:sid] << x.sid}
       end
       page.merge!(search(params[:search]))
     elsif params.has_key?(:search)
@@ -521,8 +519,7 @@ class Event
   def self.search(params)
     @search = {}
 
-#    @search.merge!({:sid => params[:sid].to_i}) unless params[:sid].blank?
-     @search.merge!({:sid => params[:sid]}) unless params[:sid].blank?
+    @search.merge!({:sid => params[:sid]}) unless params[:sid].blank?
 
     unless params[:classification_id].blank?
       if params[:classification_id].to_i == 0

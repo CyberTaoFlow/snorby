@@ -1,54 +1,57 @@
-<div id="events" class='grid_12 boxit'>
-  <ul class="table categories">
-    <div class="content">
+<div class="content">
+  <div id="events" class='grid_12 boxit'>
+    <li class="category highlight">
+      <div class="row">
+        <div class="category-name click">Events</div>
+      </div>
+    </li>
+    <ul class='table'>
+      <li class='header'>
+        <div class='row'>
+          <div class='small'>&nbsp;</div>
+          <div class='small'>Sev</div>
+          <div class='sensor'>Sensor</div>
+
+          <div class='address'>Source IP</div>
+
+          <div class='address'>Destination IP</div>
+
+          <div class='signature'>Event Signature</div>
+
+          <div class='timestamp'>Timestamp</div>
+        </div>
+      </li>
+
+      <div class='content'>
+        <%= render @events %>
+      </div>
+    </ul>
+  </div>
+
+  <%- if !@traps.nil? && !@traps.blank? %>
+    <div id="traps" class='grid_12 boxit'>
       <li class="category highlight">
         <div class="row">
-          <div class="category-name click">Last 10 events</div>
+          <div class="category-name click">Traps</div>
         </div>
-        <ul class="table">
-          <li class='header'>
-            <div class='row'>
-              <div class='small'>&nbsp;</div>
-              <div class='small'>Sev.</div>
-              <div class='sensor'>Sensor</div>
-              <div class='address'>Source IP</div>
-              <div class='address'>Destination IP</div>
-              <div class='signature'>Destination IP</div>
-              <div class='timestamp'>Timestamp</div>
-            </div>
-          </li>
-          <div class='content'>
-            <%= render @events %>
-          </div>
-        </ul>
       </li>
-      <%- if !@traps.nil? && !@traps.blank?  %>
-        <li class="category highlight">
-          <div class="row">
-            <div class="category-name click">Last 5 traps</div>
+      <ul class='table'>
+        <li class='header'>
+          <div class='row'>
+            <div class='address'>Ip</div>
+            <div class='port'>Port</div>
+            <div class='protocol'>Protocol</div>
+            <div class='address'>Hostname</div>
+            <div class='address'>Community</div>
+            <div class='value'>Message</div>
+            <div class='timestamp'>Timestamp</div>
           </div>
-          <ul class="table">
-            <li class='header'>
-              <div class='row'>
-                <div class='address'>Ip</div>
-                <div class='port'>Port</div>
-                <div class='protocol'>Protocol</div>
-                <div class='address'>Hostname</div>
-                <div class='address'>Community</div>
-                <div class='value'>Message</div>
-                <div class='timestamp'>Timestamp</div>
-              </div>
-            </li>
-            <div class='content'>
-              <%= render @traps %>
-            </div>
-          </ul>
         </li>
-      <%- end %>
+
+        <div class='content'>
+          <%= render @traps %>
+        </div>
+      </ul>
     </div>
-  </ul>
+  <%- end %>
 </div>
-
-
-
-

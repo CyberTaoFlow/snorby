@@ -395,7 +395,7 @@ var Snorby = {
       });
 
       $('#dashboard-sensor-other-content .category > .row').live('click', function() {
-        $(this).parent().children(".table").toggle('fast');
+        $(this).parents('.boxit').children(".table").toggle('fast');
         //$(this).parent().toggleClass('highlight');
       });
     },
