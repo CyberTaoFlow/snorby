@@ -11,6 +11,7 @@ class Trap
   property :hostname, String
   property :community, String
   property :message, String, :length => 512
+  property :trigger, String, :length => 64
   property :timestamp, DateTime
 
   belongs_to :sensor, :parent_key => :sid,

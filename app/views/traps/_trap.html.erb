@@ -3,6 +3,7 @@
     <div class='click sensor' title='<%=h trap.sensor.sensor_name %>'><%= trap.sensor.sensor_name %></div>
     <div class='click port' title='<%=h trap.port %>'><%= trap.port %></div>
     <div class='click protocol' title='<%=h trap.protocol %>'><%= trap.protocol %> </div>
+    <div class='click trigger' title='<%=h trap.trigger%>'><%= trap.trigger.nil? ? "unknown" : trap.trigger %></div>
     <div class='click trap_message' title='<%=h trap.message.gsub(/;\s*/, "\n")%>'>
       <span><%= trap.message %></span>
     </div>

@@ -1866,15 +1866,22 @@ ul.table li .row div.value{
 	padding-left: 12px;
 }
 
+ul.table li .row div.trigger{
+	width: 100px;
+	padding-left: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+}
+
 ul.table li .row div.trap_message{
-	width: 600px;
+	width: 500px;
 	padding-left: 12px;
         white-space: nowrap;
         overflow: hidden;
 }
 
 ul.table li .row div.port{
-	width: 75px;
+	width: 65px;
 	padding-left: 12px;
 }
 
@@ -1890,7 +1897,7 @@ ul.table li .row div.sensor{
 }
 
 ul.table li .row div.sensor{
-	width: 105px;
+	width: 100px;
 }
 
 ul.table li .row.geoip div.address{

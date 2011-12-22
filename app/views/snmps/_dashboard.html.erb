@@ -96,7 +96,7 @@
 
     <% @metrics.each_with_index do |metric, index| %>
       <div class='dashboard-header'>
-        <span> Top 5 <%= Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"] %> Sensors </span>
+        <span> Top 5 '<%= Snorby::CONFIG_SNMP[:oids].to_a[index][1]["label"] %>' Sensors </span>
       </div>
       <ul class="box-list">
         <% metric.map {|x| [x[:name], x[:data].sum{|s| s.nil? ? 0 : s} / x[:data].count{|c| c.present?}]}.sort{|x, y| y[1] <=> x[1]}.first(5).each do |sensor| %>
@@ -109,13 +109,13 @@
     <% end %>
 
     <div class='dashboard-header'>
-      <span>Last 10 Traps</span>
+      <span>Last 5 Traps</span>
     </div>
 
     <ul class='box-list'>
       <% @traps.each do |trap| %>
         <li>
-          <%= link_to truncate(trap.message, :length => 25, :omission => '...'), trap_results_path(), :title => trap.message.gsub(/;\s*/, "\n") %>
+          <%= link_to truncate(trap.trigger.nil? ? "unknown" : trap.trigger, :length => 25, :omission => '...'), trap_results_path(), :title => trap.message.gsub(/;\s*/, "\n") %>
 
           <span>
             <%= link_to trap.sensor.sensor_name, trap_results_path(:search => {:sid => "#{trap.sid}"}) %>

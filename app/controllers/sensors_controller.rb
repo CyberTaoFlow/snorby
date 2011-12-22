@@ -48,7 +48,7 @@ class SensorsController < ApplicationController
 
   def update_dashboard_rules
     @events = @sensor.events(:order => [:timestamp.desc], :limit => 10)
-    @traps  = @sensor.traps(:limit => 5)
+    @traps  = @sensor.traps(:order => [:timestamp.desc], :limit => 5)
   end
 
   def update_dashboard_load

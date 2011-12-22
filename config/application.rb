@@ -21,7 +21,7 @@ module Snorby
   Chef::Config[:node_name] = Chef::Config[:web_ui_client_name]
   Chef::Config[:client_key] = Chef::Config[:web_ui_key] 
   #next line must be commented. By default is "http://localhost:4000"
-  Chef::Config[:chef_server_url]="http://192.168.11.110:4000"
+  Chef::Config[:chef_server_url]="http://192.168.11.160:4000"
 
   class Application < Rails::Application
         

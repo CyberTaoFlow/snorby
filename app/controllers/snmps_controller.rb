@@ -14,8 +14,9 @@ class SnmpsController < ApplicationController
     @range = params[:range].blank? ? 'last_3_hours' : params[:range]
 
     set_defaults
+    virtual_sensors = @sensor.virtual_sensors
 
-    @snmp = @snmp.all(:sensor => @sensor.virtual_sensors)
+    @snmp = @snmp.all(:sensor => virtual_sensors)
 
     @last_snmp = @snmp.sort{|a, b| a.timestamp <=> b.timestamp}.last
 
@@ -35,9 +36,10 @@ class SnmpsController < ApplicationController
       @axis = @metrics.first.last[:range].join(',')
     end
     
-    @sensors = Sensor.all(:sid => @sensor.virtual_sensors.map{|x| x.sid}, :limit => 5)
+    @sensors = Sensor.all(:sid => virtual_sensors.map{|x| x.sid}, :limit => 5)
     
-    @traps = Trap.all.sort{|x, y| y.timestamp <=> x.timestamp}.first(10)
+    #@traps = Trap.all.sort{|x, y| y.timestamp <=> x.timestamp}.first(5)
+    @traps  = Trap.all(:sensor => virtual_sensors, :order => [:timestamp.desc], :limit => 10)
     
     respond_to do |format|
       format.html

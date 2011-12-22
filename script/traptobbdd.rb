@@ -38,6 +38,7 @@ class Trap
   property :hostname, String
   property :community, String
   property :message, String, :length => 512
+  property :trigger, String, :length => 64
   property :timestamp, DateTime
 end
 
@@ -100,6 +101,11 @@ if !m.nil? && m.length>3
   ipaddress = m[2]
   port      = m[3].to_i
   sensor    = Sensor.last(:ipdir=>ipaddress)
+  msg       = msg.gsub('DISMAN-EVENT-MIB::', '').gsub('SNMPv2-MIB::', '')
+  trigger   = "unknown"
+  
+  match = /.*;[\s]*mteHotTrigger.[\d]+[\s]([^;]+);.*/.match msg
+  trigger=match[1] unless match.nil?
 
   if sensor.nil?
     system("logger -t traptobbdd \"Trap no valid. Sensor with ip #{ipaddress} not found!!\" ")
@@ -114,6 +120,7 @@ if !m.nil? && m.length>3
       t.port      = port
       t.community = "redBorder"
       t.message   = msg
+      t.trigger   = trigger
       t.timestamp = Time.now
       t.save
     else
