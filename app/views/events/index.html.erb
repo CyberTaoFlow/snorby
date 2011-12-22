@@ -46,7 +46,7 @@
   <%= render :partial => 'layouts/notify' %>
 <% end %>
 
-<%= title "Listing Events <i>(#{@events.is_a?(Array) ? @events.size : @events.pager.total} unclassified events)</i>".html_safe, 'Listing Events' do -%>
+<%= title "Listing Events <i>(#{@events.pager.total} unclassified events)</i>".html_safe, 'Listing Events' do -%>
   <%= menu_item "Hotkeys", hotkey_events_path, 'events/keyboard.png', :class => 'snorbybox' %>
   <%= render :partial => 'events/menu' %>
 <%- end -%>
