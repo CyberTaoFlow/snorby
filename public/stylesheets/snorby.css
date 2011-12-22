@@ -4795,8 +4795,24 @@ input.success:active{
     cursor: pointer;
 }
 
-#dashboard .dashboard-header a{
+#dashboard .dashboard-header span.plus{
     float: right;
+    background-color: #BBB;
+    color: white;
+    padding: 1px 5px 1px 5px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#dashboard .dashboard-header span.plus{
+    background-color: #999;
+}
+
+#dashboard .dashboard-header span.plus a{
+    color: white;
+    font-size: 110%;
+    font-weight: bold;
+    text-decoration: none;
 }
 /* @end */
 

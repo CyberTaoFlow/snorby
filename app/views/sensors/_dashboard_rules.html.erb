@@ -2,7 +2,7 @@
   <div class='dashboard-header'>
     <span class="title">Rules / Events</span>
     <span class='loading'></span>
-    <span><%= link_to "+", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %></span>
+    <span class="plus"><%= link_to "+", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %></span>
   </div>
   <ul class='box-list'>
     <%- rules = sensor.last_compiled_rules %>
