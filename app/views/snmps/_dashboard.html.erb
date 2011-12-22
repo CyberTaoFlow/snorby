@@ -115,10 +115,10 @@
     <ul class='box-list'>
       <% @traps.each do |trap| %>
         <li>
-          <%= link_to truncate(trap.message, :length => 15, :omission => '...'), trap_results_path() %>
+          <%= link_to truncate(trap.message, :length => 25, :omission => '...'), trap_results_path(), :title => trap.message.gsub(/;\s*/, "\n") %>
 
           <span>
-            <%= link_to trap.hostname, trap_results_path(:search => {:hostname => "#{trap.hostname}"}) %>
+            <%= link_to trap.sensor.sensor_name, trap_results_path(:search => {:sid => "#{trap.sid}"}) %>
           </span>
         </li>
       <% end %>
