@@ -136,7 +136,7 @@ class Cache
   def self.sensor_metrics(type=nil)
     @metrics = []
 
-    Sensor.all(:sid => self.map{|x| x.sensor.sid}.uniq, :domain => false, :limit => 5, :order => [:events_count.desc]).each do |sensor|
+    Sensor.all(:sid => self.sensor.map{|x| x.sid}.uniq, :domain => false, :limit => 5, :order => [:events_count.desc]).each do |sensor|
       count = count_hash(type)
 
       blah = self.all(:sid => sensor.sid).group_by { |x| "#{x.ran_at.day}-#{x.ran_at.hour}" }
