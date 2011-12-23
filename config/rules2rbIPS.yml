@@ -25,6 +25,9 @@ category4_groups:
   - 
     name: "dos"
     regexp: "^dos$|^ddos$"
+  -
+    name: "preprocessor"
+    regexp: "^decoder$|^preprocessor$"
 
 category1_groups:
   - 
