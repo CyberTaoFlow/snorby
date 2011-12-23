@@ -102,10 +102,17 @@ if !m.nil? && m.length>3
   port      = m[3].to_i
   sensor    = Sensor.last(:ipdir=>ipaddress)
   msg       = msg.gsub('DISMAN-EVENT-MIB::', '').gsub('SNMPv2-MIB::', '')
-  trigger   = "unknown"
+  trigger   = nil
   
   match = /.*;[\s]*mteHotTrigger.[\d]+[\s]([^;]+);.*/.match msg
-  trigger=match[1] unless match.nil?
+  trigger = match[1] unless match.nil?
+
+  if trigger.nil?
+    match = /.*;[\s]*snmpTrapOID.0[\s](NET-SNMP-AGENT-MIB::)?([^;]+);.*/.match msg
+    trigger = match[2] unless match.nil?
+  end
+
+  trigger   = "unknown" if trigger.nil?
 
   if sensor.nil?
     system("logger -t traptobbdd \"Trap no valid. Sensor with ip #{ipaddress} not found!!\" ")
