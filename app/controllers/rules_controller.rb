@@ -10,6 +10,18 @@ class RulesController < ApplicationController
     @actions    = RuleAction.all
   end
 
+  def show
+    if params["rule_id"].nil? && params["rev"].nil?
+      @rule = Rule.get(params["id"].to_i) unless params["id"].nil?
+    else
+      @rule = Rule.last(:rule_id=>params["id"].to_i, :gid=>params["gid"].to_i, :rev=>params["rev"].to_i)
+    end
+
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
+  end
+
   # Method used when the category is showed in the index view. Partial Method
   def update_rule_category
     @sensor = Sensor.get(params[:sensor_id]) if params[:sensor_id].present?

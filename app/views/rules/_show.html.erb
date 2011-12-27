@@ -1,75 +1,11 @@
 <div class='rule-data-holder'>
   <div class='rule-data-holder-inside'>
     <div id="rule-menu"></div>
-
-    <div class="section-title plus">Rule Information</div>
-    <div class="rule-info plus">
-      <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
-        <tr>
-          <th class='first'>SID</th>
-          <th>GID</th>
-          <th>Protocol</th>
-          <th>Source Addr</th>
-          <th>Source Port</th>
-          <th>Dest Addr</th>
-          <th>Dest Port</th>
-          <th>Revision</th>
-          <th class='last'>Source</th>
-        </tr>
-        <tbody>
-          <tr>
-            <td><%= rule.rule_id %></td>
-            <td><%= rule.gid %></td>
-            <td><%= rule.protocol.upcase unless rule.protocol.nil? %></td>
-            <td><%= rule.source_addr %></td>
-            <td><%= rule.source_port %></td>
-            <td><%= rule.target_addr %></td>
-            <td><%= rule.target_port %></td>
-            <td><%= rule.rev %></td>
-            <td><%= rule.source.name.capitalize %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section-title plus">More Rule Information</div>
-    <div class='rule-info plus'>
-      <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
-        <tr>
-          <th class="first">Column</th>
-          <th class="last">Value</th>
-        </tr>
-        <tbody>
-          <% rule.rule.split(';').each do |x| %>
-            <tr>
-              <td><strong><%= x.split(':')[0] %></strong></td>
-              <td><%= x.split(':')[1] %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-
-    <div class='section-title plus'>Notes</div>
-    <div id='notes_<%= rule.id %>' class='notes plus'>
-      <% if rule.notes.blank? %>
-        <strong class='no-notes'>
-          This rule currently has zero notes - You can add a note by clicking the button below.<br /><br />
-        </strong>
-      <% else %>
-        <%= render :partial => 'rule_notes/note', :collection => rule.notes(:order => [:id.desc]) %>
-
-        <%#= pager(rule.notes, "rules/#{rule.id}", false) %>
-      <% end %>
-
-      <div id='new_note' class='fake_form'>
-        <%= text_area_tag :body, {}, :style => 'display:none;' %>
-
-        <%= form_actions do %>
-          <%= button "Add A Note To This Rule", :class => 'add_new_rule_note' %>
-        <% end %>
-      </div>
-
-    </div>
+    <%= render :partial => 'rules/signature', :locals => {:rule => rule}%>
+    <% unless rule.protocol.nil? %>
+      <%= render :partial => 'rules/l3l4', :locals => {:rule => rule}%>
+    <% end %>
+    <%= render :partial => 'rules/details', :locals => {:rule => rule}%>
+    <%= render :partial => 'rules/notes', :locals => {:rule => rule} if Setting.notes?%>
   </div>
 </div>

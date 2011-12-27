@@ -1,0 +1,17 @@
+<div class="section-title plus">More Rule Information</div>
+<div class='rule-info plus'>
+  <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
+    <tr>
+      <th class="first">Column</th>
+      <th class="last">Value</th>
+    </tr>
+    <tbody>
+      <% rule.rule.split(';').each do |x| %>
+        <tr>
+          <td><strong><%= x.split(':')[0] %></strong></td>
+          <td><%= x.split(':')[1] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

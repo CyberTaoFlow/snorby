@@ -21,11 +21,10 @@ Snorby::Application.routes.draw do
   match '/sensors/:sensor_id/update_rule_details'  , :controller => 'Rules', :action => 'update_rule_details'
 
   resources :rules do
-
     collection do
+      get :rule_box
       post :mass_update
     end
-
   end
 
   # This feature is not ready yet
