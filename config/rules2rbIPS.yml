@@ -6,7 +6,7 @@ category4_groups:
     regexp: "imap|pop|smtp"
   - 
     name: "web"
-    regexp: "^web-|^web_|activex"
+    regexp: "^web-|^web_|activex|^file-identify$"
   - 
     name: "services"
     regexp: "^dns$|^ftp$|^finger$|netbios|^nntp$|^scada$|^scada_special$|^snmp$|telnet|tftp|^voip$|^x11$|^icmp|^rpc$|rservices"
@@ -25,9 +25,9 @@ category4_groups:
   - 
     name: "dos"
     regexp: "^dos$|^ddos$"
-  -
-    name: "preprocessor"
-    regexp: "^decoder$|^preprocessor$"
+  - 
+    name: "preprocessors"
+    regexp: "^preprocessor$|^decoder$|^sensitive-data$"
 
 category1_groups:
   - 
@@ -43,8 +43,8 @@ category1_groups:
     name: "spamhaus"
     regexp: "^drop$"
   -
-    name: "icmp-info"
-    regexp: "^icmp_info$"
+    name: "icmp"
+    regexp: "^icmp"
  
 
 
@@ -55,6 +55,7 @@ url_rules:
     regexp_category3_ignore: "^et |^gpl |^etpro "
     search:
       - "rules"
+      - "preproc_rules"
 
   #-
   #  name: "emergingthreats" 
@@ -90,4 +91,5 @@ url_rules:
   #  md5: "https://www.snort.org/reg-rules/snortrules-snapshot-2900.tar.gz.md5/<snort_oinkcode>"
   #  search:
   #    - "rules"
+  #    - "preproc_rules"
   

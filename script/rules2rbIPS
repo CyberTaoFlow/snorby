@@ -199,13 +199,13 @@ includeRuleDir.each do |rulesDir|
 
           while ruleLine = ruleFile.gets
             ruleLine.chop!
-            ruleMatch = /^(?<action>\w+)\s+(?<protocol>\w+)\s+(?<source_addr>[^\s]+)\s+(?<source_port>[^\s]+)\s+->\s+(?<target_addr>[^\s]+)\s+(?<target_port>[^\s]+)\s+\((?<rule>.+)\)\s*$/.match(ruleLine)
+            ruleMatch = /^(?<action>\w+)\s+((?<protocol>\w+)\s+(?<source_addr>[^\s]+)\s+(?<source_port>[^\s]+)\s+->\s+(?<target_addr>[^\s]+)\s+(?<target_port>[^\s]+)\s+)?\((?<rule>.+)\)\s*$/.match(ruleLine)
             unless ruleMatch.nil?
-              sidRuleMatch = /; sid:(?<sid>\d+);/.match(ruleMatch[:rule])
+              sidRuleMatch = /; sid:\s*(?<sid>\d+);/.match(ruleMatch[:rule])
               unless sidRuleMatch.nil?
-                msgRuleMatch = /msg:"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
+                msgRuleMatch = /msg:\s*"(?<msg>[^"]+)";/.match(ruleMatch[:rule])
                 unless msgRuleMatch.nil?	
-                  classtypeRuleMatch = /; classtype:(?<classtype>[^;]+);/.match(ruleMatch[:rule])
+                  classtypeRuleMatch = /; classtype:\s*(?<classtype>[^;]+);/.match(ruleMatch[:rule])
                   if classtypeRuleMatch.nil?
                     category2="unknown"
                   else
@@ -231,7 +231,7 @@ includeRuleDir.each do |rulesDir|
                   end
 
                   if category3.nil?
-                    category3RuleMatch = /([^ ]*( [^ ]*)?( [^ ]*)?)/.match(rule_msg)
+                    category3RuleMatch = /([^ _-]*([ _-][^ _-]*)?([ _-][^ _-]*)?)/.match(rule_msg)
                     if category3RuleMatch.nil?
                       category3="unknown"
                     else
@@ -242,10 +242,10 @@ includeRuleDir.each do |rulesDir|
                   rc3 = RuleCategory3.first(:name => category3)
                   rc3 = RuleCategory3.create(:name=>category3) if rc3.nil?
 
-                  revRuleMatch = /; rev:(?<value>\d+);/.match(ruleMatch[:rule])
+                  revRuleMatch = /; rev:\s*(?<value>\d+);/.match(ruleMatch[:rule])
                   rev = revRuleMatch.nil? ? 0 : revRuleMatch[:value].to_i
 
-                  gidRuleMatch = /; gid:(?<value>\d+);/.match(ruleMatch[:rule])
+                  gidRuleMatch = /; gid:\s*(?<value>\d+);/.match(ruleMatch[:rule])
                   gid = gidRuleMatch.nil? ? 0 : gidRuleMatch[:value].to_i
 
                   r = Rule.new()
@@ -272,15 +272,13 @@ includeRuleDir.each do |rulesDir|
                     printf("The rule has not been saved: \n   Rule: %s\n   Errors:%s\n\n", ruleLine, r.errors.inspect);
                   end
                 else
-                  if config["verbose"]
-                    printf("MSG not found!! \n%s\n", ruleLine)
-                  end
+                  printf("MSG not found!! \n%s\n", ruleLine) if config["verbose"]
                 end
               else 
-                if config["verbose"]
-                  printf("SID not found!! \n%s\n", ruleLine)
-                end
+                printf("SID not found!! \n%s\n", ruleLine) if config["verbose"]
               end
+            else
+              #printf("rule line doesn't match!! \n%s\n", ruleLine) if config["verbose"]
             end
           end
           ruleFile.close

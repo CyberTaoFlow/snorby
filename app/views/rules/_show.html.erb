@@ -6,7 +6,8 @@
     <div class="rule-info plus">
       <table class="rule-1" border='0' cellspacing='0' cellpadding='0'>
         <tr>
-          <th class='first'>Sid</th>
+          <th class='first'>SID</th>
+          <th>GID</th>
           <th>Protocol</th>
           <th>Source Addr</th>
           <th>Source Port</th>
@@ -18,7 +19,8 @@
         <tbody>
           <tr>
             <td><%= rule.rule_id %></td>
-            <td><%= rule.protocol.upcase %></td>
+            <td><%= rule.gid %></td>
+            <td><%= rule.protocol.upcase unless rule.protocol.nil? %></td>
             <td><%= rule.source_addr %></td>
             <td><%= rule.source_port %></td>
             <td><%= rule.target_addr %></td>
