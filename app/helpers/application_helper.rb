@@ -19,7 +19,7 @@ module ApplicationHelper
   def dropdown_select_tag(collection, value, include_blank=false, custom=[])
     options = include_blank ? "<option value=''></option>" : ""
     custom.collect { |x| options += x }
-    collection.collect { |x| options += "<option value='#{x.send(value.to_sym)}'>#{x.name}</option>" }
+    collection.collect { |x| options += "<option value='#{x.send(value.to_sym)}'>#{x.class == Sensor ? x.sensor_name : x.name}</option>" }
     options.html_safe
   end
 
