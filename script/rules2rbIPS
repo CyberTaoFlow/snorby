@@ -199,8 +199,23 @@ includeRuleDir.each do |rulesDir|
 
           while ruleLine = ruleFile.gets
             ruleLine.chop!
-            ruleMatch = /^(?<action>\w+)\s+((?<protocol>\w+)\s+(?<source_addr>[^\s]+)\s+(?<source_port>[^\s]+)\s+->\s+(?<target_addr>[^\s]+)\s+(?<target_port>[^\s]+)\s+)?\((?<rule>.+)\)\s*$/.match(ruleLine)
+            ruleMatch = /^(?<action>\w+)\s+(?<l3l4>(?<protocol>\w+)\s+(?<source_addr>[^\s]+)\s+(?<source_port>[^\s]+)\s+->\s+(?<target_addr>[^\s]+)\s+(?<target_port>[^\s]+)\s+)?\((?<rule>.+)\)\s*$/.match(ruleLine)
             unless ruleMatch.nil?
+
+              #variables
+              unless ruleMatch[:protocol].nil?
+                vars = (ruleMatch[:source_addr] +" " +ruleMatch[:target_addr]).scan(/\$([\w_]*)/)
+                vars.each do |x|
+                  var = RuleVariable.first(:name => x[0], :type=>RuleVariable::IPVAR)
+                  var = RuleVariable.create(:name=> x[0], :type=>RuleVariable::IPVAR) if var.nil?
+                end
+                vars = (ruleMatch[:source_port] +" " +ruleMatch[:target_port]).scan(/\$([\w_]*)/)
+                vars.each do |x|
+                  var = RuleVariable.first(:name => x[0], :type=>RuleVariable::PORTVAR)
+                  var = RuleVariable.create(:name=> x[0], :type=>RuleVariable::PORTVAR) if var.nil?
+                end
+              end
+
               sidRuleMatch = /; sid:\s*(?<sid>\d+);/.match(ruleMatch[:rule])
               unless sidRuleMatch.nil?
                 msgRuleMatch = /msg:\s*"(?<msg>[^"]+)";/.match(ruleMatch[:rule])

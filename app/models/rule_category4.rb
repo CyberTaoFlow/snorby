@@ -7,4 +7,7 @@ class RuleCategory4
 
   has n, :rules, :child_key => [ :category4_id ], :constraint => :destroy
 
+  def self.preprocessors
+    RuleCategory4.first(:name=>"preprocessors")
+  end
 end
