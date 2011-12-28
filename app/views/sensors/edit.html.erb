@@ -17,7 +17,7 @@
         <%= select_tag '[role][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
       </p>
     </div>
-    <div class="title">Preprocessors</div>
+    <div class="title second">Preprocessors</div>
     <div class="config_content preprocessor">
       <% cont = 1 %>
       <table>
@@ -36,11 +36,63 @@
         </tbody>
       </table>
     </div>
-    <div class="title">Variables</div>
-    <div class="config_content">
-      
+    <div class="title second">IP Variables <i>(Blank boxs will be inherited from parent.)</i></div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <table>
+        <tbody>
+          <tr>
+            <% RuleVariable.all(:type => RuleVariable::IPVAR).each do |v| %>
+              <td>
+                <%= label_tag v.name %>
+                <br/>
+                <%= text_field_tag "[role][variables][#{v.name}]", selected_variable_value(@role, v.name) %>
+              </td>
+              <%= "</tr><tr>".html_safe if cont%3 == 0 %>
+              <% cont = cont + 1 %>
+            <% end %>
+            <% cont%3.times do %>
+              <td></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="title">Logging</div>
+    <div class="title second">Port Variables <i>(Blank boxs will be inherited from parent.)</i></div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <table>
+        <tbody>
+          <tr>
+            <% RuleVariable.all(:type => RuleVariable::PORTVAR).each do |v| %>
+              <td>
+                <%= label_tag v.name %>
+                <br/>
+                <%= text_field_tag "[role][variables][#{v.name}]", selected_variable_value(@role, v.name) %>
+              </td>
+              <%= "</tr><tr>".html_safe if cont%3 == 0 %>
+              <% cont = cont + 1 %>
+            <% end %>
+            <% cont%3.times do %>
+              <td></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="title second">Logging</div>
+    <div class="config_content">
+      <p>
+        <%= label_tag 'Syslog Servers' %>
+        <br/>
+        <%= text_field_tag "[role][syslog]", @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(",") %>
+      </p>
+      <p>
+        <%= check_box_tag '[role][pcap]', 'yes', @role.override_attributes["redBorder"]["snort"]["save_pcap"] %>
+        <%= label_tag 'Save pcap files' %><br/>
+        <i>(Info about pcap files and where it will be saved.)</i>
+      </p>
+    </div>
 
     <%= form_actions do %>
       <%= button "Save", :class => 'success' %>

@@ -4840,22 +4840,13 @@ input.success:active{
     padding-left: 5px;
 }
 
-#wrapper #content #sensor_config div.second_title{
-    height: 35px;
-    background: #EDEDED filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='white',endColorstr='#EDEDED');
-    background: -webkit-gradient(linear,0% 0,0% 100%,from(white),to(#EDEDED));
-    background: -moz-linear-gradient(-90deg,white,#EDEDED);
-    border-bottom: 1px solid #D5D5D5;
-    line-height: 37px;
-    font-weight: bold;
-    text-decoration: none;
-    font-variant: normal;
-    letter-spacing: -1px;
-    text-shadow: white 0 1px 0;
-    color: #4A4A4A;
-    font-size: 1.0em;
+#wrapper #content #sensor_config div.title.second{
+    margin-top: 30px;
+}
 
-    padding-left: 15px;
+#wrapper #content #sensor_config div.title i{
+    font-weight: normal;
+    margin-left: 5px;
 }
 
 #wrapper #content #sensor_config #form-actions{
@@ -4872,6 +4863,14 @@ input.success:active{
 
 #wrapper #content #sensor_config div.config_content.preprocessor table{
     border: none;
+}
+
+#wrapper #content #sensor_config div.config_content table tr:hover td{
+    background: white url(../images/page/table-bg.png) repeat-x 0 bottom;
+}
+
+#wrapper #content #sensor_config div.config_content table tr td:hover{
+    background-color: #fefeeb;
 }
 
 /* @end */
