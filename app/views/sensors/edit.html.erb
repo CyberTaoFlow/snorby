@@ -1,33 +1,51 @@
-<script type="text/javascript">
-  $('dl.sensor-menu').fadeOut();
-</script>
+<%= form_tag sensor_path(@sensor), :class => 'basic-form validate' do %>
 
-<%= snorby_box("Update Domain", false) do %>
+  <%= error_messages_for(@sensor) %>
 
-  <%= form_for(@sensor) do |f|%>
+  <div id="sensor_config">
+    <div class="title">General</div>
+    <div class="config_content">
+      <p>
+        <%= label_tag 'Name' %>
+        <br />
+        <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required', :disabled => 'disabled' if @sensor.is_virtual_sensor? %>
+        <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required' unless @sensor.is_virtual_sensor? %>
+      </p>
+      <p>
+        <%= label_tag 'Mode' %>
+        <br />
+        <%= select_tag '[role][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
+      </p>
+    </div>
+    <div class="title">Preprocessors</div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <table>
+        <tbody>
+          <tr>
+            <% Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].each do |key, value| %>
+              <td>
+                <%= label_tag key.capitalize %>
+                <br/>
+                <%= select_tag "[role][preprocessors][#{key}]", options_for_select(Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
+              </td>
+              <%= "</tr><tr>".html_safe if cont%4 == 0 %>
+              <% cont = cont + 1 %>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="title">Variables</div>
+    <div class="config_content">
+      
+    </div>
+    <div class="title">Logging</div>
 
-    <%= error_messages_for(@sensor) %>
-
-    <p><%= f.label :name %><br />
-      <%= f.text_field :name, :placeholder => 'Domain Name', :class => 'required', :disabled => 'disabled' if @sensor.is_virtual_sensor? %>
-      <%= f.text_field :name, :placeholder => 'Domain Name', :class => 'required' unless @sensor.is_virtual_sensor? %>
-    </p>
-
-    <% if @sensor.is_virtual_sensor? %>
-    <p><%= f.label :ip %><br/>
-      <%= f.text_field :ipdir, :placeholder => 'Ip Sensor', :class => 'required' %>
-    </p>
+    <%= form_actions do %>
+      <%= button "Save", :class => 'success' %>
+      <%= button "Cancel", :class => 'warning cancel' %>
     <% end %>
-
-    <br/><br/>
-
-    <%= snorby_box_footer do %>
-      <%= form_actions do %>
-        <%= f.submit "Save", :class => 'success' %>
-        <%= button "Cancel", :class => 'warning cancel-snorbybox' %>
-      <% end %>
-    <% end %>
-
-  <% end %>
+  </div>
 
 <% end %>

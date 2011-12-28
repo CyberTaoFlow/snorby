@@ -1,6 +1,9 @@
 class Sensor
   include DataMapper::Resource
 
+  MODES = {"IDS" => "IDS", "IPS without rules" => "IPS_NR", "IPS with alert rules" => "IPS_ALERT", "IPS normal mode" => "IPS"}
+  PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => "inherited"}
+
   after :create do |sensor|
     # After the sensor (domain or not) has been created it will involve a rule compilation for this sensor.
     #   This will create an initial restore point and it will inherit all its parents rules
@@ -344,6 +347,14 @@ class Sensor
     end
   end
 
+  def self.chef_sensor_role
+    Chef::Role.load("sensor")
+  end
+
+  def self.chef_manager_role
+    Chef::Role.load("manager")
+  end
+
   def chef_role
     Chef::Role.load(self.chef_name)
   end
@@ -428,6 +439,9 @@ class Sensor
       role.override_attributes["redBorder"] = {} if role.override_attributes["redBorder"].nil?
       role.override_attributes["redBorder"]["role"]  = role.name
       role.override_attributes["redBorder"]["snort"] = {} if role.override_attributes["redBorder"]["snort"].nil?
+      role.override_attributes["redBorder"]["snort"]["preprocessors"]={} if role.override_attributes["redBorder"]["preprocessors"].nil?
+      role.override_attributes["redBorder"]["snort"]["vars"]={} if role.override_attributes["redBorder"]["vars"].nil?
+      
       if self.parent.nil? or self.is_root?
         role.run_list("role[sensor]")
       else

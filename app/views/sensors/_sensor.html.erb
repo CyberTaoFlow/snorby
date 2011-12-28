@@ -28,7 +28,7 @@
         <%= link_to "Events", results_path(:title => "#{sensor.sensor_name}", :search => { :sid => sensor.sid }) %>
       </dd>
       <dd>
-        <%= link_to "Config", edit_sensor_path(sensor), {:class => 'snorbybox', :target => '_blank'}  if sensor.domain %>
+        <%= link_to "Config", edit_sensor_path(sensor)  if sensor.domain %>
       </dd>
       <dd>
         <%= link_to "Rules", sensor_rules_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
