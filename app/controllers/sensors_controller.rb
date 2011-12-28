@@ -81,7 +81,7 @@ class SensorsController < ApplicationController
 
   def edit
     @sensor = Sensor.get(params[:id])
-    render :layout => false
+    @role = @sensor.chef_role
   end
 
   def update
