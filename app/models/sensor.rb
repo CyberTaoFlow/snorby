@@ -35,6 +35,7 @@ class Sensor
         #role not found. Ignore it
       end
     end
+    return true
   end
 
   storage_names[:default] = "sensor"

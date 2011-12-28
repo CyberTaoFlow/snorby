@@ -66,6 +66,7 @@ Snorby::Application.routes.draw do
     resources :rules do
       collection do
         get :active_rules
+        get :preprocessors_rules
         get :pending_rules
         get :compile_rules
         get :discard_pending_rules

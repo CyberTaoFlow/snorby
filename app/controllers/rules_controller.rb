@@ -1,7 +1,7 @@
 class RulesController < ApplicationController
 
   before_filter :require_administrative_privileges, :only => [:compile_rules, :discard_pending_rules]
-  skip_before_filter :authenticate_user!, :only => [:active_rules]
+  skip_before_filter :authenticate_user!, :only => [:active_rules, :preprocessors_rules]
 
   # Get all categories and their rules. 
   def index
@@ -237,7 +237,21 @@ class RulesController < ApplicationController
       format.text{
         @sensor = Sensor.first(:hostname => params[:sensor_id])
         @sensor_rules = @sensor.last_compiled_rules
+        preprocessors_id = RuleCategory4.preprocessors.id
+        @sensor_rules = @sensor_rules.select{|x| x.rule.category4_id != preprocessors_id} unless @sensor_rules.blank?
         @rulestype = "compiled_rules"
+      }
+    end
+  end
+
+  def preprocessors_rules
+    respond_to do |format|
+      format.text{
+        @sensor = Sensor.first(:hostname => params[:sensor_id])
+        @sensor_rules = @sensor.last_compiled_rules
+        preprocessors_id = RuleCategory4.preprocessors.id
+        @sensor_rules = @sensor_rules.select{|x| x.rule.category4_id == preprocessors_id} unless @sensor_rules.blank?
+        @rulestype = "preprocessors_rules"
       }
     end
   end

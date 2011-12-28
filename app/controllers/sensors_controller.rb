@@ -114,7 +114,13 @@ class SensorsController < ApplicationController
           pname = sensor.hostname
         end
         p_sensor = Sensor.first(:name => pname.capitalize, :hostname => pname, :domain => true)
-        p_sensor = Sensor.create(:name => pname.capitalize, :hostname => pname, :domain => true, :parent => Sensor.root) if p_sensor.nil?
+        if p_sensor.nil?
+          p_sensor = Sensor.create(:name => pname.capitalize, :hostname => pname, :domain => true, :parent => Sensor.root)
+          node     = p_sensor.chef_node
+          node.run_list("role[#{p_sensor.chef_name}]")
+          node.tags << "inilizialized"
+          node.save
+        end
         sensor.update(:parent => p_sensor)
       end
 
