@@ -1,13 +1,16 @@
-<li data='<%= category.id %>' class="category">
-  <div class="row">
-    <div class="select small"><%= check_box_tag 'category-selector', nil, false, :class => "check_box_#{category.id}" %></div>
-    <div class="action click">
-      <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
+<%- count = category.rules.all().size %>
+<% if count>0 %>
+  <li data='<%= category.id %>' class="category">
+    <div class="row">
+      <div class="select small"><%= check_box_tag 'category-selector', nil, false, :class => "check_box_#{category.id}" %></div>
+      <div class="action click">
+        <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
+      </div>
+      <div class="message click"><%= category.name.upcase %><%= category.description.nil? ? "" : "  (#{category.description})" %> </div>
+      <div class="nrules"><%= count %></div>
     </div>
-    <div class="message click"><%= category.name.upcase %><%= category.description.nil? ? "" : "  (#{category.description})" %> </div>
-    <div class="nrules"><%= category.rules.all().size %></div>
-  </div>
-  <ul class="table groups" style='display:none;'>
-    <div class="content"></div>
-  </ul>
-</li>
+    <ul class="table groups" style='display:none;'>
+      <div class="content"></div>
+    </ul>
+  </li>
+<% end %>

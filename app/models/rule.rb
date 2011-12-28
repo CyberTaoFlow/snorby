@@ -2,6 +2,7 @@ class Rule
   # Version for each rule. Each time the rules2rbIPS script is executed, if it detects new rules it create a new dbversion.
   #    All the rules downloaded will have the same dbversion reference. A rule actualization will involve the script will 
   #    download all rules again creating a new dbversion entry for those rules.
+  SIGNATURE_URL = "http://rootedyour.com/snortsid?sid=$$gid$$-$$sid$$"
 
   include DataMapper::Resource
   
@@ -34,6 +35,18 @@ class Rule
   # array with all versions for one single rule
   def dbversions
     Rule.all(:rule_id => self.rule_id, :source => self.source).map{|x| x.dbversion}.uniq
+  end
+
+  def signature_url
+    sid, gid = [/\$\$sid\$\$/, /\$\$gid\$\$/]
+
+    @signature_url = if Setting.signature_lookup?
+      Setting.find(:signature_lookup)
+    else
+      SIGNATURE_URL
+    end
+
+    @signature_url.sub(sid, self.rule_id.to_s).sub(gid, self.gid.to_s)
   end
 
   def html_id

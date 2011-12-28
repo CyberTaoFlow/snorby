@@ -246,7 +246,7 @@ includeRuleDir.each do |rulesDir|
                   rev = revRuleMatch.nil? ? 0 : revRuleMatch[:value].to_i
 
                   gidRuleMatch = /; gid:\s*(?<value>\d+);/.match(ruleMatch[:rule])
-                  gid = gidRuleMatch.nil? ? 0 : gidRuleMatch[:value].to_i
+                  gid = gidRuleMatch.nil? ? 1 : gidRuleMatch[:value].to_i
 
                   r = Rule.new()
                   r.rule_id      = sidRuleMatch[:sid].to_i
