@@ -204,12 +204,12 @@ includeRuleDir.each do |rulesDir|
 
               #variables
               unless ruleMatch[:protocol].nil?
-                vars = (ruleMatch[:source_addr] +" " +ruleMatch[:target_addr]).scan(/\$([^ ,;]*)/)
+                vars = (ruleMatch[:source_addr] +" " +ruleMatch[:target_addr]).scan(/\$([\w_]*)/)
                 vars.each do |x|
                   var = RuleVariable.first(:name => x[0], :type=>RuleVariable::IPVAR)
                   var = RuleVariable.create(:name=> x[0], :type=>RuleVariable::IPVAR) if var.nil?
                 end
-                vars = (ruleMatch[:source_port] +" " +ruleMatch[:target_port]).scan(/\$([^ ,;]*)/)
+                vars = (ruleMatch[:source_port] +" " +ruleMatch[:target_port]).scan(/\$([\w_]*)/)
                 vars.each do |x|
                   var = RuleVariable.first(:name => x[0], :type=>RuleVariable::PORTVAR)
                   var = RuleVariable.create(:name=> x[0], :type=>RuleVariable::PORTVAR) if var.nil?
