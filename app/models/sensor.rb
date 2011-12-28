@@ -8,6 +8,11 @@ class Sensor
     
     #we must create a new role for chef
     sensor.create_chef_sensor
+
+    if sensor.is_virtual_sensor?
+      node = sensor.chef_node
+      sensor.update(:ipdir => node[:ipaddress])
+    end
   end
 
   after :update do |sensor|
@@ -421,8 +426,8 @@ class Sensor
       role.name(self.chef_name)
       role.description(self.sensor_name)
       role.override_attributes["redBorder"] = {} if role.override_attributes["redBorder"].nil?
-      role.override_attributes["redBorder"][:role]  = role.name
-      role.override_attributes["redBorder"][:snort] = {} if role.override_attributes["redBorder"][:snort].nil?
+      role.override_attributes["redBorder"]["role"]  = role.name
+      role.override_attributes["redBorder"]["snort"] = {} if role.override_attributes["redBorder"]["snort"].nil?
       if self.parent.nil? or self.is_root?
         role.run_list("role[sensor]")
       else
