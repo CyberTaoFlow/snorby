@@ -2,7 +2,7 @@ class Sensor
   include DataMapper::Resource
 
   MODES = {"IDS" => "IDS", "IPS without rules" => "IPS_NR", "IPS with alert rules" => "IPS_ALERT", "IPS normal mode" => "IPS"}
-  PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => "inherited"}
+  PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => " "}
 
   after :create do |sensor|
     # After the sensor (domain or not) has been created it will involve a rule compilation for this sensor.

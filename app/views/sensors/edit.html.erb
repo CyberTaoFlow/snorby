@@ -1,4 +1,4 @@
-<%= form_tag sensor_path(@sensor), :class => 'basic-form validate' do %>
+<%= form_tag "/sensors/#{@sensor.sid}", :method => :put, :class => 'basic-form validate' do %>
 
   <%= error_messages_for(@sensor) %>
 
@@ -14,7 +14,7 @@
       <p>
         <%= label_tag 'Mode' %>
         <br />
-        <%= select_tag '[role][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
+        <%= select_tag '[role][redBorder][snort][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
       </p>
     </div>
     <div class="title second">Preprocessors</div>
@@ -27,7 +27,7 @@
               <td>
                 <%= label_tag key.capitalize %>
                 <br/>
-                <%= select_tag "[role][preprocessors][#{key}]", options_for_select(Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
+                <%= select_tag "[role][redBorder][snort][preprocessors][#{key}]", options_for_select(Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
               </td>
               <%= "</tr><tr>".html_safe if cont%4 == 0 %>
               <% cont = cont + 1 %>
@@ -46,12 +46,12 @@
               <td>
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][variables][#{v.name}]", selected_variable_value(@role, v.name) %>
+                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
               </td>
               <%= "</tr><tr>".html_safe if cont%3 == 0 %>
               <% cont = cont + 1 %>
             <% end %>
-            <% cont%3.times do %>
+            <% (3 - (cont - 1)%3).times do %>
               <td></td>
             <% end %>
           </tr>
@@ -68,12 +68,12 @@
               <td>
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][variables][#{v.name}]", selected_variable_value(@role, v.name) %>
+                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
               </td>
               <%= "</tr><tr>".html_safe if cont%3 == 0 %>
               <% cont = cont + 1 %>
             <% end %>
-            <% cont%3.times do %>
+            <% (3 - (cont - 1)%3).times do %>
               <td></td>
             <% end %>
           </tr>
@@ -85,10 +85,10 @@
       <p>
         <%= label_tag 'Syslog Servers' %>
         <br/>
-        <%= text_field_tag "[role][syslog]", @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(",") %>
+        <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(",") %>
       </p>
       <p>
-        <%= check_box_tag '[role][pcap]', 'yes', @role.override_attributes["redBorder"]["snort"]["save_pcap"] %>
+        <%= check_box_tag "[role][reBborder][snort][save_pcap]", 'yes', @role.override_attributes["redBorder"]["snort"]["save_pcap"] %>
         <%= label_tag 'Save pcap files' %><br/>
         <i>(Info about pcap files and where it will be saved.)</i>
       </p>
