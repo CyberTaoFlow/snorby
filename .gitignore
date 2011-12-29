@@ -35,3 +35,5 @@ nbproject
 script/script_carga.rb
 
 config/rb-chef-webui.pem
+
+config/deploy.rb
