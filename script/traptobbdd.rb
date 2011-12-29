@@ -19,13 +19,16 @@ require 'dm-serializer'
 
 PRG_VERSION="1.0"
 
+db_config = File.read("#{File.dirname(__FILE__)}/../config/database.yml")
+CONFIG = YAML.load(db_config)[Rails.env].symbolize_keys
+
 DataMapper.setup(
   :default,
-  {:adapter  => 'mysql',
-  :username => 'snorby',
-  :password => 'redborder',
-  :host     => 'localhost',
-  :database => 'snorby'}
+  {:adapter => CONFIG[:adapter],
+  :username => CONFIG[:username],
+  :password => CONFIG[:password],
+  :host     => CONFIG[:host],
+  :database => CONFIG[:database]}
 )
 
 class Trap
