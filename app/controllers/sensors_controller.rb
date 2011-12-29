@@ -86,7 +86,25 @@ class SensorsController < ApplicationController
 
   def update
     @sensor = Sensor.get(params[:id])
-    if @sensor.update(params[:sensor])
+    @role = @sensor.chef_role
+
+    params_role = params[:role]
+
+    params[:sensor] ||= {:name => @sensor.name}
+
+    params_role[:redBorder][:snort].each do |key, value|
+      if value.class == ActiveSupport::HashWithIndifferentAccess
+        value.each do |key2, value2|
+          value2.present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = value2 : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+        end
+      else
+        value.present? ? @role.override_attributes["redBorder"]["snort"][key] = value : @role.override_attributes["redBorder"]["snort"].delete(key) { |unusedlocal|  }
+      end
+    end
+
+    params_role[:redBorder][:barnyard2][:syslog_servers].present? ? @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"] = params_role[:redBorder][:barnyard2][:syslog_servers].split(/\s*,\s*/) : @role.override_attributes["redBorder"]["barnyard2"].delete("syslog_servers")
+
+    if @sensor.update(params[:sensor]) and @role.save
       redirect_to(sensors_path, :notice => 'Sensor was successfully updated.')
     else
       redirect_to(sensors_path, :notice => 'Was an error updating the sensor.')
