@@ -4,7 +4,7 @@
   <td class='hostname'><%= sensor.hostname %></td>
   <td class='interface'><%= sensor.interface %></td>
 
-  <td class='ip <%= "edit-sensor-ip" if current_user.admin and sensor.is_virtual_sensor? %>' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
+  <td class='ip' data-sensor-id='<%= sensor.sid %>' ><%= sensor.ipdir %> </td>
 
   <% if sensor.last %>
     <td class="last_event_time">
