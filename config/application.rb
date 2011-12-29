@@ -18,10 +18,12 @@ module Snorby
   snmp_config = File.read("config/snmp_config.yml")
   CONFIG_SNMP = YAML.load(snmp_config)[Rails.env].symbolize_keys
 
-  Chef::Config[:node_name] = Chef::Config[:web_ui_client_name]
-  Chef::Config[:client_key] = Chef::Config[:web_ui_key] 
-  #next line must be commented. By default is "http://localhost:4000"
-  Chef::Config[:chef_server_url]="http://192.168.11.160:4000"
+  #Chef::Config[:node_name] = Chef::Config[:web_ui_client_name]
+  #Chef::Config[:client_key] = Chef::Config[:web_ui_key] 
+  Chef::Config[:node_name]  = "rb-chef-webui"
+  Chef::Config[:client_key] = "config/rb-chef-webui.pem"
+  #By default :chef_server_url should be "http://localhost:4000"
+  Chef::Config[:chef_server_url]="http://192.168.11.180:4000"
 
   class Application < Rails::Application
         
