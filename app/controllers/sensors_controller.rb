@@ -105,9 +105,8 @@ class SensorsController < ApplicationController
   private
 
     def create_virtual_sensors
-      sensors = Sensor.all(:domain => false, :parent_sid => nil)
-
-      sensors.each do |sensor|
+      sensors1 = Sensor.all(:domain => false, :parent_sid => nil)
+      sensors1.each do |sensor|
         if sensor.hostname.include? ':'
           pname = /([^:]+):/.match(sensor.hostname)[1]
         else
@@ -124,8 +123,14 @@ class SensorsController < ApplicationController
         sensor.update(:parent => p_sensor)
       end
 
+      sensors2 = Sensor.all(:domain => true, :ipdir => nil).select{|x| x.is_virtual_sensor?}
+      sensors2.each do |sensor|
+        node = sensor.chef_node
+        sensor.update(:ipdir => node[:ipaddress])
+      end
+
       # Needed to reload the object. Without that, index need to be reload twice to view the sensors created.
-      redirect_to sensors_path if sensors.present?
+      redirect_to sensors_path if sensors1.present? || sensors2.present?
     end
 
     def default_values

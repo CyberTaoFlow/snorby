@@ -442,8 +442,8 @@ class Sensor
       role.override_attributes["redBorder"]["snort"] = {} if role.override_attributes["redBorder"]["snort"].nil?
       role.override_attributes["redBorder"]["snort"]["preprocessors"]={} if role.override_attributes["redBorder"]["snort"]["preprocessors"].nil?
       role.override_attributes["redBorder"]["snort"]["vars"]={} if role.override_attributes["redBorder"]["snort"]["vars"].nil?
-      role.override_attributes["redBorder"]["barnyard2"] = {} if role.override_attributes["redBorder"]["bantyard2"].nil?
-      role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"] = [] if role.override_attributes["redBorder"]["bantyard2"]["syslog_servers"].nil?
+      role.override_attributes["redBorder"]["barnyard2"] = {} if role.override_attributes["redBorder"]["barnyard2"].nil?
+      role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"] = [] if role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?
       
       if self.parent.nil? or self.is_root?
         role.run_list("role[sensor]")
