@@ -5,7 +5,7 @@
       <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
     </div>
     <div class="message click"><%= group.name.upcase %></div>
-    <div class="nrules"><%= group.rules.all(:category4 => category).size %> </div>
+    <div class="nrules"><%= @sensor.rules(:category4 => category, :category1 => group).size %> / <%= group.rules.all(:category4 => category).size %> </div>
   </div>
   <ul class="table families" style='display:none;'>
     <div class="content"></div>

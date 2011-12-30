@@ -1,5 +1,6 @@
 <%- count = category.rules.all().size %>
-<% if count>0 %>
+<%- active_rules = @sensor.rules(:category4 => category).size %>
+<% if count > 0 %>
   <li data='<%= category.id %>' class="category">
     <div class="row">
       <div class="select small"><%= check_box_tag 'category-selector', nil, false, :class => "check_box_#{category.id}" %></div>
@@ -7,7 +8,7 @@
         <%= render :partial => 'rules/action', :locals => {:actions => actions, :action => nil} %>
       </div>
       <div class="message click"><%= category.name.upcase %><%= category.description.nil? ? "" : "  (#{category.description})" %> </div>
-      <div class="nrules"><%= count %></div>
+      <div class="nrules"><%= active_rules %> / <%= count %></div>
     </div>
     <ul class="table groups" style='display:none;'>
       <div class="content"></div>
