@@ -31,10 +31,10 @@
         <%= link_to "Config", edit_sensor_path(sensor)  if sensor.domain %>
       </dd>
       <dd>
-        <%= link_to "Rules", sensor_rules_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
+        <%= link_to "Rules", sensor_rules_path(:sensor_id => sensor.sid) if sensor.domain %>
       </dd>
       <dd>
-        <%= drop_down_item "Snmp"  , sensor_snmps_path(:sensor_id => sensor.sid, :title => "#{sensor.sensor_name}") if sensor.domain %>
+        <%= drop_down_item "Snmp"  , sensor_snmps_path(:sensor_id => sensor.sid) if sensor.domain %>
       </dd>
       <dd>
         <%= drop_down_item "Info"  , sensor_path(sensor) if sensor.domain and sensor.is_virtual_sensor? %>

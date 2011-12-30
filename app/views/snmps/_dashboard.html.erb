@@ -1,4 +1,4 @@
-<%= title "Snmp" do %>
+<%= title "Snmp #{'for '+@sensor.sensor_name unless @sensor.nil?}" do %>
 
   <%= drop_down_for('More Options', 'icons/filter.png', 'options') do %>
 
