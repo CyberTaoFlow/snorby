@@ -4855,6 +4855,8 @@ input.success:active{
 
 #wrapper #content #sensor_config div.config_content{
     margin-left: 20px;
+    display: block;
+    overflow: hidden;
 }
 
 #wrapper #content #sensor_config div.config_content.preprocessor{

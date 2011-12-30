@@ -5,17 +5,28 @@
   <div id="sensor_config">
     <div class="title">General</div>
     <div class="config_content">
-      <p>
-        <%= label_tag 'Name' %>
-        <br />
-        <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required', :disabled => 'disabled' if @sensor.is_virtual_sensor? %>
-        <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required' unless @sensor.is_virtual_sensor? %>
-      </p>
-      <p>
-        <%= label_tag 'Mode' %>
-        <br />
-        <%= select_tag '[role][redBorder][snort][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
-      </p>
+      <div class="grid_6">
+        <p>
+          <%= label_tag 'Name' %>
+          <br />
+          <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required', :disabled => 'disabled' if @sensor.is_virtual_sensor? %>
+          <%= text_field_tag '[sensor][name]', @sensor.name, :placeholder => 'Domain Name', :class => 'required' unless @sensor.is_virtual_sensor? %>
+        </p>
+        <p>
+          <%= label_tag 'Mode' %>
+          <br />
+          <%= select_tag '[role][redBorder][snort][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
+        </p>
+      </div>
+      <div class="grid_5">
+        <% if @sensor.is_virtual_sensor? %>
+          <p>
+            <%= label_tag 'IP' %>
+            <br />
+            <%= text_field_tag '[sensor][ipir]', @sensor.ipdir, :placeholder => 'Domain Ip', :class => 'required', :disabled => 'disabled' %>
+          </p>
+        <% end %>
+      </div>
     </div>
     <div class="title second">Preprocessors</div>
     <div class="config_content preprocessor">
