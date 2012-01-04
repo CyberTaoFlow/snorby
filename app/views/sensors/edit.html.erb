@@ -99,7 +99,7 @@
       <p>
         <%= label_tag 'Syslog Servers' %>
         <br/>
-        <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(",") %>
+        <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?) %>
       </p>
       <p>
         <%= check_box_tag "[role][reBborder][snort][save_pcap]", 'yes', @role.override_attributes["redBorder"]["snort"]["save_pcap"] %>
