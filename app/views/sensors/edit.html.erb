@@ -31,6 +31,7 @@
     <div class="title second">Preprocessors</div>
     <div class="config_content preprocessor">
       <% cont = 1 %>
+      <% size = Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].size %>
       <table>
         <tbody>
           <tr>
@@ -40,7 +41,7 @@
                 <br/>
                 <%= select_tag "[role][redBorder][snort][preprocessors][#{key}]", options_for_select(Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
               </td>
-              <%= "</tr><tr>".html_safe if cont%4 == 0 %>
+              <%= "</tr><tr>".html_safe if (cont%4 == 0 and cont < size) %>
               <% cont = cont + 1 %>
             <% end %>
           </tr>
@@ -50,6 +51,7 @@
     <div class="title second">IP Variables <i>(Blank boxs will be inherited from parent.)</i></div>
     <div class="config_content preprocessor">
       <% cont = 1 %>
+      <% size = RuleVariable.all(:type => RuleVariable::IPVAR).size %>
       <table>
         <tbody>
           <tr>
@@ -59,11 +61,11 @@
                 <br/>
                 <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
               </td>
-              <%= "</tr><tr>".html_safe if cont%3 == 0 %>
+              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>
             <% end %>
-            <% (3 - (cont - 1)%3).times do %>
-              <td></td>
+            <% ((3 -(cont - 1)%3)%3).times do %>
+              <td class="noselect"></td>
             <% end %>
           </tr>
         </tbody>
@@ -72,6 +74,7 @@
     <div class="title second">Port Variables <i>(Blank boxs will be inherited from parent.)</i></div>
     <div class="config_content preprocessor">
       <% cont = 1 %>
+      <% size = RuleVariable.all(:type => RuleVariable::PORTVAR).size %>
       <table>
         <tbody>
           <tr>
@@ -81,10 +84,10 @@
                 <br/>
                 <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
               </td>
-              <%= "</tr><tr>".html_safe if cont%3 == 0 %>
+              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>
             <% end %>
-            <% (3 - (cont - 1)%3).times do %>
+            <% ((3 -(cont - 1)%3)%3).times do %>
               <td></td>
             <% end %>
           </tr>
