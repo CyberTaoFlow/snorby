@@ -1,7 +1,7 @@
 class Sensor
   include DataMapper::Resource
 
-  MODES = {"IDS" => "IDS", "IPS without rules" => "IPS_NR", "IPS with alert rules" => "IPS_ALERT", "IPS normal mode" => "IPS"}
+  MODES = {"Inherited" => "", "IDS" => "IDS", "IPS without rules" => "IPS_NR", "IPS with alert rules" => "IPS_ALERT", "IPS normal mode" => "IPS"}
   PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => " "}
 
   after :create do |sensor|
