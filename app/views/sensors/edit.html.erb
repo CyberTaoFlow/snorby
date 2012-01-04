@@ -15,7 +15,7 @@
         <p>
           <%= label_tag 'Mode' %>
           <br />
-          <%= select_tag '[role][redBorder][snort][mode]', options_for_select(Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
+          <%= select_tag '[role][redBorder][snort][mode]', select_role_options(@sensor, ["redBorder", "snort", "mode"], Sensor::MODES, :selected => @role.override_attributes["redBorder"]["snort"]["mode"]) %>
         </p>
       </div>
       <div class="grid_5">
@@ -96,16 +96,22 @@
     </div>
     <div class="title second">Logging</div>
     <div class="config_content">
-      <p>
-        <%= label_tag 'Syslog Servers' %>
-        <br/>
-        <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?) %>
-      </p>
-      <p>
-        <%= check_box_tag "[role][reBborder][snort][save_pcap]", 'yes', @role.override_attributes["redBorder"]["snort"]["save_pcap"] %>
-        <%= label_tag 'Save pcap files' %><br/>
-        <i>(Info about pcap files and where it will be saved.)</i>
-      </p>
+      <div class="grid_6">
+        <p>
+          <%= label_tag 'Syslog Servers' %>
+          <br/>
+          <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?) %>
+        </p>
+      </div>
+      <div class="grid_5">
+        <p>
+          <%= label_tag 'Save pcap files' %>
+          <i>(Info about pcap files and where it will be saved.)</i>
+          <br/>
+          <%= select_tag "[role][redBorder][snort][save_pcap]", select_role_options(@sensor, ["redBorder","snort","save_pcap"], Sensor::PREPROCESSOR_VALUES, :selected => @role.override_attributes["redBorder"]["snort"]["save_pcap"]) %>
+          
+        </p>
+      </div>
     </div>
 
     <%= form_actions do %>
