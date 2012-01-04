@@ -98,7 +98,7 @@ class SensorsController < ApplicationController
           value2.present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = value2 : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
         end
       else
-        value.present? ? @role.override_attributes["redBorder"]["snort"][key] = value : @role.override_attributes["redBorder"]["snort"].delete(key) { |unusedlocal|  }
+        value.present? ? @role.override_attributes["redBorder"]["snort"][key] = value : @role.override_attributes["redBorder"]["snort"].delete(key)
       end
     end
 
