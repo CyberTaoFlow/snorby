@@ -13,7 +13,7 @@ module SensorsHelper
     select_options = ""
     options.each do |k, v|
       name = k
-      if v == "" and sensor.parent.role_value(chef_value_path)
+      if v == "" and sensor.parent and sensor.parent.role_value(chef_value_path)
         name += " (#{options.key(sensor.parent.role_value(chef_value_path))})"
       end
       content = content_tag(:option, name, :value => v)

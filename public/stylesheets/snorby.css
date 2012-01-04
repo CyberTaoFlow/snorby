@@ -4871,8 +4871,21 @@ input.success:active{
     background: white url(../images/page/table-bg.png) repeat-x 0 bottom;
 }
 
+
 #wrapper #content #sensor_config div.config_content table tr td:hover{
     background-color: #fefeeb;
+}
+
+#wrapper #content #sensor_config div.config_content table tr td:hover.noselect{
+    background: white url(../images/page/table-bg.png) repeat-x 0 bottom;
+}
+
+td.size_25{
+    width: 25%;
+}
+
+td.size_33{
+    width: 33%;
 }
 
 /* @end */

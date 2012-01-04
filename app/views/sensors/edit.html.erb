@@ -28,72 +28,6 @@
         <% end %>
       </div>
     </div>
-    <div class="title second">Preprocessors</div>
-    <div class="config_content preprocessor">
-      <% cont = 1 %>
-      <% size = Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].size %>
-      <table>
-        <tbody>
-          <tr>
-            <% Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].each do |key, value| %>
-              <td>
-                <%= label_tag key.capitalize %>
-                <br/>
-                <%= select_tag "[role][redBorder][snort][preprocessors][#{key}][mode]", select_role_options(@sensor, ["redBorder","snort","preprocessors","#{key}", "mode"], Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
-              </td>
-              <%= "</tr><tr>".html_safe if (cont%4 == 0 and cont < size) %>
-              <% cont = cont + 1 %>
-            <% end %>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="title second">IP Variables <i>(Blank boxs will be inherited from parent.)</i></div>
-    <div class="config_content preprocessor">
-      <% cont = 1 %>
-      <% size = RuleVariable.all(:type => RuleVariable::IPVAR).size %>
-      <table>
-        <tbody>
-          <tr>
-            <% RuleVariable.all(:type => RuleVariable::IPVAR).each do |v| %>
-              <td>
-                <%= label_tag v.name %>
-                <br/>
-                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
-              </td>
-              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
-              <% cont = cont + 1 %>
-            <% end %>
-            <% ((3 -(cont - 1)%3)%3).times do %>
-              <td class="noselect"></td>
-            <% end %>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="title second">Port Variables <i>(Blank boxs will be inherited from parent.)</i></div>
-    <div class="config_content preprocessor">
-      <% cont = 1 %>
-      <% size = RuleVariable.all(:type => RuleVariable::PORTVAR).size %>
-      <table>
-        <tbody>
-          <tr>
-            <% RuleVariable.all(:type => RuleVariable::PORTVAR).each do |v| %>
-              <td>
-                <%= label_tag v.name %>
-                <br/>
-                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name) %>
-              </td>
-              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
-              <% cont = cont + 1 %>
-            <% end %>
-            <% ((3 -(cont - 1)%3)%3).times do %>
-              <td></td>
-            <% end %>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     <div class="title second">Logging</div>
     <div class="config_content">
       <div class="grid_6">
@@ -109,9 +43,79 @@
           <i>(Info about pcap files and where it will be saved.)</i>
           <br/>
           <%= select_tag "[role][redBorder][snort][save_pcap]", select_role_options(@sensor, ["redBorder","snort","save_pcap"], Sensor::PREPROCESSOR_VALUES, :selected => @role.override_attributes["redBorder"]["snort"]["save_pcap"]) %>
-          
+
         </p>
       </div>
+    </div>
+    <div class="title second">Preprocessors</div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <% size = Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].size %>
+      <table>
+        <tbody>
+          <tr>
+            <% Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].each do |key, value| %>
+              <td class="size_33">
+                <%= label_tag key.capitalize %>
+                <i>(<%= value["description"] %>)</i>
+                <br/>
+                <%= select_tag "[role][redBorder][snort][preprocessors][#{key}][mode]", select_role_options(@sensor, ["redBorder","snort","preprocessors","#{key}", "mode"], Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
+              </td>
+              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
+              <% cont = cont + 1 %>
+            <% end %>
+            <% ((3 -(cont - 1)%3)%3).times do %>
+              <td class="size_33 noselect"></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="title second">IP Variables <i>(Blank boxs will be inherited from parent.)</i></div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <% size = RuleVariable.all(:type => RuleVariable::IPVAR).size %>
+      <table>
+        <tbody>
+          <tr>
+            <% RuleVariable.all(:type => RuleVariable::IPVAR).each do |v| %>
+              <td class="size_33">
+                <%= label_tag v.name %>
+                <br/>
+                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "vars", v.name]) %>
+              </td>
+              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
+              <% cont = cont + 1 %>
+            <% end %>
+            <% ((3 -(cont - 1)%3)%3).times do %>
+              <td class="size_33 noselect"></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="title second">Port Variables<i>(Blank boxs will be inherited from parent.)</i></div>
+    <div class="config_content preprocessor">
+      <% cont = 1 %>
+      <% size = RuleVariable.all(:type => RuleVariable::PORTVAR).size %>
+      <table>
+        <tbody>
+          <tr>
+            <% RuleVariable.all(:type => RuleVariable::PORTVAR).each do |v| %>
+              <td class="size_33">
+                <%= label_tag v.name %>
+                <br/>
+                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "vars", v.name]) %>
+              </td>
+              <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
+              <% cont = cont + 1 %>
+            <% end %>
+            <% ((3 -(cont - 1)%3)%3).times do %>
+              <td class="size_33 noselect"></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <%= form_actions do %>
