@@ -39,7 +39,7 @@
               <td>
                 <%= label_tag key.capitalize %>
                 <br/>
-                <%= select_tag "[role][redBorder][snort][preprocessors][#{key}]", options_for_select(Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
+                <%= select_tag "[role][redBorder][snort][preprocessors][#{key}][mode]", select_role_options(@sensor, ["redBorder","snort","preprocessors","#{key}", "mode"], Sensor::PREPROCESSOR_VALUES, :selected => selected_preprocessor_value(@role, key)) %>
               </td>
               <%= "</tr><tr>".html_safe if (cont%4 == 0 and cont < size) %>
               <% cont = cont + 1 %>

@@ -2,7 +2,7 @@ class Sensor
   include DataMapper::Resource
 
   MODES = {"Inherited" => "", "IDS" => "IDS", "IPS without rules" => "IPS_NR", "IPS with alert rules" => "IPS_ALERT", "IPS normal mode" => "IPS"}
-  PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => " "}
+  PREPROCESSOR_VALUES = {"Disabled" => false, "Enabled" => true, "Inherited" => ""}
 
   after :create do |sensor|
     # After the sensor (domain or not) has been created it will involve a rule compilation for this sensor.
@@ -429,6 +429,37 @@ class Sensor
         end
       end
     end
+  end
+
+  def role_value(attributes)
+    if !domain
+      return nil
+    end
+
+    value = chef_role.override_attributes
+
+    attributes.each do |k|
+      value.has_key? k ? value = value[k] : value = nil
+      if value.nil?
+        break
+      end
+    end
+
+    if value.nil? and parent
+      value = parent.role_value(attributes)
+    #find values y Sensor role. It's the top sensor in chef.
+    elsif value.nil?
+      value = Sensor.chef_sensor_role.override_attributes
+      attributes.each do |k|
+        value.has_key? k ? value = value[k] : value = nil
+        if value.nil?
+          break
+        end
+      end
+    end
+
+    value
+
   end
 
   private
