@@ -105,9 +105,9 @@ class SensorsController < ApplicationController
     params_role[:redBorder][:barnyard2][:syslog_servers].present? ? @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"] = params_role[:redBorder][:barnyard2][:syslog_servers].split(/\s*,\s*/) : @role.override_attributes["redBorder"]["barnyard2"].delete("syslog_servers")
 
     if @sensor.update(params[:sensor]) and @role.save
-      redirect_to(sensors_path, :notice => 'Sensor was successfully updated.')
+      redirect_to(edit_sensor_path, :notice => 'Sensor was successfully updated.')
     else
-      redirect_to(sensors_path, :notice => 'Was an error updating the sensor.')
+      redirect_to(edit_sensor_path, :notice => 'Was an error updating the sensor.')
     end
   end
 
