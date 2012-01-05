@@ -81,7 +81,7 @@
               <td class="size_33">
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "vars", v.name]) %>
+                <%= text_field_tag "[role][redBorder][snort][ipvars][#{v.name}]", selected_variable_value(@role, "ipvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "ipvars", v.name]) %>
               </td>
               <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>
@@ -104,7 +104,7 @@
               <td class="size_33">
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][redBorder][snort][vars][#{v.name}]", selected_variable_value(@role, v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "vars", v.name]) %>
+                <%= text_field_tag "[role][redBorder][snort][portvars][#{v.name}]", selected_variable_value(@role, "portvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "portvars", v.name]) %>
               </td>
               <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>

@@ -4,8 +4,8 @@ module SensorsHelper
     ""
   end
 
-  def selected_variable_value(role, variable)
-    return role.override_attributes["redBorder"]["snort"]["vars"][variable] unless role.override_attributes["redBorder"]["snort"]["vars"][variable].nil?
+  def selected_variable_value(role, type, variable)
+    return role.override_attributes["redBorder"]["snort"][type][variable] unless role.override_attributes["redBorder"]["snort"][type][variable].nil?
     nil
   end
 
