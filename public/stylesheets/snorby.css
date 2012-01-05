@@ -4888,6 +4888,21 @@ td.size_33{
     width: 33%;
 }
 
+div.preprocessor img{
+    margin-right: 0px;
+}
+
+div.logging img{
+    vertical-align: middle;
+}
+
+div.logging label{
+    vertical-align: middle;
+}
+
+div.logging select{
+    margin-top: 12px;
+}
 /* @end */
 
 /* @end */

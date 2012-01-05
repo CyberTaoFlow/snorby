@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="title second">Logging</div>
-    <div class="config_content">
+    <div class="config_content logging">
       <div class="grid_6">
         <p>
           <%= label_tag 'Syslog Servers' %>
@@ -39,6 +39,11 @@
       </div>
       <div class="grid_5">
         <p>
+          <% if @sensor.role_value(["redBorder", "snort", "save_pcap"]) %>
+                  <%=  image_tag "icons/incident.png" %>
+                <% else %>
+                  <%=  image_tag "icons/fp.png" %>
+                <% end %>
           <%= label_tag 'Save pcap files' %>
           <i>(Info about pcap files and where it will be saved.)</i>
           <br/>
@@ -55,6 +60,11 @@
           <tr>
             <% Sensor.chef_sensor_role.override_attributes["redBorder"]["snort"]["preprocessors"].each do |key, value| %>
               <td class="size_33">
+                <% if @sensor.role_value(["redBorder", "snort", "preprocessors", key, "mode"]) %>
+                  <%=  image_tag "icons/incident.png" %>
+                <% else %>
+                  <%=  image_tag "icons/fp.png" %>
+                <% end %>
                 <%= label_tag key.capitalize %>
                 <i>(<%= value["description"] %>)</i>
                 <br/>
