@@ -96,9 +96,9 @@ class SensorsController < ApplicationController
       if value.class == ActiveSupport::HashWithIndifferentAccess
         value.each do |key2, value2|
           if key == "preprocessors"
-            value2["mode"].present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = value2 : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+            value2["mode"].present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = to_boolean(value2) : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
           else
-            value2.present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = value2 : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+            value2.present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = to_boolean(value2) : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
           end
         end
       else
@@ -193,6 +193,21 @@ class SensorsController < ApplicationController
       @low_snmp     = @snmp.severity_count(:low, @range.to_sym)
       
       @snmp_count = @high_snmp.sum + @medium_snmp.sum + @low_snmp.sum
+    end
+
+    def to_boolean(value)
+      case value
+      when "true"
+        return true
+      when {"mode" => "true"}
+        return {"mode" => true}
+      when "false"
+        return false
+      when {"mode" => "false"}
+        return {"mode" => false}
+      else
+        return value
+      end
     end
 
 end

@@ -34,7 +34,7 @@
         <p>
           <%= label_tag 'Syslog Servers' %>
           <br/>
-          <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?) %>
+          <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?), :placeholder => @sensor.role_value(["redBorder", "barnyard2", "syslog_servers"]).map{|s| s.to_s}.join(", ") %>
         </p>
       </div>
       <div class="grid_5">
@@ -43,7 +43,6 @@
           <i>(Info about pcap files and where it will be saved.)</i>
           <br/>
           <%= select_tag "[role][redBorder][snort][save_pcap]", select_role_options(@sensor, ["redBorder","snort","save_pcap"], Sensor::PREPROCESSOR_VALUES, :selected => @role.override_attributes["redBorder"]["snort"]["save_pcap"]) %>
-
         </p>
       </div>
     </div>
