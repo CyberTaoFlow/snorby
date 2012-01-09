@@ -462,6 +462,22 @@ class Sensor
 
   end
 
+  # Return a Net::SSH object connected to the generic device
+  def get_connection_ssh()
+    #require 'net/ssh'
+    unless self.ipdir.nil? || self.ipdir.empty?
+      ssh = Net::SSH.start(
+        self.ipdir,                     # internal ip
+        "redBorder",                    # username
+        :auth_methods => ["publickey"], # auth method
+        :paranoid => false,
+        :keys => ["config/rsa"]
+      )
+    end
+    ssh
+  end
+
+
   private
 
   def set_default_chef_role_params(role)

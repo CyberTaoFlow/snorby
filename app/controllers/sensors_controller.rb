@@ -151,6 +151,12 @@ class SensorsController < ApplicationController
         sensor.update(:ipdir => node[:ipaddress])
       end
 
+      begin
+        Sensor.root.chef_role
+      rescue
+        Sensor.repair_chef_db
+      end
+
       # Needed to reload the object. Without that, index need to be reload twice to view the sensors created.
       redirect_to sensors_path if sensors1.present? || sensors2.present?
     end

@@ -23,7 +23,7 @@ module Snorby
   Chef::Config[:node_name]  = "rb-chef-webui"
   Chef::Config[:client_key] = "config/rb-chef-webui.pem"
   #By default :chef_server_url should be "http://localhost:4000"
-  Chef::Config[:chef_server_url]="http://192.168.11.180:4000"
+  Chef::Config[:chef_server_url]="http://192.168.11.250:4000"
 
   class Application < Rails::Application
         

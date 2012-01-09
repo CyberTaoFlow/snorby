@@ -7,7 +7,7 @@ snorby: &snorby
   adapter: mysql
   username: snorby
   password: "redborder"
-  host: 192.168.11.180
+  host: 192.168.11.250
 
 development:
   database: snorby
