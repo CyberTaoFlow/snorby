@@ -479,6 +479,23 @@ class Sensor
     ssh
   end
 
+  def all_childs(including_self=false)
+    
+    sensors = []
+    
+    if is_virtual_sensor? and including_self
+      return self
+    elsif !domain
+      return nil
+    elsif including_self
+      sensors << self
+    end
+    
+    sensors << childs.map{|x| x.all_childs(true)}
+
+    sensors.flatten.uniq
+
+  end
 
   private
 

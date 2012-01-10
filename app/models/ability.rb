@@ -6,7 +6,7 @@ class Ability
       can :manage, :all
     else
       user.roles.each do |role|
-        can role.permission.to_sym, role.sensors
+        can role.permission.to_sym, role.sensors.map{|s| s.all_childs(true)}
       end
     end
 

@@ -2,10 +2,12 @@ class SensorsController < ApplicationController
 
   respond_to :html, :xml, :json, :js, :csv
 
-  before_filter :require_administrative_privileges, :except => [:index, :update_name]
+  #before_filter :require_administrative_privileges, :except => [:index, :update_name]
   before_filter :create_virtual_sensors, :only => [:index]
 
-  before_filter :default_values, :except => [:index, :update_name, :update_ip, :new, :create]
+  before_filter :default_values, :except => [:index, :new, :create]
+
+  authorize_resource :except => :index
   
   # It returns a sensor's hierarchy tree
   def index
@@ -35,13 +37,11 @@ class SensorsController < ApplicationController
   end
 
   def update_name
-    @sensor = Sensor.get(params[:id])
     @sensor.update(:name => params[:name]) if @sensor
     render :text => @sensor.name
   end
 
   def update_ip
-    @sensor = Sensor.get(params[:id])
     @sensor.update(:ipdir => params[:ip]) if @sensor
     render :text => @sensor.ipdir
   end
@@ -80,12 +80,10 @@ class SensorsController < ApplicationController
   end
 
   def edit
-    @sensor = Sensor.get(params[:id])
     @role = @sensor.chef_role
   end
 
   def update
-    @sensor = Sensor.get(params[:id])
     @role = @sensor.chef_role
 
     params_role = params[:role]
