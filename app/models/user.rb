@@ -85,6 +85,8 @@ class User
 
   has n, :events, :through => :favorites
 
+  has n, :roles, :through => :roleUser
+
   #
   # Converts the user to a String.
   #
