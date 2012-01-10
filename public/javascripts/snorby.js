@@ -21,42 +21,6 @@ var flash_message   = [];
 var loading_class   = "loading"
 var csrf = $('meta[name="csrf-token"]').attr('content');
 
-function isIP(IPvalue) {
-  var ret       = 1;
-  var ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
-  var ipArray   = IPvalue.match(ipPattern);
-
-  if (IPvalue == "0.0.0.0")
-    ret = 0 
-  else if (IPvalue == "255.255.255.255")
-    ret = 0 
-  
-  if (ipArray == null) {
-    ret = 0;
-  } else {
-    for (i = 0; i < 4 && ret==1; i++) {
-      if (ipArray[i] > 255) {
-        ret = 0;
-      }
-    }
-  } 
-  return ret;
-}
-
-function isListIp(list) {
-
-}
-
-function validateSensorConfForm() {
-  var list_ips = $("#_role_redBorder_barnyard2_syslog_servers")[0].value;
-  if (list_ips!="") {
-    if (!isIP(list_ips)) {
-      alert("Syslog servers: Not valid input");
-      return false;
-    }
-  }
-}
-
 function reload_dashboard_sensor(type){
   var sensor_id = $("#dashboard").attr("data");
   var column = $("#dashboard .secondary")

@@ -1,4 +1,4 @@
-<%= form_tag "/sensors/#{@sensor.sid}", :method => :put, :class => 'basic-form validate', :onsubmit => "return validateSensorConfForm();" do %>
+<%= form_tag "/sensors/#{@sensor.sid}", :method => :put, :class => 'basic-form validate' do %>
 
   <%= error_messages_for(@sensor) %>
 
@@ -34,7 +34,7 @@
         <p>
           <%= label_tag 'Syslog Servers' %>
           <br/>
-          <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?), :placeholder => @sensor.role_value(["redBorder", "barnyard2", "syslog_servers"]).map{|s| s.to_s}.join(", ") %>
+          <%= text_field_tag "[role][redBorder][barnyard2][syslog_servers]", (@role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].map{|s| s.to_s}.join(", ") unless @role.override_attributes["redBorder"]["barnyard2"]["syslog_servers"].nil?), :placeholder => @sensor.role_value(["redBorder", "barnyard2", "syslog_servers"]).map{|s| s.to_s}.join(", "), :class => 'listipaddr' %>
         </p>
       </div>
       <div class="grid_5">
@@ -91,7 +91,7 @@
               <td class="size_33">
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][redBorder][snort][ipvars][#{v.name}]", selected_variable_value(@role, "ipvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "ipvars", v.name]) %>
+                <%= text_field_tag "[role][redBorder][snort][ipvars][#{v.name}]", selected_variable_value(@role, "ipvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "ipvars", v.name]), :class => 'snort_ipvar' %>
               </td>
               <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>
@@ -114,7 +114,7 @@
               <td class="size_33">
                 <%= label_tag v.name %>
                 <br/>
-                <%= text_field_tag "[role][redBorder][snort][portvars][#{v.name}]", selected_variable_value(@role, "portvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "portvars", v.name]) %>
+                <%= text_field_tag "[role][redBorder][snort][portvars][#{v.name}]", selected_variable_value(@role, "portvars", v.name), :placeholder => @sensor.role_value(["redBorder", "snort", "portvars", v.name]), :class => 'snort_portvar' %>
               </td>
               <%= "</tr><tr>".html_safe if (cont%3 == 0 and cont < size) %>
               <% cont = cont + 1 %>
