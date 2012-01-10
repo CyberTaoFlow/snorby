@@ -87,6 +87,8 @@ class Sensor
   has n, :sensorRules, :constraint => :destroy
   has n, :rules      , :through => :sensorRules
 
+  has n, :roles, :through => :roleSensor
+
   def cache
     Cache.all(:sid => sid)
   end
