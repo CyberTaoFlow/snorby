@@ -6,6 +6,6 @@
   <ul class='box-list'>
     <li id='load'>Load<span><%= node["redBorder"]["uptime"]["1minute"]%>  <%= node["redBorder"]["uptime"]["5minute"]%>  <%= node["redBorder"]["uptime"]["15minute"]%></span></li>
     <li id='memory'>Memory<span class="chart"><%= css_chart((100*(1-(node["memory"]["free"].to_f / node["memory"]["total"].to_f))).round(2)) %></span></li>
-    <li id='hd'>HD<span class="chart"><%= css_chart((node["filesystem"]["/dev/mapper/VolGroup-lv_root"][:kb_used].to_f / node["filesystem"]["/dev/mapper/VolGroup-lv_root"][:kb_size].to_f * 100).round(0)) %></span></li>
+    <li id='hd'>HD<span class="chart"><%= css_chart((node["filesystem"]["/dev/mapper/vg_rb-lv_root"][:kb_used].to_f / node["filesystem"]["/dev/mapper/vg_rb-lv_root"][:kb_size].to_f * 100).round(0)) %></span></li>
   </ul>
 </div>
