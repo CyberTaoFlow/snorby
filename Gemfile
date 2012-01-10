@@ -66,6 +66,7 @@ gem 'getopt',			   '~> 1.4.1'
 gem 'net-ssh',                     '2.1.4'
 gem 'json',                        '1.6.1'
 gem 'chef',                        '0.10.8'
+gem 'cancan'
 
 group(:test) do
   gem 'capybara'
@@ -77,6 +78,10 @@ group(:test) do
   gem 'ansi'
   gem 'turn'
   gem 'minitest'
+end
+
+group(:development) do
+  gem 'newrelic_rpm'
 end
 
 group(:doc) do
