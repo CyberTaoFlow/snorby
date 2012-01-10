@@ -95,6 +95,47 @@ class SensorsController < ApplicationController
         value.each do |key2, value2|
           if key == "preprocessors"
             value2["mode"].present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = to_boolean(value2) : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+          elsif key == "portvars"
+            if value2.present?
+              array = value2.split(/\s*,\s*/);
+
+              if array.size>0
+                array.each_with_index do |x,i|
+                  match = x.match('^(!?)(\d+):(\d+)$')
+                  unless match.nil?
+                    if match[2].to_i<match[3].to_i
+                      array[i] = x
+                    elsif match[2].to_i==match[3].to_i
+                      array[i] = match[1]+match[2]
+                    else
+                      array[i] = match[1]+match[3] +":" +match[2]
+                    end
+                  end
+                end
+                @role.override_attributes["redBorder"]["snort"][key][key2] = array.join(", ")
+              else
+                @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+              end
+            else
+              @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+            end
+          elsif key == "ipvars"
+            if value2.present?
+              array = value2.split(/\s*,\s*/);
+
+              if array.size>0
+                array.each_with_index do |x,i|
+                  match = x.match('^(!?)([^/]+)/([^/]+)$')
+                  array[i] = match[1] + NetAddr::CIDR.create(match[2]+'/'+match[3]).to_s unless match.nil?
+                end
+                @role.override_attributes["redBorder"]["snort"][key][key2] = array.join(", ")
+              else
+                @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+              end
+            else
+              @role.override_attributes["redBorder"]["snort"][key].delete(key2)
+            end
+
           else
             value2.present? ? @role.override_attributes["redBorder"]["snort"][key][key2] = to_boolean(value2) : @role.override_attributes["redBorder"]["snort"][key].delete(key2)
           end
