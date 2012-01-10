@@ -1,4 +1,4 @@
-<%= form_tag "/sensors/#{@sensor.sid}", :method => :put, :class => 'basic-form validate' do %>
+<%= form_tag "/sensors/#{@sensor.sid}", :method => :put, :class => 'basic-form validate', :onsubmit => "return validateSensorConfForm();" do %>
 
   <%= error_messages_for(@sensor) %>
 
