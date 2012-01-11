@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 
         @user.reprocess_avatar
 
-        flash[:notice] = "You updated the account succesfuly."
+        flash[:notice] = "You updated the account successfully."
         redirect_to edit_user_path
       else
         render :template => "users/registrations/crop"
