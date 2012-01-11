@@ -479,6 +479,7 @@ class Sensor
     ssh
   end
 
+  #return all sensor childs up to virtual sensors.
   def all_childs(including_self=false)
     
     sensors = []
@@ -486,7 +487,7 @@ class Sensor
     if is_virtual_sensor? and including_self
       return self
     elsif !domain
-      return nil
+      return sensors
     elsif including_self
       sensors << self
     end
