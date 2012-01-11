@@ -38,9 +38,6 @@
           <p><%= f.label :password_confirmation %><br />
             <%= f.password_field :password_confirmation, :placeholder => 'Password Confirmation' %></p>
 
-          <p><%#= f.label :current_password %> <%# <i>(we need your current password to confirm your changes)</i> %><br />
-            <%#= f.password_field :current_password, :placeholder => 'Current Password', :class => 'required password' %></p>
-
         <% end %>
 
         <p>
@@ -89,15 +86,19 @@
           <i>(Get avatar from gravatar.com)</i>
         </p>
 
-        <% if current_user.admin? %>
+        <p>
+          <%= f.check_box :admin %> <%= f.label "Administrator" %>
+          <i>(should this user have administrative rights?)</i>
+          <br /><br />
+        </p>
 
+        <h2>Roles</h2>
+        <% Role.all.each do |role| %>
           <p>
-            <%= f.check_box :admin %> <%= f.label "Administrator" %>
-            <i>(should this user have administrative rights?)</i>
+            <%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %> <%= f.label role.name %>
           </p>
-
         <% end %>
-
+        
       </div>
 
     </div>
