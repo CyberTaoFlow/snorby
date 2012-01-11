@@ -1,10 +1,12 @@
 class RoleSensor
   include DataMapper::Resource
 
-  property :sensor_sid, Integer, :key => true, :index => true
-  property :role_id   , Integer, :key => true, :index => true
+  property  :id       , Serial, :key => true, :index => true
 
-  belongs_to :sensor, :model => 'Sensor', :child_key => [ :sensor_sid ]
-  belongs_to :role  , :model => 'Role'  , :child_key => [ :role_id ]
+  property :sensor_sid, Integer, :index => true
+  property :role_id   , Integer, :index => true
+
+  belongs_to :sensor, :parent_key => [ :sid ], :child_key => [ :sensor_sid ]
+  belongs_to :role
 
 end
