@@ -255,6 +255,14 @@ $.extend($.validator, {
 				this.findByName(element.name).removeClass(errorClass).addClass(validClass);
 			} else {
 				$(element).removeClass(errorClass).addClass(validClass);
+				if (element.type === 'text') {
+					var data = $(element).attr('data');
+					if (data!=null && data!=element.value){
+						$(element).addClass('modified');
+					} else {
+						$(element).removeClass('modified');
+					}
+				}
 			}
 		}
 	},

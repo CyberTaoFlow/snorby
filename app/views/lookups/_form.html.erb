@@ -12,12 +12,12 @@
 	
 		<p class='form-order'>
 			<%= f.label 'Lookup Title' %><br />
-	  	<%= f.text_field :title, :class => 'required large', :placeholder => 'Example.com Address Lookup', :autocomplete => :off %>
+	  	<%= f.text_field :title, :class => 'required large', :placeholder => 'Example.com Address Lookup', :autocomplete => :off, :data => @lookup.title.nil? ? "" : @lookup.title  %>
 		</p>
 		
 		<p class='form-order'>
 			<%= f.label 'Lookup Source URL' %><br />
-	  	<%= f.text_field :value, :class => 'required large', :placeholder => 'Source URL', :autocomplete => :off %>
+	  	<%= f.text_field :value, :class => 'required large', :placeholder => 'Source URL', :autocomplete => :off, :data => @lookup.value.nil? ? "" : @lookup.value %>
 		</p>
 
 		<%= form_actions do %>

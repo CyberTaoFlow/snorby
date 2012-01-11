@@ -5,7 +5,7 @@
 	
 		<p>
 			<%= f.label 'Classification Name' %><br />
-	  	<%= f.text_field :name, :class => 'required', :placeholder => 'Example: Web Attacks', :autocomplete => :off %>
+	  	<%= f.text_field :name, :class => 'required', :placeholder => 'Example: Web Attacks', :autocomplete => :off, :data=> @classification.name.nil? ? "" : @classification.name %>
 		</p>
 		
 		<p>

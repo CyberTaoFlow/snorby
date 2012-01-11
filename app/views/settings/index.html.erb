@@ -14,17 +14,17 @@
 		<div class='grid_6'>
 			<p>
 				<%= label_tag 'Company Name' %><br />
-				<%= text_field_tag '[settings][company]', (Setting.company ? Setting.find(:company) : nil), :placeholder => 'Company Name', :autocomplete => :off, :class => 'required' %>
+				<%= text_field_tag '[settings][company]', (Setting.company ? Setting.find(:company) : nil), :placeholder => 'Company Name', :autocomplete => :off, :class => 'required', :data => (Setting.company ? Setting.find(:company) : nil) %>
 			</p>
 
 			<p>
 				<%= label_tag 'Company Email' %> <i>(this email will be used as the report sender)</i><br />
-				<%= text_field_tag '[settings][email]', (Setting.email ? Setting.find(:email) : nil), :placeholder => 'Company Email', :autocomplete => :off, :class => 'required email' %>
+				<%= text_field_tag '[settings][email]', (Setting.email ? Setting.find(:email) : nil), :placeholder => 'Company Email', :autocomplete => :off, :class => 'required email', :data => (Setting.email ? Setting.find(:email) : nil) %>
 			</p>
 			
 			<p>
 				<%= label_tag 'Signature Lookup URL' %> <i>(user $$sid$$ and $$gid$$ for the get request parameters)</i><br />
-				<%= text_field_tag '[settings][signature_lookup]', (Setting.signature_lookup ? Setting.find(:signature_lookup) : nil), :placeholder => 'Signature Lookup URL', :autocomplete => :off, :class => 'required url' %>
+				<%= text_field_tag '[settings][signature_lookup]', (Setting.signature_lookup ? Setting.find(:signature_lookup) : nil), :placeholder => 'Signature Lookup URL', :autocomplete => :off, :class => 'required url', :data => (Setting.signature_lookup ? Setting.find(:signature_lookup) : nil) %>
 			</p>
 			
 			<p>
@@ -99,7 +99,7 @@
 			<p class='pc-settings'>
 				<%= label_tag 'Packet Capture Extract URL' %> <i>(Packet Capture extract URL)</i><br />
 				<%= text_field_tag '[settings][packet_capture_url]', (Setting.packet_capture_url ? Setting.find(:packet_capture_url) : nil), 
-				:placeholder => 'Packet Capture Extract URL', :autocomplete => :off, :class => 'url' %>
+				:placeholder => 'Packet Capture Extract URL', :autocomplete => :off, :class => 'url', :data => (Setting.packet_capture_url ? Setting.find(:packet_capture_url) : nil) %>
 			</p>
 
 		</div>
@@ -109,7 +109,7 @@
 			<p class='pc-settings'>
 				<%= label_tag 'API User' %> <i>(User name for Packet Capture API)</i><br />
 				<%= text_field_tag '[settings][packet_capture_user]', (Setting.packet_capture_user ? Setting.find(:packet_capture_user) : nil), 
-				:placeholder => 'Packet Capture User', :autocomplete => :off, :class => '' %>
+				:placeholder => 'Packet Capture User', :autocomplete => :off, :class => '', :data => (Setting.packet_capture_user ? Setting.find(:packet_capture_user) : nil) %>
 			</p>
 
 			<p class='pc-settings'>

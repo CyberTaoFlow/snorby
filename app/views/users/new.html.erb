@@ -12,14 +12,14 @@
 				
 				<% if Snorby::CONFIG[:authentication_mode] == "cas" %>
   				<p><%= f.label :name %> <i>(please use your complete CAS login)</i><br />
-  			  <%= f.text_field :name, :placeholder => 'CAS login', :class => 'required' %></p>
+  			  <%= f.text_field :name, :placeholder => 'CAS login', :class => 'required', :data => @user.name.nil? ? "" : @user.name  %></p>
         <% else %>
   				<p><%= f.label :name %> <i>(please use first and last name)</i><br />
-  			  <%= f.text_field :name, :placeholder => 'Full Name', :class => 'required' %></p>        
+  			  <%= f.text_field :name, :placeholder => 'Full Name', :class => 'required', :data => @user.name.nil? ? "" : @user.name %></p>
         <% end %>  
         
 			  <p><%= f.label :email %> <i>(example: snorby@snorby.org)</i><br />
-			  <%= f.text_field :email, :placeholder => 'E-mail Address', :class => 'required email' %></p>
+			  <%= f.text_field :email, :placeholder => 'E-mail Address', :class => 'required email', :data => @user.email.nil? ? "" : @user.email %></p>
 				
 				<% if Snorby::CONFIG[:authentication_mode] == "database" %>
   				<p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />

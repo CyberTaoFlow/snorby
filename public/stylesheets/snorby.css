@@ -2957,6 +2957,10 @@ label{
 	text-transform: none;
 }
 
+input.modified{
+	border: 2px solid #76ca6a !important;
+}
+
 input.error{
 	border: 2px solid #fd2e3f !important;
 }
