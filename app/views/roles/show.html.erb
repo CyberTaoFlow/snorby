@@ -1,0 +1,90 @@
+<%= title "Role #{@role.name}" -%>
+<div class="dashboard content role">
+  <div class="boxit">
+    <ul class="table categories">
+      <div class="content">
+        <li class="category boxit">
+          <div class="row">
+            <div class="category-name click">Users</div>
+          </div>
+          <ul class="table">
+            <div class="content">
+              <li class="group">
+                <div class="row">
+                  <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Enabled</th>
+                      <th>Admin.</th>
+                      <th>Name</th>
+                      <th>E-mail</th>
+                      <th>Login Count</th>
+                      <th>Last Login IP</th>
+                      <th>Last Login Time</th>
+                      <th></th>
+                    </tr>
+                    <tbody class='users'>
+                      <%= render @role.users, :locals => {:role => @role} %>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </li>
+      </div>
+    </ul>
+  </div>
+
+  <div class="boxit">
+    <ul class="table categories">
+      <div class="content">
+        <li class="category boxit">
+          <div class="row">
+            <div class="category-name click">Sensors</div>
+          </div>
+          <ul class="table">
+            <div class="content">
+              <li class="group">
+                <div class="row">
+                  <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <th>Name</th>
+                        <th>Hostname</th>
+                        <th>Interface</th>
+                        <th>Ip</th>
+                        <th>Last Event</th>
+                        <th>Event Count</th>
+                        <th>Event %</th>
+                        <th></th>
+                    </tr>
+                    <tbody class='sensors'>
+                      <%= render @role.sensors, :locals => {:role => @role} %>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </li>
+      </div>
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('input#enabled, input#admin').attr("disabled", true);
+  $('li.sensor-options').parent().remove();
+  $('tbody.users td.last').addClass('icons');
+
+  var role_id = <%= @role.id %>;
+
+  $('tbody.users a').each(function(index, value){
+    var user = $(value).parents('tr').attr('data-user-id');
+    $(value).attr('href', '/roles/'+role_id+'?user_id='+user);
+  });
+
+  $('tbody.sensors a').each(function(index, value){
+    var sensor = $(value).parents('tr').attr('data-sensor-id');
+    $(value).attr('href', '/roles/'+role_id+'?sensor_sid='+sensor);
+  });
+</script>

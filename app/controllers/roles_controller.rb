@@ -25,8 +25,16 @@ class RolesController < ApplicationController
   end
 
   def destroy
-    @role.destroy!
-    redirect_to roles_path
+    if params[:sensor_sid].present?
+      @role.roleSensors.all(:sensor_sid => params[:sensor_sid]).destroy
+      redirect_to roles_path(@role)
+    elsif params[:user_id].present?
+      @role.roleUsers.all(:user_id => params[:user_id]).destroy
+      redirect_to roles_path(@role)
+    else
+      @role.destroy!
+      redirect_to roles_path
+    end
   end
 
   private
