@@ -41,6 +41,7 @@ Snorby::Application.routes.draw do
 
   resources :classifications
 
+  match 'users/add' => 'users#add', :via => [:put]
   match 'users/:id' => 'users#update', :via => [:put]
 
   devise_for :users, :path_names => { :sign_in => 'login', 
