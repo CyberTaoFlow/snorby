@@ -2,8 +2,7 @@ class SessionsController < Devise::SessionsController
   layout 'login'
 
   def create
-    resource = warden.authenticate!(:scope => resource_name, 
-    :recall => "sessions#failure")
+    resource = warden.authenticate!(:scope => resource_name, :recall => "sessions#failure")
 
     return sign_in_and_redirect(resource_name, resource)
   end

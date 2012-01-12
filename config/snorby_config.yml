@@ -5,7 +5,7 @@ production:
   rules:
     - "/opt/rb/etc/snortrules/rules"
     - "/opt/rb/etc/snortrules/so_rules"
-  authentication_mode: database
+  authentication_mode: ldap
 
 development:
   domain: 'rb-manager'
@@ -14,6 +14,6 @@ development:
   rules:
     - "/opt/rb/etc/snortrules/rules"
     - "/opt/rb/etc/snortrules/so_rules"
-  authentication_mode: database
+  authentication_mode: ldap
 
 

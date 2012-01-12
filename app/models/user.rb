@@ -9,13 +9,29 @@ class User
 
   cattr_accessor :current_user
 
+  before :save do |sensor|
+    if Snorby::CONFIG[:authentication_mode] == "ldap"
+      if sensor.login.nil?
+        errors.add "Login can't be blank"
+        return false
+      end
+    else
+      sensor.login = sensor.email
+    end
+  end
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   if Snorby::CONFIG[:authentication_mode] == "cas"
     devise :cas_authenticatable, :registerable, :trackable
-    property :email, String, :required => true, :unique => true 
+    property :email, String, :required => true, :unique => true
+    property :login, String
+  elsif Snorby::CONFIG[:authentication_mode] == "ldap"
+    devise :ldap_authenticatable, :registerable, :rememberable, :trackable, :validatable
+    property :login, String, :unique => true
   else
     devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
+    property :login, String
   end
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h

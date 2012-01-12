@@ -1,6 +1,9 @@
 require 'dm-rails/middleware/identity_map'
 
 class ApplicationController < ActionController::Base
+  rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
+    render :text => exception, :status => 500
+  end
   use Rails::DataMapper::Middleware::IdentityMap
   protect_from_forgery
 

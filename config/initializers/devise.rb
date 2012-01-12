@@ -20,7 +20,6 @@ Devise.setup do |config|
   # authenticating an user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
-  # config.authentication_keys = [ :email ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true
@@ -143,11 +142,22 @@ Devise.setup do |config|
   
   if Snorby::CONFIG[:authentication_mode] == "cas"  
     config.cas_base_url = Snorby::CONFIG[:cas_config]["base_url"]
-
     # you can override these if you need to, but cas_base_url is usually enough
     config.cas_login_url = Snorby::CONFIG[:cas_config]["login_url"]
     config.cas_logout_url = Snorby::CONFIG[:cas_config]["logout_url"]
     # config.cas_validate_url = "https://cas.myorganization.com/serviceValidate"
+  elsif Snorby::CONFIG[:authentication_mode] == "ldap"
+    # ==> Advanced LDAP Configuration
+    # config.ldap_auth_username_builder = Proc.new() {|attribute, login, ldap| "#{attribute}=#{login},#{ldap.base}" }
+    # ==> LDAP Configuration 
+    config.ldap_logger = true
+    config.ldap_create_user = false
+    config.ldap_update_password = false
+    config.ldap_config = "#{Rails.root}/config/ldap.yml"
+    # config.ldap_check_group_membership = false
+    # config.ldap_check_attributes = false
+    config.ldap_use_admin_to_bind = true
+    # config.ldap_ad_group_check = false
+    config.authentication_keys = [ :login ]
   end
-  
 end

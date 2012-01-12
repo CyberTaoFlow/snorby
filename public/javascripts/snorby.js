@@ -1800,9 +1800,11 @@ jQuery(document).ready(function($) {
     event.preventDefault();
     var self = $('#login');
     var that = this;
+    login = ($('input#user_email').length>0 ? $('input#user_email') : $('input#user_login'))
+    //login = $('input#user_login')
     
     if ($('input#user_password', that).attr('value').length > 1) {
-      if ($('input#user_email', that).attr('value').length > 5) {
+      if (login.attr('value').length > 5) {
 
         $.post(that.action, $(that).serialize(), function(data) {
           if (data.success) {
