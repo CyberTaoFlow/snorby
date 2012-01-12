@@ -4755,15 +4755,15 @@ input.success:active{
   width: 724px;
 }
 
-#dashboard-sensor-other-content ul.table {
+div.dashboard.content ul.table {
   width: auto;
 }
 
-#dashboard-sensor-other-content div.content li.highlight{
+div.dashboard.content div.content li.boxit{
   list-style: none;
 }
 
-#dashboard-sensor-other-content div.content li.highlight > div.row {
+div.dashboard.content div.content li.boxit > div.row {
   background-color: #414346;
   border: 1px solid white;
   background-image: none;
@@ -4776,21 +4776,21 @@ input.success:active{
   overflow: hidden;
 }
 
-#dashboard-sensor-other-content div.content li.highlight > div.row > div{
+div.dashboard.content div.content li.boxit > div.row > div{
   margin-left: 5px;
 }
 
-#dashboard-sensor-other-content div.content li.highlight.event > div.row > div{
+div.dashboard.content div.content li.boxit.event > div.row > div{
   margin-left: 0px;
 }
 
-#dashboard-sensor-other-content > .content{
+div.dashboard.content > .content{
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border: 5px solid #F3F3F3;
 }
 
-#dashboard-sensor-other-content .content .grid_12 {
+div.dashboard.content .content .grid_12 {
   padding-top: 0px;
   padding-bottom: 0px;
   width: auto;
@@ -4798,7 +4798,7 @@ input.success:active{
   margin-right: 0px;
 }
 
-#dashboard-sensor-info-content, #dashboard-sensor-load-content{
+div.dashboard.content{
     margin-top: 30px;
 }
 
@@ -4906,6 +4906,10 @@ div.logging label{
 
 div.logging select{
     margin-top: 12px;
+}
+
+div.dashboard.content.role{
+    margin-top: 5px;
 }
 /* @end */
 
