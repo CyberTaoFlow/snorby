@@ -4911,6 +4911,35 @@ div.logging select{
 div.dashboard.content.role{
     margin-top: 5px;
 }
+
+#wrapper #content #title.sec-title{
+    background: none;
+    background-color: #414346;
+    border: 0px;
+}
+
+#wrapper #content #title.sec-title #title-header{
+    color: white;
+    text-shadow: none;
+}
+
+#wrapper #content #title.sec-title #title-menu-holder ul#title-menu{
+    margin-right: 0px;
+}
+
+#wrapper #content #title.sec-title #title-menu-holder ul#title-menu li{
+    border-right: 0px;
+    border-left: 0px;
+}
+
+#wrapper #content #title.sec-title #title-menu-holder ul#title-menu li a{
+    color: white;
+    text-shadow: none;
+}
+
+#wrapper #content #title.sec-title #title-menu-holder ul#title-menu li:hover{
+    background-color: #414346;
+}
 /* @end */
 
 /* @end */

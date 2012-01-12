@@ -10,7 +10,10 @@ Snorby::Application.routes.draw do
     
   end
 
-  resources :roles
+  resources :roles do
+    get :add_users
+    get :add_sensors
+  end
 
   match '/snmp_results', :controller => 'Snmps', :action => 'results'
   match '/trap_results', :controller => 'Traps', :action => 'results'

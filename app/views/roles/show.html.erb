@@ -4,9 +4,9 @@
     <ul class="table categories">
       <div class="content">
         <li class="category boxit">
-          <div class="row">
-            <div class="category-name click">Users</div>
-          </div>
+          <%= sec_title "Users" do -%>
+            <%= menu_item "Add User", role_add_users_path(@role), 'icons/add.png', {:class => 'snorbybox', :target => '_blank'} %>
+          <%- end -%>
           <ul class="table">
             <div class="content">
               <li class="group">
@@ -23,7 +23,7 @@
                       <th></th>
                     </tr>
                     <tbody class='users'>
-                      <%= render @role.users, :locals => {:role => @role} %>
+                      <%= render @role.users %>
                     </tbody>
                   </table>
                 </div>
@@ -39,9 +39,9 @@
     <ul class="table categories">
       <div class="content">
         <li class="category boxit">
-          <div class="row">
-            <div class="category-name click">Sensors</div>
-          </div>
+          <%= sec_title "Sensors" do -%>
+            <%= menu_item "Add Sensor", role_add_sensors_path(@role), 'icons/add.png', {:class => 'snorbybox', :target => '_blank'} %>
+          <%- end -%>
           <ul class="table">
             <div class="content">
               <li class="group">

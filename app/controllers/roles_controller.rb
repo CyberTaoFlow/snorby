@@ -37,6 +37,18 @@ class RolesController < ApplicationController
     end
   end
 
+  def add_users
+    @role = Role.get(params[:role_id])
+    @users = User.all - @role.users
+    render :layout => false
+  end
+
+  def add_sensors
+    @role = Role.get(params[:role_id])
+    @sensors = Sensor.all(:domain => true) - @role.sensors
+    render :layout => false
+  end
+
   private
 
     def find_role

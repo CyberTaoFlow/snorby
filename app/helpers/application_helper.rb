@@ -55,6 +55,22 @@ module ApplicationHelper
     return content_tag(:div, html, :id => 'title')
   end
 
+  def sec_title(header, title=nil, &block)
+    show_title(title ? title : header)
+    title_header = content_tag(:div, header, :id => 'title-header', :class => 'grid_6')
+
+    if block_given?
+      data = capture(&block).gsub("\n|\t", '')
+      menu = content_tag(:ul, "<li>&nbsp;</li>#{capture(&block)}<li>&nbsp;</li>".html_safe, :id => 'title-menu') unless data.blank?
+      menu_holder = content_tag(:ul, menu, :id => 'title-menu-holder', :class => '')
+      html = title_header + menu_holder
+    else
+      html = title_header
+    end
+
+    return content_tag(:div, html, :id => 'title', :class => 'sec-title')
+  end
+
   def sortable(column, title = nil)
     title ||= column.titleize
     css_class = column == sort_column ? "current #{sort_direction} add_tipsy" : 'add_tipsy'
