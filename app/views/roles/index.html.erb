@@ -1,0 +1,19 @@
+<%= title "Listing Roles" do -%>
+  <%= render :partial => 'add' %>
+<%- end -%>
+
+<div id="sensors" class='boxit'>
+  <table id="sensorTable" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th>Name</th>
+      <th>Permission</th>
+      <th>Users</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tbody class='sensors'>
+      <%= render @roles %>
+    </tbody>
+  </table>
+
+</div>

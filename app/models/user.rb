@@ -143,4 +143,14 @@ class User
     avatar.reprocess! if cropping?
   end
 
+  def role_ids
+    self.roles.map{|r| r.id}
+  end
+
+  def role_ids=(roles)
+    self.roles = []
+    self.roles = Role.all(:id => roles)
+    self.save
+  end
+
 end

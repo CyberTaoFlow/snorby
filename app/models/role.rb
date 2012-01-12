@@ -8,4 +8,13 @@ class Role
   has n, :users, :through => :roleUser
   has n, :sensors, :through => :roleSensor
 
+  has n, :roleSensors
+  has n, :roleUsers  
+
+  # constraint => :destroy fails
+  before :destroy! do
+    self.roleSensors.destroy
+    self.roleUsers.destroy
+  end
+
 end

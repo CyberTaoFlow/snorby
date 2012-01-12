@@ -18,7 +18,39 @@ class UsersController < ApplicationController
       render :action => 'new'
     end
   end
-  
+
+  def edit
+    @user = User.get(params[:id])
+  end
+
+  def update
+    @user = User.get(params[:id])
+
+    params[:user][:role_ids] ||= []
+
+    if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+
+    if @user.send("update", params["user"])
+
+      if params['user']['avatar'].blank?
+
+        @user.reprocess_avatar
+
+        flash[:notice] = "You updated the account successfully."
+        redirect_to edit_user_path
+      else
+        render :template => "users/registrations/crop"
+      end
+
+    else
+      @user.password = @user.password_confirmation = nil
+      redirect_to edit_user_path
+    end
+  end
+
   def remove
     @user = User.get(params[:id])
     @user.destroy!

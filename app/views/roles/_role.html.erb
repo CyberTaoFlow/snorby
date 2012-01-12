@@ -1,0 +1,11 @@
+<tr id='role_<%= role.id %>' class='role' data-sensor-id='<%= role.id %>'>
+  <td class='name' data-role-id='<%= role.id %>'><%= role.name %></td>
+
+  <td class='name' data-role-id='<%= role.id %>' ><%= role.permission %> </td>
+
+  <td class='event_count'><%= role.users.size %></td>
+
+  <td class='icons'><%= link_to image_tag("icons/admin2.png", :size => '16x16', :class => 'trash'), role_path(role) %></td>
+  <td class='icons last'><%= link_to image_tag("icons/destroy.png", :size => '16x16', :class => 'trash'), role_path(role), :method => :delete, :confirm => "Are you sure you want to remove this role?" %></td>
+
+</tr>

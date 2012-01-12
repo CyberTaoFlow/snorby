@@ -10,6 +10,8 @@ Snorby::Application.routes.draw do
     
   end
 
+  resources :roles
+
   match '/snmp_results', :controller => 'Snmps', :action => 'results'
   match '/trap_results', :controller => 'Traps', :action => 'results'
 
@@ -38,6 +40,8 @@ Snorby::Application.routes.draw do
   end
 
   resources :classifications
+
+  match 'users/:id' => 'users#update', :via => [:put]
 
   devise_for :users, :path_names => { :sign_in => 'login', 
     :sign_out => 'logout', 
