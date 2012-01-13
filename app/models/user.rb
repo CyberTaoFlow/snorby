@@ -1,7 +1,6 @@
 require 'snorby/model/counter'
 
-class User
-  
+class User  
   include DataMapper::Resource
   include DataMapper::Validate
   include Paperclip::Resource
@@ -28,6 +27,7 @@ class User
     property :login, String
   elsif Snorby::CONFIG[:authentication_mode] == "ldap"
     devise :ldap_authenticatable, :registerable, :rememberable, :trackable, :validatable
+    property :email, String, :required => true, :unique => true
     property :login, String, :unique => true
   else
     devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable

@@ -16,6 +16,13 @@
         <% else %>
   				<p><%= f.label :name %> <i>(please use first and last name)</i><br />
   			  <%= f.text_field :name, :placeholder => 'Full Name', :class => 'required', :data => @user.name.nil? ? "" : @user.name %></p>
+                                <% if Snorby::CONFIG[:authentication_mode] == "ldap" %>
+                                  <p>
+                                    <%= f.label :login %> <i>(please user the ldap username)</i><br/>
+                                    <%= f.text_field :login, :placeholder => '', :class => 'required', :data => @user.login.nil? ? "" : @user.login  %>
+                                  </p>
+
+                                <% end %>
         <% end %>  
         
 			  <p><%= f.label :email %> <i>(example: snorby@snorby.org)</i><br />

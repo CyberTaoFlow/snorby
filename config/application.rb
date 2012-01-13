@@ -74,4 +74,13 @@ module Snorby
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
   end
+
+
+#  if Snorby::CONFIG[:authentication_mode] == "ldap"
+#    #delete "not null" property for encrypted_password
+#    DataMapper.repository(:default).adapter.execute "ALTER TABLE snorby.users MODIFY COLUMN encrypted_password VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL"
+#  else
+#    DataMapper.repository(:default).adapter.execute "ALTER TABLE snorby.users MODIFY COLUMN encrypted_password VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;"
+#  end
+  
 end

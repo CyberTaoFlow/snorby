@@ -11,6 +11,10 @@ class UsersController < ApplicationController
   end
   
   def add
+    if Snorby::CONFIG[:authentication_mode] == "ldap" and params[:user][:password].blank?
+      params[:user][:password] = "redborder"
+      params[:user][:password_confirmation] = "redborder"
+    end
     @user = User.create(params[:user])
     if @user.save
       redirect_to users_path
