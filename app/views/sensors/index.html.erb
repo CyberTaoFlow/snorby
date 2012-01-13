@@ -1,7 +1,7 @@
 <% if current_user.admin %>
   <%= title "Listing Sensors" do -%>
     <% if current_user.admin %>
-      <%= render :partial => 'sensors/add' %>
+      <%= menu_item "Add Domain", new_sensor_path, 'icons/add.png', {:class => 'snorbybox', :target => '_blank'} %>
       <%= render :partial => 'settings/menu' %>
     <% end %>
   <%- end -%>
