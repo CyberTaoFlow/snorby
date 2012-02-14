@@ -41,19 +41,15 @@ Pass: snorby
 	
 		`apt-get install imagemagick`
 
-* Install Gem Dependencies (make sure you have bundler installed: `gem install bundler`)
-
-	`bundle install`
-	
-* Install wkhtmltopdf
-
-	`pdfkit --install-wkhtmltopdf # If this fails - visit http://code.google.com/p/wkhtmltopdf/ for more information`
-	
 * Get Snorby from the download section or use the latest edge release via git.
 
 	`git clone git://github.com/Snorby/snorby.git`
 
-* Install Gem Dependencies (inside the root Snorby directory)
+* Move into de snorby Directory
+
+	`cd snorby`
+
+* Install Gem Dependencies  (make sure you have bundler installed: `gem install bundler`)
 
 	`$ bundle install`
 	
@@ -63,17 +59,21 @@ Pass: snorby
 
 	* If running `bundle exec {app}` is painful you can safely install binstubs by `bundle install --binstubs` 
 	
+* Install wkhtmltopdf
+
+	`pdfkit --install-wkhtmltopdf # If this fails - visit http://code.google.com/p/wkhtmltopdf/ for more information`
+
 * Run The Snorby Setup
 
 	`rake snorby:setup`
 	
 * Edit The Snorby Configuration File
 
-	`snorby/app/config/snorby_config.yml`
+	`config/snorby_config.yml`
 	
 * Edit The Snorby Mail Configurations
 
-	`snorby/app/initializers/mail_config.rb`
+	`config/initializers/mail_config.rb`
 	
 * Once all options have been configured and snorby is up and running
 
@@ -127,22 +127,7 @@ You can open the rails console at anytime and interact with the Snorby environme
 	# If the Snorby worker is running this will start the cache jobs and set the run_at time for the current time.
 	Snorby::Jobs.run_now!
 
-## Snorby Team
-
- * Snorby
- 	* **Dustin Willis Webber** (Creator, Designer and Backend Code)
-
- * Insta-Snorby 
- 	* **Jason Meller** (Insta-Snorby Creator and Maintainer) [https://github.com/Snorby/insta-snorby](https://github.com/Snorby/insta-snorby)
-
- * Team Cool
- 	* **JJ Cummings** (Super Badass)
-
 ## License
-
-* Note: The snorby source code is 100% free and open source however we use highcharts for metrics
-and reporting. Please make sure you review the [highcharts](http://www.highcharts.com) licensing in detail [here](http://www.highcharts.com/license). 
-The below license only applies to snorby source code which can be identified with the below license in each file.
 
 Snorby - All About Simplicity.
 
@@ -161,3 +146,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+* Note: The snorby source code is 100% free and open source however we use highcharts for metrics
+and reporting. Please make sure you review the [highcharts](http://www.highcharts.com) licensing in detail [here](http://www.highcharts.com/license). 
+The below license only applies to snorby source code which can be identified with the below license in each file.
