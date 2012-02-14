@@ -36,7 +36,7 @@ class Event
 
   has n, :users, :through => :favorites
 
-  has 1, :severity, :through => :signature, :via => :sig_priority
+  has 1, :severity, :through => :signature, :via => :sig_priority, :constraint => :skip
 
   has 1, :payload, :parent_key => [ :sid, :cid ], 
     :child_key => [ :sid, :cid ], :constraint => :destroy
