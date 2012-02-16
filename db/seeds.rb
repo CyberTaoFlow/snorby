@@ -108,3 +108,7 @@ end
 
 # Sensor root
 Sensor.create(:name => "root", :domain => true) if Sensor.first(:name => "root").nil?
+# Validate Snorby Indexes
+require "./lib/snorby/jobs/cache_helper"
+include Snorby::Jobs::CacheHelper
+validate_cache_indexes
