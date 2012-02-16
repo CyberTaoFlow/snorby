@@ -42,7 +42,7 @@ class Sensor
 
   property :ipdir, String
 
-  has n, :events, :child_key => :sid, :constraint => :destroy
+  has n, :events, :child_key => :sid, :constraint => :destroy!
 
   has n, :ips, :child_key => :sid, :constraint => :destroy
   
