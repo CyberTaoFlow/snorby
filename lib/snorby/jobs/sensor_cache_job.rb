@@ -129,12 +129,14 @@ module Snorby
               end_time = end_time + 30.minutes
             end
 
-          end # Sensor.all.each END
+            logit "\n[~] Calculating Last Cache value", false            
+            last_cache = Cache.all(:sid => @sensor.sid, :cid.not => nil, :order => [:cid.desc]).first
+            @sensor.update(:last_cid => last_cache.cid) unless last_cache.nil?
 
-          logit "\n[~] Building Sensor Metrics", false
-          Sensor.all.each do |x|
-            x.update(:events_count => Event.all(:sid => x.sid).count)
-          end
+            logit "\n[~] Building Sensor Metrics", false
+            @sensor.update(:events_count => Event.all(:sid => @sensor.sid).count)
+
+          end # Sensor.all.each END
 
           logit "[~] Building Signature Metrics", false
           update_signature_count
